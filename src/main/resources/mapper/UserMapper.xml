@@ -40,7 +40,11 @@
                 mobile,
                 roleId,
                 createTime,
-                delFlag from easybuy_user
+                isDel from easybuy_user
         where loginName = #{loginName} and isDel = 0
     </select>
+    <insert id="register">
+        insert into easybuy_user(loginName, password, email, mobile, createTime,isDel,roleId) value (#{loginName}, #{password}, #{email}, #{mobile},
+                                                                                                     now(), 0,3);
+    </insert>
 </mapper>

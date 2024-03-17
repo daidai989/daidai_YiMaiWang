@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Random;
 
 @Service
+
 public class UserServiceImpl implements UserService {
     private Logger logger = Logger.getLogger(getClass());
 
@@ -25,9 +27,9 @@ public class UserServiceImpl implements UserService {
         User login = userMapper.login(user);
         logger.info("UserServiceImpl login login:"+login);
         if (login != null){
-            return new ResponseMessage("200","登录成功",login);
+            return  ResponseMessage.success("登录成功",login);
         }
-        return new ResponseMessage("201","登录失败",null);
+        return  ResponseMessage.error("登录失败");
     }
 
     @Override
@@ -36,9 +38,9 @@ public class UserServiceImpl implements UserService {
         int count = userMapper.updatePwd(user);
         logger.info("UserServiceImpl updatePwd count:"+count);
         if (count > 0){
-            return new ResponseMessage("200","修改成功",count);
+            return  ResponseMessage.success("修改成功",count);
         }
-        return new ResponseMessage("201","修改失败",count);
+        return  ResponseMessage.error("修改失败");
     }
 
     @Override
@@ -47,9 +49,18 @@ public class UserServiceImpl implements UserService {
         User isExist = userMapper.checkUserExist(user);
         logger.info("UserServiceImpl checkUserExist login:"+isExist);
         if (isExist != null){
-            return new ResponseMessage("200","用户存在",isExist);
+            return ResponseMessage.success("用户存在",isExist);
         }
-        return new ResponseMessage("201","用户不存在",null);
+        return ResponseMessage.error("用户不存在");
+    }
+    @Override
+    public ResponseMessage register(User user) {
+        int updateRow = userMapper.register(user);
+        if (updateRow>0) {
+            return ResponseMessage.success();
+        }else {
+            return ResponseMessage.error("添加失败");
+        }
     }
 
 }

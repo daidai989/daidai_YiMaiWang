@@ -7,4 +7,5 @@ public interface UserService {
     public ResponseMessage login(User user);
     public ResponseMessage updatePwd(User user);
     public ResponseMessage checkUserExist(User user);
+    public ResponseMessage register(User user);
 }
