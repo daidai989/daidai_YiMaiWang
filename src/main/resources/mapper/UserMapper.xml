@@ -40,7 +40,7 @@
                 mobile,
                 roleId,
                 createTime,
-                delFlag from easybuy_user
+                isDel from easybuy_user
         where loginName = #{loginName} and isDel = 0
     </select>
 </mapper>
