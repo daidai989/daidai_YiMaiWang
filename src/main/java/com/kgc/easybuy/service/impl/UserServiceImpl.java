@@ -6,7 +6,11 @@ import com.kgc.easybuy.pojo.User;
 import com.kgc.easybuy.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
+import java.util.Random;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -14,7 +18,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
-
 
     @Override
     public ResponseMessage login(User user) {
@@ -48,4 +51,5 @@ public class UserServiceImpl implements UserService {
         }
         return new ResponseMessage("201","用户不存在",null);
     }
+
 }

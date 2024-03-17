@@ -9,9 +9,8 @@ public class User {
     private String identityCode;
     private String email;
     private String mobile;
-    private int type;
-    private int power;
-    private int delFlag;
+    private int roleId;
+    private int isDel;
 
     public int getId() {
         return id;
@@ -77,28 +76,20 @@ public class User {
         this.mobile = mobile;
     }
 
-    public int getType() {
-        return type;
+    public int getRoleId() {
+        return roleId;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 
-    public int getPower() {
-        return power;
+    public int getIsDel() {
+        return isDel;
     }
 
-    public void setPower(int power) {
-        this.power = power;
-    }
-
-    public int getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(int delFlag) {
-        this.delFlag = delFlag;
+    public void setIsDel(int isDel) {
+        this.isDel = isDel;
     }
 
     @Override
@@ -112,9 +103,8 @@ public class User {
                 ", identityCode='" + identityCode + '\'' +
                 ", email='" + email + '\'' +
                 ", mobile='" + mobile + '\'' +
-                ", type=" + type +
-                ", power=" + power +
-                ", delFlag=" + delFlag +
+                ", roleId=" + roleId +
+                ", isDel=" + isDel +
                 '}';
     }
 }

@@ -1,5 +1,6 @@
 package com.kgc.easybuy.controller;
 
+import com.kgc.easybuy.Config.SendEmail;
 import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.pojo.User;
 import com.kgc.easybuy.service.UserService;
@@ -17,6 +18,14 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SendEmail sendEmail;
+    @RequestMapping("login")
+    public String login(){
+        logger.info("UserController login start.. ");
+        return "Login.html";
+    }
 
     @RequestMapping("userLogin")
     @ResponseBody
@@ -46,5 +55,14 @@ public class UserController {
         ResponseMessage message = userService.checkUserExist(user);
         logger.debug("UserController checkUserExist message：" + message);
         return message;
+    }
+
+
+    @RequestMapping("sendEmailCode")
+    @ResponseBody
+    public Object sendEmailCode(String userName){
+        logger.info("UserController sendEmailCode start..");
+        int code = sendEmail.sendEmail(userName);
+        return code;
     }
 }
