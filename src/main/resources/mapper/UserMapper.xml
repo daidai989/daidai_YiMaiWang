@@ -26,7 +26,7 @@
                 password = #{password}
             </if>
         </set>
-        where LoginName = #{LoginName]} and isDel = 0
+        where LoginName = #{loginName} and isDel = 0
     </update>
 
     <select id="checkUserExist" parameterType="com.kgc.easybuy.pojo.User" resultType="com.kgc.easybuy.pojo.User">

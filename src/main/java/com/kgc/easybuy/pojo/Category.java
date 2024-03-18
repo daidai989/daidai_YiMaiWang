@@ -18,6 +18,5 @@ public class Category {
     private int type;
     private String iconClass;
     private int isDel;
-
     private Date createTime;
 }
