@@ -1,4 +1,4 @@
-package com.kgc.easybuy.Config;
+package com.kgc.easybuy.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -16,7 +16,7 @@ public class SendEmail {
     public int sendEmail(String userName){
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         // 发件人
-        simpleMailMessage.setFrom("易买网");
+        simpleMailMessage.setFrom(userName);
         // 收件人
         simpleMailMessage.setTo(userName);
         // 邮件主题

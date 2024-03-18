@@ -10,4 +10,5 @@ public interface UserMapper {
     public int updatePwd(User user);
 
     public User checkUserExist(User user);
+    public int register(User user);
 }

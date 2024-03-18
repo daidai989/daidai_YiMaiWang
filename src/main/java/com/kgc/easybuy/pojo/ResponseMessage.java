@@ -1,48 +1,31 @@
 package com.kgc.easybuy.pojo;
 
-public class ResponseMessage {
-    private String code;
-    private String msg;
-    private Object data;
-    public ResponseMessage() {
 
-    }
-    public ResponseMessage(String code, String msg, Object data) {
-        this.code = code;
-        this.msg = msg;
-        this.data = data;
-    }
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    public String getCode() {
-        return code;
-    }
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ResponseMessage<T> {
+   private Integer code;
+   private String message;
+   private T data;
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+   public static <E> ResponseMessage<E> success(E data) {
+       return new ResponseMessage<>(200,"操作成功",data);
+   }
 
-    public String getMsg() {
-        return msg;
+    public static  ResponseMessage success() {
+        return new ResponseMessage<>(200,"操作成功",null);
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public static <E> ResponseMessage<E> success(String message,E data) {
+        return new ResponseMessage<>(200,message,data);
     }
 
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
-
-    @Override
-    public String toString() {
-        return "ResponseMessage{" +
-                "code='" + code + '\'' +
-                ", msg='" + msg + '\'' +
-                ", data=" + data +
-                '}';
+    public static  ResponseMessage error(String message) {
+        return new ResponseMessage<>(400,message,null);
     }
 }

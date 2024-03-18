@@ -1,18 +1,22 @@
 package com.kgc.easybuy.controller;
 
-import com.kgc.easybuy.Config.SendEmail;
+import com.kgc.easybuy.config.SendEmail;
 import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.pojo.User;
 import com.kgc.easybuy.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
+@CrossOrigin(origins = "*")
+
 public class UserController {
     private Logger logger = Logger.getLogger(getClass());
 
@@ -64,5 +68,11 @@ public class UserController {
         logger.info("UserController sendEmailCode start..");
         int code = sendEmail.sendEmail(userName);
         return code;
+    }
+    @RequestMapping("doRegister")
+    @ResponseBody
+    public ResponseMessage toRegister(@RequestBody User user) {
+        ResponseMessage responeseMsg = userService.register(user);
+        return responeseMsg;
     }
 }

@@ -21,7 +21,7 @@
     </style>
 </head>
 <body>
-    <div id="root">
+<div id="root">
         <el-container>
             <el-header><h2>忘记密码</h2></el-header>
             <el-main>
@@ -55,10 +55,10 @@
                         </el-row>
                         <el-row :gutter="24">
                             <el-col :span="6">
-                                <el-form-item label="验证码" prop="checkCode">
-                                    <el-input v-model="user.checkNum"></el-input>
+                                <el-form-item style="margin-bottom: 10px" label="验证码" prop="checkCode">
+                                    <el-input v-model="user.checkCode"></el-input>
                                 </el-form-item>
-                                <el-button type="primary" size="small" @click="getCode">获取验证码</el-button>
+                                <el-button style="margin-left: 190px" :disabled="isSend" type="primary" size="small" @click="getCode">{{codeName}}</el-button>
                             </el-col>
                         </el-row>
                         <el-button type="primary" @click="submit('form')">提交</el-button>
@@ -108,12 +108,16 @@
                     repassword: "",
                     email: "",
                     checkCode: "",
-                    resultCode:""
                 },
+                resultCode:"",
+                isSend: false,
+                codeName: "发送验证码",
+                totalTime: 10,
+                timer:'',
                 rules:{
                 loginName:[
                     { required: true, message: '请输入用户名', trigger: 'blur' },
-                    { min:2,max:10, message: '用户名应该在2至10位之间', trigger: 'blur'},
+                    { min:2,max:20, message: '用户名应该在2至20位之间', trigger: 'blur'},
                     { validator:checkloginName, trigger:"blur"}
                 ],
                 password:[
@@ -131,7 +135,7 @@
                 ],
                  checkCode:[
                     { required: true, message: '请输入验证码', trigger: 'blur' },
-                     { validator:checkEmail, trigger:"blur" }
+                    { validator:checkEmail, trigger:"blur" },
                 ]
             }
             };
@@ -143,10 +147,14 @@
         submit(form){
             this.$refs[form].validate((valid) => {
                 if (valid) {
+                    if (this.resultCode != this.user.checkCode){
+                            alert("验证码错误！");
+                            return;
+                    }
                     axios.get("updatePwd",{
                         params:{
-                            loginName:this.loginName,
-                            password:this.password
+                            loginName:this.user.loginName,
+                            password:this.user.password
                         }
                 }).then((result) => {
                     if (result.data.code == "200") {
@@ -159,16 +167,35 @@
                 }
         })
         },
-            getCode(){
-                axios.get('sendEmailCode',{
-                    params:{
-                        loginName:this.loginName
-                    }
+        getCode(){
+            if (this.user.email == ""){
+                alert("请先输入邮箱！");
+                    return;
+            }
+             if (this.isSend){
+                 return;
+             }
+           axios.get('http://localhost:8080/sendEmailCode',{
+                 params:{
+                     userName:this.user.email
+                 }
                 }).then((result) => {
                     console.log(result.data);
                     this.resultCode = result.data;
-                })
-            }
+             })
+             this.isSend = true
+             this.codeName = this.totalTime + 's后重新发送'
+             this.timer = setInterval(() => {
+                 this.totalTime--
+                 this.codeName = this.totalTime + 's后重新发送'
+                 if (this.totalTime < 0) {
+                     clearInterval(this.timer)
+                     this.codeName = '重新发送验证码'
+                     this.totalTime = 10
+                     this.isSend = false
+                 }
+             }, 1000)
+         }
     }
     })
 </script>
