@@ -1,0 +1,132 @@
+[33mcommit 969042ef61c335f5ce9a859d3b4ac319f5299426[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m
+Author: zhangxuebin <1527949074@qq.com>
+Date:   Mon Mar 18 19:01:20 2024 +0800
+
+    易买网后端项目搭建0.0.2base版
+
+[33mcommit e9289198dd57c7593e3472ef5306d1d6f4f8fe81[m
+Merge: 6980f55 478cdf7
+Author: zhangxuebin <1527949074@qq.com>
+Date:   Mon Mar 18 12:38:38 2024 +0800
+
+    Merge branch 'master' of github.com:daidai989/daidai_YiMaiWang
+    
+    # Conflicts:
+    #       src/main/resources/static/index.html
+
+[33mcommit 478cdf7045a7b655be12098bdee6592429f68323[m
+Merge: a8dcd05 e4231bc
+Author: daidai <1304057714@qq.com>
+Date:   Mon Mar 18 11:52:40 2024 +0800
+
+    易买网后端项目搭建0.0.2base版
+
+[33mcommit a8dcd054a39b2c5faa03ee95e88c1d570fe89787[m
+Author: daidai <1304057714@qq.com>
+Date:   Mon Mar 18 11:39:37 2024 +0800
+
+    易买网后端项目搭建0.0.2base版
+
+[33mcommit 6912ca8084ace0aee8cc764ea686ee83f432fb7b[m
+Author: daidai <1304057714@qq.com>
+Date:   Mon Mar 18 11:39:28 2024 +0800
+
+    易买网后端项目搭建0.0.2base版
+
+[33mcommit ecb96535d0bac04c3e9d4ea535f36a9d67a6679f[m
+Author: daidai <1304057714@qq.com>
+Date:   Mon Mar 18 11:16:23 2024 +0800
+
+    易买网后端项目搭建0.0.2base版
+
+[33mcommit 941253ea23b34576e35d3c12b22c659794fbd443[m
+Author: daidai <1304057714@qq.com>
+Date:   Mon Mar 18 11:13:29 2024 +0800
+
+    易买网后端项目搭建0.0.2base版
+
+[33mcommit 6980f551e7b97b69d86db8b2dba5aaad567bdb6b[m
+Merge: e4231bc dd8f5fc
+Author: zhangxuebin <1527949074@qq.com>
+Date:   Mon Mar 18 11:10:57 2024 +0800
+
+    Merge branch 'master' of https://github.com/daidai989/daidai_YiMaiWang
+    
+    # Conflicts:
+    #       src/main/java/com/kgc/easybuy/aop/Logg.java
+    #       src/main/java/com/kgc/easybuy/pojo/Category.java
+    #       src/main/resources/static/index.html
+
+[33mcommit dd8f5fc693c5e653c68bfa87c795a6dcdb3caf2b[m
+Author: daidai <1304057714@qq.com>
+Date:   Mon Mar 18 11:04:42 2024 +0800
+
+    易买网后端项目搭建0.0.2base版
+
+[33mcommit e4231bc3053d74ada88034fa628f8ac5596e0d26[m[33m ([m[1;31mdaidai_YiMaiWang/zhangxuebin[m[33m)[m
+Author: zhangxuebin <1527949074@qq.com>
+Date:   Mon Mar 18 11:02:26 2024 +0800
+
+    易买网后端项目搭建0.0.5base版
+
+[33mcommit 43b298b4c97c9620129fda19418959c636fd6811[m
+Merge: 161d754 dec4231
+Author: zhangxuebin <1527949074@qq.com>
+Date:   Mon Mar 18 10:36:46 2024 +0800
+
+    Merge remote-tracking branch 'daidai_YiMaiWang/zhangxuebin'
+    
+    # Conflicts:
+    #       debug.log
+    #       src/main/java/com/kgc/easybuy/aop/Logg.java
+    #       src/main/java/com/kgc/easybuy/config/RedisConfig.java
+    #       src/main/resources/application.properties
+    #       src/main/resources/static/register.html
+
+[33mcommit dec42318993bf887557784b278f6fb7ae7008517[m
+Author: daidai <1304057714@qq.com>
+Date:   Mon Mar 18 09:56:29 2024 +0800
+
+    易买网后端项目搭建0.0.2base版
+
+[33mcommit 161d754e24ac0429c9a99d79098980b33393d423[m
+Author: zhangxuebin <1527949074@qq.com>
+Date:   Mon Mar 18 09:51:20 2024 +0800
+
+    易买网后端项目搭建0.0.4base版
+
+[33mcommit f28f41df8dd51f6afb948f8551037737d6c3ca2d[m
+Author: zhangxuebin <1527949074@qq.com>
+Date:   Mon Mar 18 09:29:39 2024 +0800
+
+    易买网后端项目搭建0.0.4base版
+
+[33mcommit 5d43623a9b3951c757b7c3e1a4563fc47bce89a1[m
+Author: zhangxuebin <1527949074@qq.com>
+Date:   Mon Mar 18 01:30:19 2024 +0800
+
+    易买网后端项目搭建0.0.3base版
+
+[33mcommit 5f331dca0db427d59eb790a7ec574621b9129777[m
+Author: daidai <1304057714@qq.com>
+Date:   Mon Mar 18 01:17:37 2024 +0800
+
+    易买网后端项目搭建0.0.2base版
+
+[33mcommit 2c9433d4c4d17a528d93f9488f3930d5986eaab9[m
+Author: zhangxuebin <1527949074@qq.com>
+Date:   Mon Mar 18 00:11:43 2024 +0800
+
+    易买网后端项目搭建0.0.2base版
+
+[33mcommit 1d6d73f022e1aa05529bd732dc83f1a89a607181[m
+Author: zhangxuebin <1527949074@qq.com>
+Date:   Mon Mar 18 00:05:30 2024 +0800
+
+    易买网后端项目搭建0.0.2base版
+
+[33mcommit 5e050242b0210ecbd18c64ad11b6cef12b139fa8[m
+Author: zhangxuebin <1527949074@qq.com>
+Date:   Sun Mar 17 19:52:02 2024 +0800
+
+    易买网后端项目搭建0.0.1base版
