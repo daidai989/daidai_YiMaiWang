@@ -178,9 +178,11 @@
                                 <font color="#ff4e00">*</font>&nbsp;验证码 &nbsp;
                             </td>
                             <td>
-                                <input class="l_ipt" type="text" v-model="verify"/>
-                                <a @click="checkVerify()" href="javascript:void(0)"
-                                   style="font-size: 12px; font-family: '宋体'">发送</a>
+                                <input class="l_ipt" type="text" v-model.number="verify"/>
+                                <span style="font-size: 12px; font-family: '宋体'">
+                                    <button class="sendMsg" @click.prevent="sendVerificationCode()" :disabled="isVerificationButtonDisabled">发送</button>
+                                </span>
+
                                 <span class="error" style="
                       position: absolute;
                       margin-left: 17px;
@@ -224,8 +226,11 @@
     new Vue({
         el: '#app',
         data: {
+            isVerificationButtonDisabled: false,
+            verificationTimer: null,
+            number:null,
             ischeck: false,
-            verify: "",
+            verify: null,
             user: {
                 loginName: "",
                 password: "",
@@ -343,23 +348,53 @@
                     this.LoginFalg.mobileFalg = true;
                 }
             },
+            sendVerificationCode() {
+                if (this.isVerificationButtonDisabled) {
+                    return;
+                }
+
+                // 禁用 sendVerificationCode() 方法
+                this.isVerificationButtonDisabled = true;
+
+                this.checkVerify();
+
+                // 设置定时器，在60秒后启用 sendVerificationCode() 方法
+                setTimeout(() => {
+                    this.isVerificationButtonDisabled = false;
+                }, 60000);
+            },
+
             checkVerify() {
                 if (this.user.email.trim() === "") {
                     this.Cue.verifyInfo = "请填写邮箱";
                     this.LoginFalg.verifyFalg = false;
                     return;
                 } else {
-                    axios.get('http://localhost:8080/sendEmailCode',{params:{
-                            userName:this.user.email
-                        }}).then( (resp) =>{
-                        console.log(resp.data)
-                        if (resp.data!==null){
-                            this.Cue.verifyInfo=resp.data
-                            this.LoginFalg.verifyFalg=true
+                    axios.get('http://localhost:8080/sendEmailCode', {
+                        params: {
+                            userName: this.user.email
                         }
-
+                    }).then((resp) => {
+                        console.log(resp.data);
+                        if (resp.data !== null) {
+                            this.number = resp.data;
+                            this.startVerificationTimer();
+                        }
                     })
                 }
+            },
+            startVerificationTimer() {
+                let count = 60;
+                this.verificationTimer = setInterval(() => {
+                    count--;
+                    if (count >= 0) {
+                        this.Cue.verifyInfo = count;
+                    } else {
+                        clearInterval(this.verificationTimer);
+                        this.number = null;
+                        this.isVerificationButtonDisabled = false;
+                    }
+                }, 1000);
             },
             checkIsCheckd() {
                 if (!this.ischeck) {
@@ -378,23 +413,45 @@
             register() {
                 event.preventDefault();
                 this.checkUsername();
-                this.checkPassword()
-                this.checkRePassword()
-                this.checkEmail()
-                this.checkMobile()
-                this.checkVerify()
-                this.checkIsCheckd()
-                if (this.LoginFalg.userNameFalg===false||this.LoginFalg.passwordFalg===false||this.LoginFalg.repasswordFalg===false||this.LoginFalg.emailFalg===false||this.LoginFalg.mobileFalg===false||this.LoginFalg.verifyFalg===false||this.LoginFalg.shakeFalg===false){
+                this.checkPassword();
+                this.checkRePassword();
+                this.checkEmail();
+                this.checkMobile();
+
+                if (this.verify === null) {
+                    this.Cue.verifyInfo = "验证码未输入";
+                    this.LoginFalg.verifyFalg = false;
                     return;
                 }
-                axios.post('http://localhost:8080/doRegister',this.user).then((resp)=> {
-                    console.log(resp.data)
-                    if (resp.data.code===200){
-                        window.location.href="index.html"
+
+                // 判断验证码是否存在并且与后端发送的验证码相同，或者验证码是否失效
+                if (!this.number || this.number !== this.verify) {
+                    this.Cue.verifyInfo = "验证码错误或失效";
+                    this.LoginFalg.verifyFalg = false;
+                    return;
+                }else {
+                    this.LoginFalg.verifyFalg = true;
+                }
+
+                this.checkIsCheckd();
+
+                if (this.LoginFalg.userNameFalg === false || this.LoginFalg.passwordFalg === false || this.LoginFalg.repasswordFalg === false || this.LoginFalg.emailFalg === false || this.LoginFalg.mobileFalg === false || this.LoginFalg.shakeFalg === false || this.LoginFalg.verifyFalg === false) {
+                    return;
+                }
+
+                axios.post('http://localhost:8080/doRegister', this.user).then((resp) => {
+                    console.log(resp.data);
+                    if (resp.data.code === 200) {
+                        window.location.href = "index.html";
                     }
                 })
             },
+
         },
+        beforeDestroy() {
+            // Clear the verification timer when the component is destroyed
+            clearInterval(this.verificationTimer);
+        }
 
     })
 </script>
