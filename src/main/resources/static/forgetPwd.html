@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>忘记密码</title>
+    <link rel="stylesheet" href="css/element.css">
+    <script src="js/vue.js"></script>
+    <script src="js/element.js"></script>
+    <script src="js/axios.js"></script>
+    <style>
+        .el-header {
+            background-color: #b3c0d1;
+            color: #333;
+            text-align: center;
+            line-height: 20px;
+        }
+        #form{
+            /*width: 500px;*/
+            margin: 0px auto;
+        }
+    </style>
+</head>
+<body>
+<div id="root">
+        <el-container>
+            <el-header><h2>忘记密码</h2></el-header>
+            <el-main>
+                <div>
+                    <el-form ref="form" :rules="rules" :model="user" label-width="80px">
+                        <el-row :gutter="24">
+                            <el-col :span="6">
+                                <el-form-item label="用户名" prop="loginName">
+                                    <el-input v-model="user.loginName"></el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                        <el-row :gutter="24">
+                            <el-col :span="6">
+                                <el-form-item label="新密码" prop="password">
+                                    <el-input type="password" v-model="user.password"></el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                        <el-row :gutter="24">
+                            <el-col :span="6">
+                                <el-form-item label="确认密码" prop="repassword">
+                                    <el-input type="password" v-model="user.repassword"></el-input></el-form-item>
+                            </el-col>
+                        </el-row>
+                        <el-row :gutter="24">
+                            <el-col :span="6">
+                                <el-form-item label="邮箱" prop="email">
+                                    <el-input v-model="user.email"></el-input> </el-form-item>
+                            </el-col>
+                        </el-row>
+                        <el-row :gutter="24">
+                            <el-col :span="6">
+                                <el-form-item style="margin-bottom: 10px" label="验证码" prop="checkCode">
+                                    <el-input v-model="user.checkCode"></el-input>
+                                </el-form-item>
+                                <el-button style="margin-left: 190px" :disabled="isSend" type="primary" size="small" @click="getCode">{{codeName}}</el-button>
+                            </el-col>
+                        </el-row>
+                        <el-button type="primary" @click="submit('form')">提交</el-button>
+                        <el-button @click="resetForm('form')">重置</el-button>
+                    </el-form>
+                </div>
+            </el-main>
+        </el-container>
+    </div>
+</body>
+</html>
+<script>
+    new Vue({
+        el:"#root",
+        data() {
+            const checkloginName = (rule,value,callback) => {
+            axios.get('checkUserExist',{
+                params:{
+                    loginName:value
+                }
+            }).then((result) => {
+                if(result.data.code != "200"){
+                    callback(new Error("该账号不存在！"))
+                }else{
+                    callback()
+                }
+            });
+        }
+         const checkPassword = (rule,value,callback) => {
+                if(value != this.user.password){
+                    callback(new Error("两次输入的密码不一致！"))
+                }else{
+                    callback()
+                }
+        }
+         const checkEmail = (rule,value,callback) => {
+             if(this.user.email == '' || this.user.email == null){
+                 callback(new Error("请先输入正确的邮箱！"))
+             }else{
+                 callback()
+             }
+         }
+            return {
+                user: {
+                    loginName: "",
+                    password: "",
+                    repassword: "",
+                    email: "",
+                    checkCode: "",
+                },
+                resultCode:"",
+                isSend: false,
+                codeName: "发送验证码",
+                totalTime: 10,
+                timer:'',
+                rules:{
+                loginName:[
+                    { required: true, message: '请输入用户名', trigger: 'blur' },
+                    { min:2,max:20, message: '用户名应该在2至20位之间', trigger: 'blur'},
+                    { validator:checkloginName, trigger:"blur"}
+                ],
+                password:[
+                    { required: true, message: '请输入密码', trigger: 'blur' },
+                    { min:4,max:10, message: '密码应该在4-10位之间', trigger: 'blur' }
+                ],
+                repassword:[
+                    { required: true, message: '请输入确认密码', trigger: 'blur' },
+                    { min:4,max:10, message: '确认密码应该在4-10位之间', trigger: 'blur' },
+                    { validator:checkPassword, trigger:"blur" }
+                ],
+                email:[
+                    { required: true, message: '请输入邮箱', trigger: 'blur' },
+                    { "pattern": /\w+@qq.com/, message: '请输入——@qq.com的邮箱格式', trigger: 'blur'},
+                ],
+                 checkCode:[
+                    { required: true, message: '请输入验证码', trigger: 'blur' },
+                    { validator:checkEmail, trigger:"blur" },
+                ]
+            }
+            };
+        },
+        methods: {
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
+        },
+        submit(form){
+            this.$refs[form].validate((valid) => {
+                if (valid) {
+                    if (this.resultCode != this.user.checkCode){
+                            alert("验证码错误！");
+                            return;
+                    }
+                    axios.get("updatePwd",{
+                        params:{
+                            loginName:this.user.loginName,
+                            password:this.user.password
+                        }
+                }).then((result) => {
+                    if (result.data.code == "200") {
+                        alert("修改成功！")
+                        window.location.href="Login.html"
+                    }
+                })
+                } else {
+                    return false;
+                }
+        })
+        },
+        getCode(){
+            if (this.user.email == ""){
+                alert("请先输入邮箱！");
+                    return;
+            }
+             if (this.isSend){
+                 return;
+             }
+           axios.get('http://localhost:8080/sendEmailCode',{
+                 params:{
+                     userName:this.user.email
+                 }
+                }).then((result) => {
+                    console.log(result.data);
+                    this.resultCode = result.data;
+             })
+             this.isSend = true
+             this.codeName = this.totalTime + 's后重新发送'
+             this.timer = setInterval(() => {
+                 this.totalTime--
+                 this.codeName = this.totalTime + 's后重新发送'
+                 if (this.totalTime < 0) {
+                     clearInterval(this.timer)
+                     this.codeName = '重新发送验证码'
+                     this.totalTime = 10
+                     this.isSend = false
+                 }
+             }, 1000)
+         }
+    }
+    })
+</script>

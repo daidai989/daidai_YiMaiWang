@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kgc.easybuy.dao.UserMapper">
+    <select id="login" parameterType="com.kgc.easybuy.pojo.User" resultType="com.kgc.easybuy.pojo.User">
+        select  id,
+<<<<<<< HEAD
+                loginName,
+                userName,
+                password,
+                sex,
+                identityCode,
+                email,
+                mobile,
+                roleId,
+                createTime,
+                delFlag from easybuy_user
+        where
+            loginName = #{loginName}
+          and password = #{password}
+          and isDel = 0
+=======
+            loginName,
+            userName,
+            password,
+            sex,
+            identityCode,
+            email,
+            mobile,
+            roleId,
+            createTime,
+            delFlag from easybuy_user
+        where
+            loginName = #{loginName}
+            and password = #{password}
+            and isDel = 0
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
+    </select>
+
+    <update id="updatePwd" parameterType="com.kgc.easybuy.pojo.User">
+        update  easybuy_user
+        <set>
+            <if test="password != null and password != ''">
+                password = #{password}
+            </if>
+        </set>
+        where LoginName = #{loginName} and isDel = 0
+    </update>
+
+    <select id="checkUserExist" parameterType="com.kgc.easybuy.pojo.User" resultType="com.kgc.easybuy.pojo.User">
+        select  id,
+                loginName,
+                userName,
+                password,
+                sex,
+                identityCode,
+                email,
+                mobile,
+                roleId,
+                createTime,
+                isDel from easybuy_user
+        where loginName = #{loginName} and isDel = 0
+    </select>
+    <insert id="register">
+        insert into easybuy_user(loginName, password, email, mobile, createTime,isDel,roleId) value (#{loginName}, #{password}, #{email}, #{mobile},
+                                                                                                     now(), 0,3);
+    </insert>
+</mapper>
