@@ -133,8 +133,6 @@ var jq = jQuery.noConflict();
 
 
 
-
-
 jQuery(function() {
 	jq("#botton-scroll").jCarouselLite({
 		btnNext: ".h_next",

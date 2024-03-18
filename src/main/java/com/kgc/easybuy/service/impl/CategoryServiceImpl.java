@@ -1,12 +1,16 @@
 package com.kgc.easybuy.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.kgc.easybuy.dao.CategoryMapper;
 import com.kgc.easybuy.pojo.Category;
+import com.kgc.easybuy.pojo.Product;
 import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,5 +36,16 @@ public class CategoryServiceImpl implements CategoryService {
     public ResponseMessage getThirdCategories(int id) {
         List<Category> thirdCategories = categoryMapper.getThirdCategories(id);
         return ResponseMessage.success(thirdCategories);
+    }
+
+    @Override
+    public ResponseMessage getSecondAllCategories() {
+        List<Category> firstCategories = categoryMapper.getFirstCategories();
+        List<List> productList = new ArrayList<>();
+        for (Category category: firstCategories) {
+            List<Category> secondCategories = categoryMapper.getSecondCategories(category.getId());
+            productList.add(secondCategories);
+        }
+        return ResponseMessage.success(productList);
     }
 }

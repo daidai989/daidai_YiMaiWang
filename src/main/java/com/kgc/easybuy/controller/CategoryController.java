@@ -30,4 +30,10 @@ public class CategoryController {
         ResponseMessage responeseMsg = categoryService.getThirdCategories(id);
         return responeseMsg;
     }
+
+    @RequestMapping("getSecondAllCategories")
+    public ResponseMessage getSecondAllCategories() {
+        ResponseMessage responeseMsg = categoryService.getSecondAllCategories();
+        return responeseMsg;
+    }
 }

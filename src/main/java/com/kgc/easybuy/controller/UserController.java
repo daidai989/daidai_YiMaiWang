@@ -16,11 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-
 @CrossOrigin(origins = "*")
-
-
-
 public class UserController {
     private Logger logger = Logger.getLogger(getClass());
 

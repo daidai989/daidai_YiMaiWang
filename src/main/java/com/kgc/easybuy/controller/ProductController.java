@@ -1,5 +1,6 @@
 package com.kgc.easybuy.controller;
 
+import com.kgc.easybuy.pojo.Category;
 import com.kgc.easybuy.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,5 +18,12 @@ public class ProductController {
     public Object getProductList(int currentPageNo,int pageSize){
         Object page = productService.getProductList(currentPageNo, pageSize);
         return page;
+    }
+
+    @RequestMapping("getProductByCategoryId")
+    @ResponseBody
+    public Object getProductByCategoryId(){
+        Object list = productService.getProductByCategoryId();
+        return list;
     }
 }

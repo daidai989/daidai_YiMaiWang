@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kgc.easybuy.dao.ProductMapper">
-    <select id="getProductList" parameterType="Category" resultMap="productList">
+    <select id="getProductList" resultMap="productList">
         select  p.id,
         p.name,
         description,
@@ -12,12 +12,13 @@
         p.isDelete,
         p.createTime,
         filePath,
-        c.name,
+        c.name cname,
         parentId,
         type
         from easybuy_product p,easybuy_file f,easybuy_product_category c
         <where>
             p.id = f.productId and p.categoryLevelId = c.id
+            and p.isDelete = 0
         </where>
     </select>
     <resultMap id="productList" type="Product">
@@ -30,8 +31,26 @@
         <result column="fileId" property="fileId"></result>
         <result column="isDelete" property="isDelete"></result>
         <result column="createTime" property="createTime"></result>
-        <result column="c.name" property="categoryName"></result>
+        <result column="cname" property="categoryName"></result>
         <result column="parentId" property="parentId"></result>
         <result column="type" property="type"></result>
     </resultMap>
+
+    <select id="getProductByCategoryId" parameterType="int" resultMap="productList">
+        SELECT p.id,
+               p.name,
+               description,
+               price,
+               stock,
+               categoryLevelId,
+               fileId,
+               p.isDelete,
+               p.createTime,
+               c.name,
+               parentId,
+               type
+        FROM easybuy_product p,easybuy_product_category c
+        WHERE p.categoryLevelId = c.id
+        AND parentId IN (SELECT id FROM easybuy_product_category WHERE parentId = #{parentId})
+    </select>
 </mapper>

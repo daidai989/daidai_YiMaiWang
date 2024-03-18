@@ -31,7 +31,6 @@
     <script src="js/vue.js"></script>
     <script src="js/axios.js"></script>
     <script src="js/element.js"></script>
-
     <title>尤洪</title>
 
 </head>
@@ -336,7 +335,7 @@
                                 <ul class="featureUL">
                                     <li class="featureBox" v-for="product in hotProduct" :key="product.id">
                                         <div class="box">
-                                            <div class="h_icon"><img src="images/hot.png" width="50" height="50" />
+                                            <div class="h_icon"><img src="images/hot.png" width="50" height="50"/>
                                             </div>
                                             <div class="imgbg">
                                                 <a href="#"><img src="images/hot1.jpg" width="160"
@@ -382,49 +381,49 @@
             <div class="sell_right">
                 <div class="sell_1">
                     <div class="s_img"><a href="#"><img height="155" src="images/tm_1.jpg" width="185"/></a></div>
-                    <div class="s_price">￥<span>89</span></div>
+                    <div class="s_price">￥<span>{{hotProduct[0].price}}</span></div>
                     <div class="s_name">
-                        <h2><a href="#">沙宣洗发水</a></h2>
+                        <h2><a href="#">{{hotProduct[0].categoryName}}</a></h2>
                         倒计时：<span>1200</span> 时 <span>30</span> 分 <span>28</span> 秒
                     </div>
                 </div>
                 <div class="sell_2">
                     <div class="s_img"><a href="#"><img height="155" src="images/tm_2.jpg" width="185"/></a></div>
-                    <div class="s_price">￥<span>289</span></div>
+                    <div class="s_price">￥<span>{{hotProduct[3].price}}</span></div>
                     <div class="s_name">
-                        <h2><a href="#">德芙巧克力</a></h2>
+                        <h2><a href="#">{{hotProduct[3].categoryName}}</a></h2>
                         倒计时：<span>1200</span> 时 <span>30</span> 分 <span>28</span> 秒
                     </div>
                 </div>
                 <div class="sell_b1">
                     <div class="sb_img"><a href="#"><img height="356" src="images/tm_b1.jpg" width="242"/></a></div>
-                    <div class="s_price">￥<span>289</span></div>
+                    <div class="s_price">￥<span>{{hotProduct[5].price}}</span></div>
                     <div class="s_name">
-                        <h2><a href="#">东北大米</a></h2>
+                        <h2><a href="#">{{hotProduct[5].categoryName}}</a></h2>
                         倒计时：<span>1200</span> 时 <span>30</span> 分 <span>28</span> 秒
                     </div>
                 </div>
                 <div class="sell_3">
                     <div class="s_img"><a href="#"><img height="155" src="images/tm_3.jpg" width="185"/></a></div>
-                    <div class="s_price">￥<span>289</span></div>
+                    <div class="s_price">￥<span>{{hotProduct[6].price}}</span></div>
                     <div class="s_name">
-                        <h2><a href="#">迪奥香水</a></h2>
+                        <h2><a href="#">{{hotProduct[6].categoryName}}</a></h2>
                         倒计时：<span>1200</span> 时 <span>30</span> 分 <span>28</span> 秒
                     </div>
                 </div>
                 <div class="sell_4">
                     <div class="s_img"><a href="#"><img height="155" src="images/tm_4.jpg" width="185"/></a></div>
-                    <div class="s_price">￥<span>289</span></div>
+                    <div class="s_price">￥<span>{{hotProduct[8].price}}</span></div>
                     <div class="s_name">
-                        <h2><a href="#">美妆</a></h2>
+                        <h2><a href="#">{{hotProduct[8].categoryName}}</a></h2>
                         倒计时：<span>1200</span> 时 <span>30</span> 分 <span>28</span> 秒
                     </div>
                 </div>
                 <div class="sell_b2">
                     <div class="sb_img"><a href="#"><img height="356" src="images/tm_b2.jpg" width="242"/></a></div>
-                    <div class="s_price">￥<span>289</span></div>
+                    <div class="s_price">￥<span>{{hotProduct[9].price}}</span></div>
                     <div class="s_name">
-                        <h2><a href="#">美妆</a></h2>
+                        <h2><a href="#">{{hotProduct[9].categoryName}}</a></h2>
                         倒计时：<span>1200</span> 时 <span>30</span> 分 <span>28</span> 秒
                     </div>
                 </div>
@@ -435,9 +434,88 @@
             <img height="110" src="images/mban_1.jpg" width="1200"/>
         </div>
         <!--Begin 进口 生鲜 Begin-->
-        <div class="i_t mar_10">
+        <div v-for="(first, index) in theFirst" :key="index">
+            <div class="i_t mar_10">
+                <span class="floor_num">1F</span>
+                <span class="fl">{{theFirst[index].name}}</span>
+                <span class="i_mores fr"><a href="#" v-for="secondCategory in allTheSecond[index]" :key="index">{{secondCategory.name}}</a>&nbsp; &nbsp; &nbsp;</span>
+            </div>
+            <div class="content">
+                <div class="fresh_left">
+                    <div class="fre_ban">
+                        <div id="imgPlay1">
+                            <ul class="imgs" id="actor1">
+                                <li><a href="#"><img height="286" src="images/fre_r.jpg" width="211"/></a></li>
+                                <li><a href="#"><img height="286" src="images/fre_r.jpg" width="211"/></a></li>
+                                <li><a href="#"><img height="286" src="images/fre_r.jpg" width="211"/></a></li>
+                            </ul>
+                            <div class="prevf">上一张</div>
+                            <div class="nextf">下一张</div>
+                        </div>
+                    </div>
+                    <div class="fresh_txt">
+                        <div class="fresh_txt_c">
+                            <a v-for="secondCategory in allTheSecond[index]" href="#">{{secondCategory.name}}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="fresh_mid">
+                    <ul>
+                        <li v-for="categoryProduct in categoryProduct[index]" >
+                            <div class="name"><a href="#">{{categoryProduct.name}}</a></div>
+                            <div class="price">
+                                <font>￥<span>{{categoryProduct.price}}</span></font> &nbsp; 26R
+                            </div>
+                            <div class="img"><a href="#"><img height="155" src="images/fre_1.jpg" width="185"/></a></div>
+                        </li>
+                        <!-- <li>
+                            <div class="name"><a href="#">新鲜美味 进口美食</a></div>
+                            <div class="price">
+                                <font>￥<span>198.00</span></font> &nbsp; 26R
+                            </div>
+                            <div class="img"><a href="#"><img height="155" src="images/fre_2.jpg" width="185"/></a></div>
+                        </li>
+                        <li>
+                            <div class="name"><a href="#">新鲜美味 进口美食</a></div>
+                            <div class="price">
+                                <font>￥<span>198.00</span></font> &nbsp; 26R
+                            </div>
+                            <div class="img"><a href="#"><img height="155" src="images/fre_3.jpg" width="185"/></a></div>
+                        </li>
+                        <li>
+                            <div class="name"><a href="#">新鲜美味 进口美食</a></div>
+                            <div class="price">
+                                <font>￥<span>198.00</span></font> &nbsp; 26R
+                            </div>
+                            <div class="img"><a href="#"><img height="155" src="images/fre_4.jpg" width="185"/></a></div>
+                        </li>
+                        <li>
+                            <div class="name"><a href="#">新鲜美味 进口美食</a></div>
+                            <div class="price">
+                                <font>￥<span>198.00</span></font> &nbsp; 26R
+                            </div>
+                            <div class="img"><a href="#"><img height="155" src="images/fre_5.jpg" width="185"/></a></div>
+                        </li>
+                        <li>
+                            <div class="name"><a href="#">新鲜美味 进口美食</a></div>
+                            <div class="price">
+                                <font>￥<span>198.00</span></font> &nbsp; 26R
+                            </div>
+                            <div class="img"><a href="#"><img height="155" src="images/fre_6.jpg" width="185"/></a></div>
+                        </li> -->
+                    </ul>
+                </div>
+                <div class="fresh_right">
+                    <ul>
+                        <li><a href="#"><img height="220" src="images/fre_b1.jpg" width="260"/></a></li>
+                        <li><a href="#"><img height="220" src="images/fre_b2.jpg" width="260"/></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="i_t mar_10">
             <span class="floor_num">1F</span>
-            <span class="fl">进口 <b>·</b> 生鲜</span>
+            <span class="fl">{{theFirst[0]}}</span>
             <span class="i_mores fr"><a href="#">进口咖啡</a>&nbsp; &nbsp; &nbsp; <a href="#">进口酒</a>&nbsp; &nbsp; &nbsp; <a
                     href="#">进口母婴</a>&nbsp; &nbsp; &nbsp; <a href="#">新鲜蔬菜</a>&nbsp; &nbsp; &nbsp; <a href="#">新鲜水果</a></span>
         </div>
@@ -514,10 +592,10 @@
                     <li><a href="#"><img height="220" src="images/fre_b2.jpg" width="260"/></a></li>
                 </ul>
             </div>
-        </div>
-        <!--End 进口 生鲜 End-->
-        <!--Begin 食品饮料 Begin-->
-        <div class="i_t mar_10">
+        </div> -->
+        <!-- End 进口 生鲜 End
+        Begin 食品饮料 Begin-->
+        <!-- <div class="i_t mar_10">
             <span class="floor_num">2F</span>
             <span class="fl">食品饮料</span>
             <span class="i_mores fr"><a href="#">咖啡</a>&nbsp; &nbsp; | &nbsp; &nbsp;<a href="#">休闲零食</a>&nbsp; &nbsp; | &nbsp; &nbsp;<a
@@ -597,10 +675,10 @@
                     <li><a href="#"><img height="220" src="images/food_b2.jpg" width="260"/></a></li>
                 </ul>
             </div>
-        </div>
+        </div> -->
         <!--End 食品饮料 End-->
         <!--Begin 个人美妆 Begin-->
-        <div class="i_t mar_10">
+        <!-- <div class="i_t mar_10">
             <span class="floor_num">3F</span>
             <span class="fl">个人美妆</span>
             <span class="i_mores fr"><a href="#">洗发护发</a>&nbsp; &nbsp; | &nbsp; &nbsp;<a href="#">面膜</a>&nbsp; &nbsp; | &nbsp; &nbsp;<a
@@ -680,13 +758,13 @@
                     <li><a href="#"><img height="220" src="images/make_b2.jpg" width="260"/></a></li>
                 </ul>
             </div>
-        </div>
+        </div> -->
         <!--End 个人美妆 End-->
         <div class="content mar_20">
             <img height="110" src="images/mban_1.jpg" width="1200"/>
         </div>
         <!--Begin 母婴玩具 Begin-->
-        <div class="i_t mar_10">
+        <!-- <div class="i_t mar_10">
             <span class="floor_num">4F</span>
             <span class="fl">母婴玩具</span>
             <span class="i_mores fr"><a href="#">营养品</a>&nbsp; &nbsp; | &nbsp; &nbsp;<a href="#">孕妈背带裤</a>&nbsp; &nbsp; | &nbsp; &nbsp;<a
@@ -766,10 +844,10 @@
                     <li><a href="#"><img height="220" src="images/baby_b2.jpg" width="260"/></a></li>
                 </ul>
             </div>
-        </div>
+        </div> -->
         <!--End 母婴玩具 End-->
         <!--Begin 家居生活 Begin-->
-        <div class="i_t mar_10">
+        <!-- <div class="i_t mar_10">
             <span class="floor_num">5F</span>
             <span class="fl">家居生活</span>
             <span class="i_mores fr"><a href="#">床上用品</a>&nbsp; &nbsp; | &nbsp; &nbsp;<a href="#">家纺布艺</a>&nbsp; &nbsp; | &nbsp; &nbsp;<a
@@ -849,10 +927,10 @@
                     <li><a href="#"><img height="220" src="images/home_b2.jpg" width="260"/></a></li>
                 </ul>
             </div>
-        </div>
+        </div> -->
         <!--End 家居生活 End-->
         <!--Begin 数码家电 Begin-->
-        <div class="i_t mar_10">
+        <!-- <div class="i_t mar_10">
             <span class="floor_num">6F</span>
             <span class="fl">数码家电</span>
             <span class="i_mores fr"><a href="#">手机</a>&nbsp; &nbsp; | &nbsp; &nbsp;<a href="#">苹果</a>&nbsp; &nbsp; | &nbsp; &nbsp;<a
@@ -932,7 +1010,7 @@
                     <li><a href="#"><img height="220" src="images/tel_b2.jpg" width="260"/></a></li>
                 </ul>
             </div>
-        </div>
+        </div> --> 
         <!--End 数码家电 End-->
         <!--Begin 猜你喜欢 Begin-->
         <div class="i_t mar_10">
@@ -1152,29 +1230,43 @@
     new Vue({
         el: '#app',
         data: {
-            currentPageNo: 1,
-            pageSize: 10,
             hotProduct: [],
             theFirst: [],
             theSecond: [],
             theThird: [],
             newsList: [],
+            categoryProduct:[],
+            allTheSecond:[]
         },
         mounted() {
-            this.getProductList();
+            this.gethotProductList(1,10);
+            this.getCategoryProduct();
+            this.getAllTheSecond();
             this.firstLoad();
             this.showNews();
         },
         methods: {
-            getProductList() {
+            gethotProductList(currentPageNo,pageSize) {
                 axios.get('getProductList', {
                     params: {
-                        currentPageNo: this.currentPageNo,
-                        pageSize: this.pageSize
+                        currentPageNo: currentPageNo,
+                        pageSize: pageSize
                     }
                 }).then((result) => {
                     console.log(result.data)
                     this.hotProduct = result.data.list
+                })
+            },
+            getCategoryProduct() {
+                axios.get('getProductByCategoryId').then((result) => {
+                    console.log(result.data)
+                    this.categoryProduct = result.data
+                })
+            },
+            getAllTheSecond(currentPageNo,pageSize) {
+                axios.get('getSecondAllCategories').then((result) => {
+                    console.log(result.data)
+                    this.allTheSecond = result.data.data
                 })
             },
             firstLoad() {

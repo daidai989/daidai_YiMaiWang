@@ -9,4 +9,5 @@ public interface CategoryService {
     public ResponseMessage getFirstCategories();
     public ResponseMessage getSecondCategories(int id);
     public ResponseMessage getThirdCategories(int id);
+    public ResponseMessage getSecondAllCategories();
 }

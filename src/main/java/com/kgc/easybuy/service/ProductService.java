@@ -8,4 +8,5 @@ import java.util.List;
 public interface ProductService {
     public Object getProductList(int currentPageNo,int pageSize);
 
+    public Object getProductByCategoryId();
 }

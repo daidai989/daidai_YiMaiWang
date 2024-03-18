@@ -12,7 +12,7 @@
                 mobile,
                 roleId,
                 createTime,
-                delFlag from easybuy_user
+                isDel from easybuy_user
         where
             loginName = #{loginName}
           and password = #{password}
