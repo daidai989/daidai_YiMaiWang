@@ -18,7 +18,7 @@ import java.util.Arrays;
 
 public class Logg {
     private Logger log = LoggerFactory.getLogger(Logg.class);
-    @Around(value = "execution(* com.kgc.controller..*.*(..))||execution(* com.kgc.service..*.*(..))")
+    @Around(value = "execution(* com.kgc.easybuy.controller..*.*(..))||execution(* com.kgc.easybuy.service..*.*(..))")
     public Object around(ProceedingJoinPoint joinPoint){
         log.info("method:"+joinPoint.getSignature().getName()+"target:"+joinPoint.getTarget()+"params:"+ Arrays.toString(joinPoint.getArgs()));
         Object result;
