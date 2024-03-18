@@ -334,71 +334,22 @@
                         <div id="block">
                             <div id="botton-scroll">
                                 <ul class="featureUL">
-                                    <li class="featureBox">
+                                    <li class="featureBox" v-for="product in hotProduct" :key="product.id">
                                         <div class="box">
-                                            <div class="h_icon"><img height="50" src="images/hot.png" width="50"/></div>
+                                            <div class="h_icon"><img src="images/hot.png" width="50" height="50" />
+                                            </div>
                                             <div class="imgbg">
-                                                <a href="#"><img height="136" src="images/hot1.jpg" width="160"/></a>
+                                                <a href="#"><img src="images/hot1.jpg" width="160"
+                                                                 height="136" /></a>
                                             </div>
                                             <div class="name">
                                                 <a href="#">
-                                                    <h2>德国进口</h2>
-                                                    德亚全脂纯牛奶200ml*48盒
+                                                    <h2>{{product.name}}</h2>
+                                                    {{product.description}}
                                                 </a>
                                             </div>
                                             <div class="price">
-                                                <font>￥<span>189</span></font> &nbsp; 26R
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="featureBox">
-                                        <div class="box">
-                                            <div class="h_icon"><img height="50" src="images/hot.png" width="50"/></div>
-                                            <div class="imgbg">
-                                                <a href="#"><img height="136" src="images/hot2.jpg" width="160"/></a>
-                                            </div>
-                                            <div class="name">
-                                                <a href="#">
-                                                    <h2>iphone 6S</h2>
-                                                    Apple/苹果 iPhone 6s Plus公开版
-                                                </a>
-                                            </div>
-                                            <div class="price">
-                                                <font>￥<span>5288</span></font> &nbsp; 25R
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="featureBox">
-                                        <div class="box">
-                                            <div class="h_icon"><img height="50" src="images/hot.png" width="50"/></div>
-                                            <div class="imgbg">
-                                                <a href="#"><img height="136" src="images/hot3.jpg" width="160"/></a>
-                                            </div>
-                                            <div class="name">
-                                                <a href="#">
-                                                    <h2>倩碧特惠组合套装</h2>
-                                                    倩碧补水组合套装8折促销
-                                                </a>
-                                            </div>
-                                            <div class="price">
-                                                <font>￥<span>368</span></font> &nbsp; 18R
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="featureBox">
-                                        <div class="box">
-                                            <div class="h_icon"><img height="50" src="images/hot.png" width="50"/></div>
-                                            <div class="imgbg">
-                                                <a href="#"><img height="136" src="images/hot4.jpg" width="160"/></a>
-                                            </div>
-                                            <div class="name">
-                                                <a href="#">
-                                                    <h2>品利特级橄榄油</h2>
-                                                    750ml*4瓶装组合 西班牙原装进口
-                                                </a>
-                                            </div>
-                                            <div class="price">
-                                                <font>￥<span>280</span></font> &nbsp; 30R
+                                                <font>￥<span>{{product.price}}</span></font> &nbsp; 26R
                                             </div>
                                         </div>
                                     </li>
@@ -1201,12 +1152,31 @@
     new Vue({
         el: '#app',
         data: {
+            currentPageNo: 1,
+            pageSize: 10,
+            hotProduct: [],
             theFirst: [],
             theSecond: [],
             theThird: [],
             newsList: [],
         },
+        mounted() {
+            this.getProductList();
+            this.firstLoad();
+            this.showNews();
+        },
         methods: {
+            getProductList() {
+                axios.get('getProductList', {
+                    params: {
+                        currentPageNo: this.currentPageNo,
+                        pageSize: this.pageSize
+                    }
+                }).then((result) => {
+                    console.log(result.data)
+                    this.hotProduct = result.data.list
+                })
+            },
             firstLoad() {
                 axios.get('http://localhost:8080/getFirstCategory')
                     .then((resp) => {
@@ -1242,10 +1212,6 @@
                     });
             }
 
-        },
-        mounted() {
-            this.firstLoad();
-            this.showNews();
         }
     })
 </script>

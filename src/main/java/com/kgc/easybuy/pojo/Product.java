@@ -21,5 +21,8 @@ public class Product {
     private int fileId;
     private int isDelete;
     private Date createTime;
-
+    private String filePath;
+    private String categoryName;
+    private int parentId;
+    private int type;
 }
