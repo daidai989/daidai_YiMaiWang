@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseMessage<T> {
-   private Integer code;
-   private String message;
-   private T data;
+    private Integer code;
+    private String message;
+    private T data;
 
-   public static <E> ResponseMessage<E> success(E data) {
-       return new ResponseMessage<>(200,"操作成功",data);
-   }
+    public static <E> ResponseMessage<E> success(E data) {
+        return new ResponseMessage<>(200,"操作成功",data);
+    }
 
     public static  ResponseMessage success() {
         return new ResponseMessage<>(200,"操作成功",null);

@@ -3,20 +3,20 @@
 <mapper namespace="com.kgc.easybuy.dao.UserMapper">
     <select id="login" parameterType="com.kgc.easybuy.pojo.User" resultType="com.kgc.easybuy.pojo.User">
         select  id,
-            loginName,
-            userName,
-            password,
-            sex,
-            identityCode,
-            email,
-            mobile,
-            roleId,
-            createTime,
-            delFlag from easybuy_user
+                loginName,
+                userName,
+                password,
+                sex,
+                identityCode,
+                email,
+                mobile,
+                roleId,
+                createTime,
+                delFlag from easybuy_user
         where
             loginName = #{loginName}
-            and password = #{password}
-            and isDel = 0
+          and password = #{password}
+          and isDel = 0
     </select>
 
     <update id="updatePwd" parameterType="com.kgc.easybuy.pojo.User">

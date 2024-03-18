@@ -4,11 +4,15 @@ import com.kgc.easybuy.dao.UserMapper;
 import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.pojo.User;
 import com.kgc.easybuy.service.UserService;
+import com.kgc.easybuy.util.Md5Util;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.util.Random;
 
 @Service
 
@@ -20,6 +24,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseMessage login(User user) {
+        String md5String = Md5Util.getMD5String(user.getPassword());
+        user.setPassword(md5String);
         logger.info("UserServiceImpl login user:"+user);
         User login = userMapper.login(user);
         logger.info("UserServiceImpl login login:"+login);
@@ -52,6 +58,7 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public ResponseMessage register(User user) {
+        user.setPassword(Md5Util.getMD5String(user.getPassword()));
         int updateRow = userMapper.register(user);
         if (updateRow>0) {
             return ResponseMessage.success();

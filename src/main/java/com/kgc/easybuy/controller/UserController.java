@@ -9,19 +9,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
+
 @CrossOrigin(origins = "*")
+
+
 
 public class UserController {
     private Logger logger = Logger.getLogger(getClass());
 
     @Autowired
     private UserService userService;
+
 
     @Autowired
     private SendEmail sendEmail;
@@ -30,6 +35,7 @@ public class UserController {
         logger.info("UserController login start.. ");
         return "Login.html";
     }
+
 
     @RequestMapping("userLogin")
     @ResponseBody
@@ -75,4 +81,5 @@ public class UserController {
         ResponseMessage responeseMsg = userService.register(user);
         return responeseMsg;
     }
+
 }

@@ -1,6 +1,7 @@
 package com.kgc.easybuy.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -12,11 +13,13 @@ public class SendEmail {
 
     @Autowired
     private JavaMailSender javaMailSender;
+    @Value("${spring.mail.username}")
+    private String from;
 
     public int sendEmail(String userName){
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         // 发件人
-        simpleMailMessage.setFrom(userName);
+        simpleMailMessage.setFrom(from);
         // 收件人
         simpleMailMessage.setTo(userName);
         // 邮件主题

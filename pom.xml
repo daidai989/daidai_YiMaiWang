@@ -100,6 +100,7 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
         <dependency>
+
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
@@ -153,7 +154,6 @@
             <artifactId>aspectjweaver</artifactId>
             <version>1.8.5</version>
         </dependency>
-
     </dependencies>
     <dependencyManagement>
         <dependencies>
