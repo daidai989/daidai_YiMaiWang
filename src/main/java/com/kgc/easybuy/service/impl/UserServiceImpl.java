@@ -5,6 +5,7 @@ import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.pojo.User;
 import com.kgc.easybuy.service.UserService;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.kgc.easybuy.util.Md5Util;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +16,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Random;
 =======
+=======
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+<<<<<<< HEAD
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
+=======
 >>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 
 @Service
@@ -33,8 +39,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseMessage login(User user) {
 <<<<<<< HEAD
+<<<<<<< HEAD
         String md5String = Md5Util.getMD5String(user.getPassword());
         user.setPassword(md5String);
+=======
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 =======
 >>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
         logger.info("UserServiceImpl login user:"+user);
@@ -70,7 +79,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseMessage register(User user) {
 <<<<<<< HEAD
+<<<<<<< HEAD
         user.setPassword(Md5Util.getMD5String(user.getPassword()));
+=======
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 =======
 >>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
         int updateRow = userMapper.register(user);

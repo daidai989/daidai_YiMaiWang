@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ResponseMessage<T> {
 <<<<<<< HEAD
+<<<<<<< HEAD
     private Integer code;
     private String message;
     private T data;
@@ -18,6 +19,8 @@ public class ResponseMessage<T> {
         return new ResponseMessage<>(200,"操作成功",data);
     }
 =======
+=======
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
    private Integer code;
    private String message;
    private T data;
@@ -25,6 +28,9 @@ public class ResponseMessage<T> {
    public static <E> ResponseMessage<E> success(E data) {
        return new ResponseMessage<>(200,"操作成功",data);
    }
+<<<<<<< HEAD
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
+=======
 >>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 
     public static  ResponseMessage success() {

@@ -10,7 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 =======
 >>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,11 +23,16 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 @CrossOrigin(origins = "*")
 
 
 
+=======
+@CrossOrigin(origins = "*")
+
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 =======
 @CrossOrigin(origins = "*")
 
@@ -36,7 +44,10 @@ public class UserController {
     private UserService userService;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 =======
 >>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
     @Autowired
@@ -48,7 +59,10 @@ public class UserController {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 =======
 >>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
     @RequestMapping("userLogin")
@@ -96,7 +110,10 @@ public class UserController {
         return responeseMsg;
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 =======
 >>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 }

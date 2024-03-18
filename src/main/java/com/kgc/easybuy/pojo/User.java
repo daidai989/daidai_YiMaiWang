@@ -1,6 +1,7 @@
 package com.kgc.easybuy.pojo;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+=======
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 =======
 >>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 public class User {
@@ -23,8 +26,11 @@ public class User {
     private int isDel;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 =======
+=======
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
     public int getId() {
         return id;
     }
@@ -121,4 +127,7 @@ public class User {
                 '}';
     }
 }
+<<<<<<< HEAD
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
+=======
 >>>>>>> 478cdf7045a7b655be12098bdee6592429f68323

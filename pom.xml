@@ -101,7 +101,10 @@
         </dependency>
         <dependency>
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 =======
 >>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
             <groupId>javax.servlet</groupId>
@@ -159,7 +162,10 @@
         </dependency>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 =======
 >>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
     </dependencies>

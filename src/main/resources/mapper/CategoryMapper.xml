@@ -3,6 +3,10 @@
 <mapper namespace="com.kgc.easybuy.dao.CategoryMapper">
     <select id="getFirstCategories" resultType="Category">
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        select from easy_buy
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 =======
         select from easy_buy
 >>>>>>> 478cdf7045a7b655be12098bdee6592429f68323

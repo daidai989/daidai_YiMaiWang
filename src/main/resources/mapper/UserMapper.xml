@@ -4,6 +4,7 @@
     <select id="login" parameterType="com.kgc.easybuy.pojo.User" resultType="com.kgc.easybuy.pojo.User">
         select  id,
 <<<<<<< HEAD
+<<<<<<< HEAD
                 loginName,
                 userName,
                 password,
@@ -19,6 +20,8 @@
           and password = #{password}
           and isDel = 0
 =======
+=======
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
             loginName,
             userName,
             password,
@@ -33,6 +36,9 @@
             loginName = #{loginName}
             and password = #{password}
             and isDel = 0
+<<<<<<< HEAD
+>>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
+=======
 >>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
     </select>
 
