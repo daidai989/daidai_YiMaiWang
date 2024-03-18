@@ -100,13 +100,7 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
         <dependency>
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
-=======
->>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
@@ -161,13 +155,7 @@
             <version>1.8.5</version>
         </dependency>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
-=======
->>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
     </dependencies>
     <dependencyManagement>
         <dependencies>

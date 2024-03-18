@@ -17,7 +17,7 @@ public class RedisUtil {
     public ResponseMessage setStrToRedis(String key,Object obj) {
         String value = JSON.toJSONString(obj);
         stringRedisTemplate.opsForValue().set(key,value);
-        return new ResponseMessage(200,null,null);
+        return ResponseMessage.success();
     }
 
 
@@ -25,7 +25,7 @@ public class RedisUtil {
         String value = stringRedisTemplate.opsForValue().get(key);
         Object obj= JSONObject.parseObject(value, Object.class);
         if (obj != null){
-            return new ResponseMessage(200,"成功",obj);
+            return  ResponseMessage.success(obj);
         }
         return new ResponseMessage(201,"失败",null);
     }

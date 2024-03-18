@@ -9,47 +9,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
-=======
->>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 @CrossOrigin(origins = "*")
 
 
 
-=======
-@CrossOrigin(origins = "*")
-
->>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
-=======
-@CrossOrigin(origins = "*")
-
->>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 public class UserController {
     private Logger logger = Logger.getLogger(getClass());
 
     @Autowired
     private UserService userService;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
-=======
->>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
     @Autowired
     private SendEmail sendEmail;
     @RequestMapping("login")
@@ -58,13 +36,7 @@ public class UserController {
         return "Login.html";
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
-=======
->>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
     @RequestMapping("userLogin")
     @ResponseBody
     public Object login(HttpServletRequest request,User user){
@@ -109,11 +81,5 @@ public class UserController {
         ResponseMessage responeseMsg = userService.register(user);
         return responeseMsg;
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
-=======
->>>>>>> 478cdf7045a7b655be12098bdee6592429f68323
 }
