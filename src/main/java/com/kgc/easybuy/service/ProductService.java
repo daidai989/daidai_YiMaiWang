@@ -8,5 +8,9 @@ import java.util.List;
 public interface ProductService {
     public Object getProductList(int currentPageNo,int pageSize);
 
+    public List<Product> getHotProduct();
+
     public Object getProductByCategoryId();
+
+    public Product getProductById(int id);
 }

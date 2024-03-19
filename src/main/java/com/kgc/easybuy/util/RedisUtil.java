@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.TimeUnit;
+
 @Component
 public class RedisUtil {
 
@@ -16,7 +18,7 @@ public class RedisUtil {
 
     public ResponseMessage setStrToRedis(String key,Object obj) {
         String value = JSON.toJSONString(obj);
-        stringRedisTemplate.opsForValue().set(key,value);
+        stringRedisTemplate.opsForValue().set(key,value,30, TimeUnit.MINUTES);
         return ResponseMessage.success();
     }
 

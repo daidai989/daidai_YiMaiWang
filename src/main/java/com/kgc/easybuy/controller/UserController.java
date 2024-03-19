@@ -4,6 +4,7 @@ import com.kgc.easybuy.config.SendEmail;
 import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.pojo.User;
 import com.kgc.easybuy.service.UserService;
+import com.kgc.easybuy.util.RedisUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,24 +24,18 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
     @Autowired
     private SendEmail sendEmail;
-    @RequestMapping("login")
-    public String login(){
-        logger.info("UserController login start.. ");
-        return "Login.html";
-    }
 
-
+    @Autowired
+    private RedisUtil redisUtil;
     @RequestMapping("userLogin")
     @ResponseBody
     public Object login(HttpServletRequest request,User user){
         logger.info("UserController login user:"+user);
         ResponseMessage message = userService.login(user);
         if (message.getData() != null){
-            User userTemp = (User) message.getData();
-            request.setAttribute("user",userTemp);
+            redisUtil.setStrToRedis(user.getLoginName(),user);
         }
         return message;
     }

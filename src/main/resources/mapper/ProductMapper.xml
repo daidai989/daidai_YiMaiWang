@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kgc.easybuy.dao.ProductMapper">
-    <select id="getProductList" resultMap="productList">
+    <select id="getProductList" resultType="Product">
         select  p.id,
         p.name,
         description,
@@ -21,22 +21,8 @@
             and p.isDelete = 0
         </where>
     </select>
-    <resultMap id="productList" type="Product">
-        <id column="id" property="id"></id>
-        <result column="name" property="name"></result>
-        <result column="description" property="description"></result>
-        <result column="price" property="price"></result>
-        <result column="stock" property="stock"></result>
-        <result column="categoryLevelId" property="categoryLevelId"></result>
-        <result column="fileId" property="fileId"></result>
-        <result column="isDelete" property="isDelete"></result>
-        <result column="createTime" property="createTime"></result>
-        <result column="cname" property="categoryName"></result>
-        <result column="parentId" property="parentId"></result>
-        <result column="type" property="type"></result>
-    </resultMap>
 
-    <select id="getProductByCategoryId" parameterType="int" resultMap="productList">
+    <select id="getProductByCategoryId" parameterType="int" resultType="Product">
         SELECT p.id,
                p.name,
                description,
@@ -44,13 +30,53 @@
                stock,
                categoryLevelId,
                fileId,
+               filePath,
                p.isDelete,
                p.createTime,
                c.name,
                parentId,
                type
-        FROM easybuy_product p,easybuy_product_category c
-        WHERE p.categoryLevelId = c.id
-        AND parentId IN (SELECT id FROM easybuy_product_category WHERE parentId = #{parentId})
+        FROM easybuy_product p,easybuy_file f,easybuy_product_category c
+        WHERE p.id = f.productId and p.categoryLevelId = c.id
+          and p.isDelete = 0
+          AND parentId IN (SELECT id FROM easybuy_product_category WHERE parentId = #{parentId})
+    </select>
+
+    <select id="getHotProduct" resultType="Product">
+        SELECT  p.id,`name`,
+                description,
+                price,
+                stock,
+                categoryLevelId,
+                fileId,
+                p.createTime,
+                filePath
+        FROM easybuy_product p,easybuy_file f
+        WHERE p.id = f.productId and p.isDelete = 0 and f.isDelete = 0  and p.id iN(SELECT productId
+             FROM easybuy_order_detail
+              GROUP BY productId)
+            LIMIT 0,4
+    </select>
+
+    <select id="getProductById" parameterType="int" resultType="Product">
+        select  p.id,
+        p.name,
+        description,
+        price,
+        stock,
+        categoryLevelId,
+        fileId,
+        p.isDelete,
+        p.createTime,
+        filePath,
+        c.name cname,
+        parentId,
+        type
+        from easybuy_product p,easybuy_file f,easybuy_product_category c
+        <where>
+            p.id = f.productId and p.categoryLevelId = c.id
+            and p.id = #{id}
+            and p.isDelete = 0
+        </where>
     </select>
 </mapper>

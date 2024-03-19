@@ -13,4 +13,9 @@ public interface ProductMapper {
     public List<Product> getProductList();
 
     public List<Product> getProductByCategoryId(int parentId);
+
+    public List<Product> getHotProduct();
+
+    public Product getProductById(int id);
+
 }
