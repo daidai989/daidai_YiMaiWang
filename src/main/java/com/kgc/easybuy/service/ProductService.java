@@ -2,15 +2,19 @@ package com.kgc.easybuy.service;
 
 import com.kgc.easybuy.pojo.Category;
 import com.kgc.easybuy.pojo.Product;
+import com.kgc.easybuy.pojo.ResponseMessage;
 
 import java.util.List;
 
 public interface ProductService {
-    public Object getProductList(int currentPageNo,int pageSize);
+    public ResponseMessage getProductList(int currentPageNo, int pageSize);
 
-    public List<Product> getHotProduct();
+    public ResponseMessage getHotProduct();
 
-    public Object getProductByCategoryId();
+    public ResponseMessage getProductByCategoryId();
 
-    public Product getProductById(int id);
+    public ResponseMessage getProductById(int id);
+
+    public ResponseMessage getRecommendProduct(Product product);
+
 }

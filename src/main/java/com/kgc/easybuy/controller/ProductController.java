@@ -2,9 +2,11 @@ package com.kgc.easybuy.controller;
 
 import com.kgc.easybuy.pojo.Category;
 import com.kgc.easybuy.pojo.Product;
+import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -24,36 +26,37 @@ public class ProductController {
     @RequestMapping("getProductList")
     @ResponseBody
     public Object getProductList(int currentPageNo,int pageSize){
-        Object page = productService.getProductList(currentPageNo, pageSize);
-        return page;
+        ResponseMessage responseMessage = productService.getProductList(currentPageNo, pageSize);
+        return responseMessage;
     }
 
     @RequestMapping("getProductByCategoryId")
     @ResponseBody
     public Object getProductByCategoryId(){
-        Object list = productService.getProductByCategoryId();
-        return list;
+        ResponseMessage responseMessage = productService.getProductByCategoryId();
+        return responseMessage;
     }
 
     @RequestMapping("getHotProduct")
     @ResponseBody
     public Object getHotProduct(){
-        List<Product> hotProduct = productService.getHotProduct();
-        return hotProduct;
+        ResponseMessage responseMessage = productService.getHotProduct();
+        return responseMessage;
     }
 
 
     @RequestMapping("getImage")
+    @ResponseBody
     public void disPlayImage(HttpServletResponse response,String filePath){
         ServletOutputStream os = null;
         InputStream is = null;
         try {
           String fileName = URLDecoder.decode(filePath,"utf-8");
-            is = new FileInputStream(filePath);
+            is = new FileInputStream(fileName);
             os = response.getOutputStream();
             int length;
             byte[] bytes = new byte[1024];
-            while ((length = is.read(bytes)) == -1){
+            while ((length = is.read(bytes)) != -1){
                 os.write(bytes,0,length);
             }
         } catch (IOException e) {
@@ -73,8 +76,16 @@ public class ProductController {
     }
 
     @RequestMapping("getProductById")
-    public Object getProductById(int id){
-        Product product = productService.getProductById(id);
-        return  product;
+    @ResponseBody
+    public Object getProductById(Product product){
+        ResponseMessage responseMessage = productService.getProductById(product.getId());
+        return  responseMessage;
+    }
+
+    @RequestMapping("getRecommendProduct")
+    @ResponseBody
+    public Object getRecommendProduct(Product product){
+        ResponseMessage responseMessage = productService.getRecommendProduct(product);
+        return  responseMessage;
     }
 }

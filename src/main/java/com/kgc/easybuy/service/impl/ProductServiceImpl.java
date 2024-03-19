@@ -6,6 +6,7 @@ import com.kgc.easybuy.dao.CategoryMapper;
 import com.kgc.easybuy.dao.ProductMapper;
 import com.kgc.easybuy.pojo.Category;
 import com.kgc.easybuy.pojo.Product;
+import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.service.ProductService;
 import com.kgc.easybuy.util.EncodingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,23 +26,23 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private CategoryMapper categoryMapper;
     @Override
-    public Object getProductList(int currentPageNo,int pageSize) {
+    public ResponseMessage getProductList(int currentPageNo, int pageSize) {
         PageHelper.startPage(currentPageNo,pageSize);
         List<Product> productList = productMapper.getProductList();
         List<Product> encodingPro = EncodingUtil.encoding(productList);
         PageInfo PageInfo = new PageInfo(encodingPro);
-        return PageInfo;
+        return ResponseMessage.success(PageInfo);
     }
 
     @Override
-    public List<Product> getHotProduct() {
+    public ResponseMessage getHotProduct() {
         List<Product> productList = productMapper.getHotProduct();
         List<Product> encodingPro = EncodingUtil.encoding(productList);
-        return encodingPro;
+        return ResponseMessage.success(encodingPro);
     }
 
     @Override
-    public Object getProductByCategoryId() {
+    public ResponseMessage getProductByCategoryId() {
         List<Category> firstCategories = categoryMapper.getFirstCategories();
         List<List> productList = new ArrayList<>();
         for (Category category: firstCategories) {
@@ -51,17 +52,24 @@ public class ProductServiceImpl implements ProductService {
             PageInfo pageInfo = new PageInfo(encodingPro);
             productList.add(pageInfo.getList());
         }
-        return productList;
+        return ResponseMessage.success(productList);
     }
 
     @Override
-    public Product getProductById(int id) {
+    public ResponseMessage getProductById(int id) {
         Product product = productMapper.getProductById(id);
         try {
             product.setFilePath(URLEncoder.encode(product.getFilePath(),"utf-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return product;
+        return ResponseMessage.success(product);
+    }
+
+    @Override
+    public ResponseMessage getRecommendProduct(Product product) {
+        List<Product> recommendProduct = productMapper.getRecommendProduct(product);
+        List<Product> productList = EncodingUtil.encoding(recommendProduct);
+        return ResponseMessage.success(productList);
     }
 }
