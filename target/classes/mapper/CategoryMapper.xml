@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kgc.easybuy.dao.CategoryMapper">
+    <select id="getFirstCategories" resultType="Category">
+        select id, name, parentId, type, iconClass, isDel, createTime from easybuy_product_category where type=1 and isDel=0
+    </select>
+    <select id="getSecondCategories" resultType="Category">
+        SELECT e1.id, e1.name, e1.parentId, e1.type, e1.iconClass, e1.isDel, e1.createTime
+        FROM easybuy_product_category e1
+                 JOIN easybuy_product_category e2 ON e1.parentId = e2.id
+        WHERE e1.type = 2 AND e2.id = #{id};
+    </select>
+    <select id="getThirdCategories" resultType="Category">
+        SELECT e1.id, e1.name, e1.parentId, e1.type, e1.iconClass, e1.isDel, e1.createTime
+        FROM easybuy_product_category e1
+                 JOIN easybuy_product_category e2 ON e1.parentId = e2.id
+        WHERE e1.type = 3 AND e2.id = #{id};
+    </select>
+</mapper>
