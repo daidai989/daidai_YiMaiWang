@@ -1,8 +1,6 @@
 package com.kgc.easybuy.controller;
 
-import com.kgc.easybuy.pojo.Category;
-import com.kgc.easybuy.pojo.Product;
-import com.kgc.easybuy.pojo.ResponseMessage;
+import com.kgc.easybuy.pojo.*;
 import com.kgc.easybuy.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +20,7 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
 
     @RequestMapping("getProductList")
     @ResponseBody
@@ -86,6 +85,20 @@ public class ProductController {
     @ResponseBody
     public Object getRecommendProduct(Product product){
         ResponseMessage responseMessage = productService.getRecommendProduct(product);
+        return  responseMessage;
+    }
+
+    @RequestMapping("setProductTes")
+    @ResponseBody
+    public Object setProductTes(Product product){
+        ResponseMessage responseMessage = productService.setProductTes();
+        return  responseMessage;
+    }
+
+    @RequestMapping("getProFromEs")
+    @ResponseBody
+    public Object getProFromEs(EsSelect esSelect){
+        ResponseMessage responseMessage = productService.getProFromEs(esSelect);
         return  responseMessage;
     }
 }

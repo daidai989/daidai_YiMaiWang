@@ -2,20 +2,30 @@ package com.kgc.easybuy.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.kgc.easybuy.config.ProductEsRepository;
 import com.kgc.easybuy.dao.CategoryMapper;
 import com.kgc.easybuy.dao.ProductMapper;
-import com.kgc.easybuy.pojo.Category;
-import com.kgc.easybuy.pojo.Product;
-import com.kgc.easybuy.pojo.ResponseMessage;
+import com.kgc.easybuy.pojo.*;
 import com.kgc.easybuy.service.ProductService;
 import com.kgc.easybuy.util.EncodingUtil;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -25,6 +35,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private CategoryMapper categoryMapper;
+
+    @Autowired
+    private ProductEsRepository repository;
+
+    @Autowired
+    private ElasticsearchRestTemplate restTemplate;
+
     @Override
     public ResponseMessage getProductList(int currentPageNo, int pageSize) {
         PageHelper.startPage(currentPageNo,pageSize);
@@ -71,5 +88,64 @@ public class ProductServiceImpl implements ProductService {
         List<Product> recommendProduct = productMapper.getRecommendProduct(product);
         List<Product> productList = EncodingUtil.encoding(recommendProduct);
         return ResponseMessage.success(productList);
+    }
+
+    @Override
+    public ResponseMessage setProductTes() {
+        List<Product> productList = productMapper.setProductTes();
+        repository.saveAll(productList);
+        return ResponseMessage.success("成功",productList);
+    }
+
+    @Override
+    public ResponseMessage getProFromEs(EsSelect esSelect) {
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        Page page = new Page();
+        page.setCurrentPageNo(esSelect.getCurrentPageNo());
+        page.setPageSize(esSelect.getPageSize());
+        //匹配查询
+        if(esSelect.getName() != null && !"".equals(esSelect.getName())){
+            boolQueryBuilder.must(QueryBuilders.matchQuery("name",esSelect.getName()));
+        }
+        if (esSelect.getEnd() > 1){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("price").from(esSelect.getBegin()).to(esSelect.getEnd()));
+        }
+        if (esSelect.getEnd() == -1){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("price").gte(esSelect.getBegin()));
+        }
+        if (esSelect.getBrandId() > 0){
+            boolQueryBuilder.must(QueryBuilders.matchQuery("brandId",esSelect.getBrandId()));
+        }
+        NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
+        nativeSearchQueryBuilder.withQuery(boolQueryBuilder);
+        if (esSelect.isSortPrice()){
+            nativeSearchQueryBuilder.withSort(SortBuilders.fieldSort("price").order(SortOrder.ASC));
+        }else {
+            nativeSearchQueryBuilder.withSort(SortBuilders.fieldSort("price").order(SortOrder.DESC));
+        }
+        nativeSearchQueryBuilder.withPageable(PageRequest.of(page.getCurrentPageNo() -1, page.getPageSize()));
+
+        HighlightBuilder highlightBuilder = new HighlightBuilder();
+        highlightBuilder.field("name");
+        highlightBuilder.preTags("<font style='color:red'>");
+        highlightBuilder.postTags("</font>");
+
+        nativeSearchQueryBuilder.withHighlightBuilder(highlightBuilder);
+        SearchHits<Product> search = restTemplate.search(nativeSearchQueryBuilder.build(), Product.class);
+        List<Product> productList = new ArrayList<>();
+        long totalHits = search.getTotalHits();
+        int totalPage = (int) totalHits;
+        page.setTotalPage(totalPage);
+        for(SearchHit<Product> hits: search) {
+            Product prod = hits.getContent();
+            Map<String, List<String>> highlightFields = hits.getHighlightFields();
+            List<String> hightList = highlightFields.get("name");
+            if (hightList != null && !hightList.isEmpty()){
+                prod.setName(hightList.get(0));
+            }
+            productList.add(prod);
+        }
+        page.setData(productList);
+        return ResponseMessage.success(page);
     }
 }

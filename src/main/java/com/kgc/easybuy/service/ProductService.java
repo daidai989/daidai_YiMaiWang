@@ -1,8 +1,6 @@
 package com.kgc.easybuy.service;
 
-import com.kgc.easybuy.pojo.Category;
-import com.kgc.easybuy.pojo.Product;
-import com.kgc.easybuy.pojo.ResponseMessage;
+import com.kgc.easybuy.pojo.*;
 
 import java.util.List;
 
@@ -17,4 +15,7 @@ public interface ProductService {
 
     public ResponseMessage getRecommendProduct(Product product);
 
+    public ResponseMessage setProductTes();
+
+    public ResponseMessage getProFromEs(EsSelect esSelect);
 }

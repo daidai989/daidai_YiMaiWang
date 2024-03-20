@@ -19,4 +19,6 @@ public interface ProductMapper {
     public Product getProductById(int id);
 
     public List<Product> getRecommendProduct(Product product);
+
+    public List<Product> setProductTes();
 }
