@@ -21,7 +21,6 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-
     @RequestMapping("getProductList")
     @ResponseBody
     public Object getProductList(int currentPageNo,int pageSize){
@@ -101,4 +100,12 @@ public class ProductController {
         ResponseMessage responseMessage = productService.getProFromEs(esSelect);
         return  responseMessage;
     }
+
+    @RequestMapping("checkProductExitsByCategoryId")
+    @ResponseBody
+    public Object checkProductExitsByCategoryId(Category category){
+        ResponseMessage responseMessage = productService.checkProductExitsByCategoryId(category);
+        return responseMessage;
+    }
+
 }

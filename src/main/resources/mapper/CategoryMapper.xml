@@ -16,4 +16,68 @@
                  JOIN easybuy_product_category e2 ON e1.parentId = e2.id
         WHERE e1.type = 3 AND e2.id = #{id};
     </select>
+    <select id="getAllCategories" resultMap="categoryList">
+        select a.id as aid, a.name as aname, a.parentId as aparentId, a.type as atype, a.iconClass as aiconClass,
+        a.isDel as aisDel, a.createTime as acreateTime, b.name as bname, b.parentId as bparentId
+        from easybuy_product_category a
+        left join easybuy_product_category b on a.parentId = b.id and b.isDel = 0
+        <where>
+         a.isDel = 0
+        <if test="type > 0">
+            and a.type = #{type}
+        </if>
+        <if test="name != null and name != ''">
+           and a.name like concat('%',#{name},'%')
+        </if>
+        </where>
+    </select>
+
+    <resultMap id="categoryList" type="Category">
+        <id column="aid" property="id"></id>
+        <result column="aname" property="name"></result>
+        <result column="aparentId" property="parentId"></result>
+        <result column="aiconClass" property="iconClass"></result>
+        <result column="acreateTime" property="createTime"></result>
+        <result column="atype" property="type"></result>
+        <result column="aisDel" property="isDel"></result>
+        <result column="bname" property="parentName"></result>
+    </resultMap>
+
+    <insert id="addCategory" parameterType="Category">
+        insert into
+            easybuy_product_category(name,parentId,type,createTime)
+        values (#{name},#{parentId},#{type},now())
+    </insert>
+
+    <select id="checkCategoryName" resultType="String">
+        select name from easybuy_product_category where name=#{name} and isDel = 0
+    </select>
+
+    <update id="deleteCategory" >
+        update  easybuy_product_category set isDel = 1 where id = #{id}
+    </update>
+
+    <select id="getCategory" parameterType="int" resultMap="categoryList">
+        select a.id as aid, a.name as aname, a.parentId as aparentId, a.type as atype, a.iconClass as aiconClass,
+               a.isDel as aisDel, a.createTime as acreateTime, b.name as bname, b.parentId as bparentId
+        from easybuy_product_category a
+                 left join easybuy_product_category b on a.parentId = b.id and b.isDel = 0
+        where a.id  = #{id}
+    </select>
+
+    <update id="updateCategory" parameterType="Category">
+        update  easybuy_product_category
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="type >0">
+                type = #{type},
+            </if>
+            <if test="parentId >= 0">
+                parentId = #{parentId}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

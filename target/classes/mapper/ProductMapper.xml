@@ -22,7 +22,7 @@
         </where>
     </select>
 
-    <select id="getProductByCategoryId" parameterType="int" resultType="Product">
+    <select id="getProductByFirstCategoryId" parameterType="int" resultType="Product">
         SELECT p.id,
                p.name,
                description,
@@ -39,7 +39,7 @@
         FROM easybuy_product p,easybuy_file f,easybuy_product_category c
         WHERE p.id = f.productId and p.categoryLevelId = c.id
           and p.isDelete = 0
-          AND parentId IN (SELECT id FROM easybuy_product_category WHERE parentId = #{parentId})
+          AND parentId IN (SELECT id FROM easybuy_product_category WHERE parentId = #{id})
     </select>
 
     <select id="getHotProduct" resultType="Product">
@@ -120,5 +120,45 @@
             p.id = f.productId and p.categoryLevelId = c.id
             and b.id = brandId and f.isDelete = 0 and c.isDel = 0 and p.isDelete = 0
         </where>
+    </select>
+
+    <select id="getProductBySecondCategoryId" parameterType="int" resultType="Product">
+        SELECT p.id,
+               p.name,
+               description,
+               price,
+               stock,
+               categoryLevelId,
+               fileId,
+               filePath,
+               p.isDelete,
+               p.createTime,
+               c.name,
+               parentId,
+               type
+        FROM easybuy_product p,easybuy_file f,easybuy_product_category c
+        WHERE p.id = f.productId and p.categoryLevelId = c.id
+          and p.isDelete = 0
+          AND parentId = #{id}
+    </select>
+
+    <select id="getProductByThreeCategoryId" parameterType="int" resultType="Product">
+        SELECT p.id,
+               p.name,
+               description,
+               price,
+               stock,
+               categoryLevelId,
+               fileId,
+               filePath,
+               p.isDelete,
+               p.createTime,
+               c.name,
+               parentId,
+               type
+        FROM easybuy_product p,easybuy_file f,easybuy_product_category c
+        WHERE p.id = f.productId and p.categoryLevelId = c.id
+          and p.isDelete = 0
+          AND c.id = #{id}
     </select>
 </mapper>

@@ -21,7 +21,7 @@
     <script type="text/javascript" src="js/axios.js"></script>
     <link type="text/css" rel="stylesheet" href="css/element.css"/>
     <script type="text/javascript" src="js/element.js"></script>
-    <title>尤洪</title>
+    <title>商品搜索</title>
 </head>
 <body>
 <div id="root3">
@@ -571,18 +571,16 @@
                             </div>
                         </li>
                     </ul>
-                    <div class="pages">
-                        <el-pagination
-                                layout="prev, pager, next"
-                                :current-page="page.currentPageNo"
-                                :page-size="page.pageSize"
-                                :total="page.totalPage"
-                                @current-change="handleCurrentChange"/>
-                    </div>
-
             </div>
         </div>
-
+            <div class="pages">
+                <el-pagination
+                        layout="prev, pager, next"
+                        :current-page="page.currentPageNo"
+                        :page-size="page.pageSize"
+                        :total="page.totalPage"
+                        @current-change="handleCurrentChange"/>
+            </div>
         <!--Begin Footer Begin -->
         <div class="b_btm_bg bg_color">
             <div class="b_btm">

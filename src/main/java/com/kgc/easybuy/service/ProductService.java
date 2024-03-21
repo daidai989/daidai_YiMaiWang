@@ -18,4 +18,13 @@ public interface ProductService {
     public ResponseMessage setProductTes();
 
     public ResponseMessage getProFromEs(EsSelect esSelect);
+
+    public ResponseMessage getProductByFirstCategoryId(int id);
+
+    public ResponseMessage getProductBySecondCategoryId(int id);
+
+    public ResponseMessage getProductByThreeCategoryId(int id);
+
+    public ResponseMessage checkProductExitsByCategoryId(Category category);
+
 }

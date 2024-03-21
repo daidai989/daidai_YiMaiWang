@@ -6,9 +6,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserMapper {
     public User login(User user);
-
     public int updatePwd(User user);
-
     public User checkUserExist(User user);
     public int register(User user);
 }

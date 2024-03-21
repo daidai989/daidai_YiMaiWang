@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,4 +20,6 @@ public class Category {
     private String iconClass;
     private int isDel;
     private Date createTime;
+    private String parentName;
+    private List<Category> childCategory;
 }

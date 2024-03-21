@@ -64,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
         List<List> productList = new ArrayList<>();
         for (Category category: firstCategories) {
             PageHelper.startPage(1,6);
-            List<Product> products = productMapper.getProductByCategoryId(category.getId());
+            List<Product> products = productMapper.getProductByFirstCategoryId(category.getId());
             List<Product> encodingPro = EncodingUtil.encoding(products);
             PageInfo pageInfo = new PageInfo(encodingPro);
             productList.add(pageInfo.getList());
@@ -147,5 +147,39 @@ public class ProductServiceImpl implements ProductService {
         }
         page.setData(productList);
         return ResponseMessage.success(page);
+    }
+
+    @Override
+    public ResponseMessage getProductByFirstCategoryId(int id) {
+        List<Product> productList = productMapper.getProductByFirstCategoryId(id);
+        return ResponseMessage.success(productList);
+    }
+
+    @Override
+    public ResponseMessage getProductBySecondCategoryId(int id) {
+        List<Product> productList = productMapper.getProductBySecondCategoryId(id);
+        return ResponseMessage.success(productList);
+    }
+
+    @Override
+    public ResponseMessage getProductByThreeCategoryId(int id) {
+        List<Product> productList = productMapper.getProductByThreeCategoryId(id);
+        return ResponseMessage.success(productList);
+    }
+
+    @Override
+    public ResponseMessage checkProductExitsByCategoryId(Category category) {
+        List<Product> productList = null;
+        if (category.getType() == 1){
+            productList =  productMapper.getProductByFirstCategoryId(category.getId());
+        } else if (category.getType() == 2) {
+            productList = productMapper.getProductBySecondCategoryId(category.getId());
+        } else if (category.getType() == 3) {
+            productList = productMapper.getProductByThreeCategoryId(category.getId());
+        }
+        if (productList.size() == 0){
+            return ResponseMessage.success("可以删除");
+        }
+        return ResponseMessage.error("不能删除，该分类下有数据！");
     }
 }
