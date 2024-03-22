@@ -22,7 +22,7 @@
         order by createTime desc
         </where>
     </select>
-    
+
     <update id="setDefaultTwo">
         update easybuy_user_address set isDefault = 1 where userId = #{userId} and id = #{id} and isDel = 0
     </update>

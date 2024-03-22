@@ -29,14 +29,14 @@ public class RedisUtil {
         if (obj != null){
             return  ResponseMessage.success(obj);
         }
-        return new ResponseMessage(201,"失败",null);
+        return ResponseMessage.error("获取失败");
     }
 
     public ResponseMessage delStrByRedis(String key) {
         Boolean delete = stringRedisTemplate.delete(key);
         if (delete){
-            return new ResponseMessage(200,"成功",delete);
+            return  ResponseMessage.success(delete);
         }
-        return new ResponseMessage(201,"失败",delete);
+        return ResponseMessage.error("失败",delete);
     }
 }

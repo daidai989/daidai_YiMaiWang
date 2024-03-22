@@ -1,12 +1,15 @@
 package com.kgc.easybuy.controller;
 
-import com.kgc.easybuy.pojo.*;
+import com.kgc.easybuy.pojo.Category;
+import com.kgc.easybuy.pojo.Product;
+import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.service.ProductService;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -14,8 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLDecoder;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
+@CrossOrigin(origins = "*")
 public class ProductController {
 
     @Autowired
@@ -24,38 +29,37 @@ public class ProductController {
     @RequestMapping("getProductList")
     @ResponseBody
     public Object getProductList(int currentPageNo,int pageSize){
-        ResponseMessage responseMessage = productService.getProductList(currentPageNo, pageSize);
-        return responseMessage;
+        Object page = productService.getProductList(currentPageNo, pageSize);
+        return page;
     }
 
     @RequestMapping("getProductByCategoryId")
     @ResponseBody
-    public Object getProductByCategoryId(){
-        ResponseMessage responseMessage = productService.getProductByCategoryId();
-        return responseMessage;
+    public ResponseMessage getProductByCategoryId(){
+        ResponseMessage productByCategoryId = productService.getProductByCategoryId();
+        return productByCategoryId;
     }
 
     @RequestMapping("getHotProduct")
     @ResponseBody
-    public Object getHotProduct(){
-        ResponseMessage responseMessage = productService.getHotProduct();
-        return responseMessage;
+    public ResponseMessage getHotProduct(){
+        ResponseMessage hotProduct = productService.getHotProduct();
+        return hotProduct;
     }
 
 
     @RequestMapping("getImage")
-    @ResponseBody
     public void disPlayImage(HttpServletResponse response,String filePath){
         ServletOutputStream os = null;
         InputStream is = null;
         try {
-          String fileName = URLDecoder.decode(filePath,"utf-8");
-            is = new FileInputStream(fileName);
+           filePath = URLDecoder.decode(filePath,"utf-8");
+            is = new FileInputStream(filePath);
             os = response.getOutputStream();
-            int length;
+            int len;
             byte[] bytes = new byte[1024];
-            while ((length = is.read(bytes)) != -1){
-                os.write(bytes,0,length);
+            while ((len = is.read(bytes)) != -1) {
+                os.write(bytes, 0, len);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -75,37 +79,74 @@ public class ProductController {
 
     @RequestMapping("getProductById")
     @ResponseBody
-    public Object getProductById(Product product){
-        ResponseMessage responseMessage = productService.getProductById(product.getId());
-        return  responseMessage;
+    public Object getProductById(int id){
+        Product product = productService.getProductById(id);
+        return  product;
     }
-
-    @RequestMapping("getRecommendProduct")
+    @RequestMapping("getproducts")
     @ResponseBody
-    public Object getRecommendProduct(Product product){
-        ResponseMessage responseMessage = productService.getRecommendProduct(product);
-        return  responseMessage;
+    public ResponseMessage getProducts(){
+        ResponseMessage products = productService.getProducts();
+        return products;
     }
-
-    @RequestMapping("setProductTes")
+    @RequestMapping("viewProductsList")
     @ResponseBody
-    public Object setProductTes(Product product){
-        ResponseMessage responseMessage = productService.setProductTes();
-        return  responseMessage;
-    }
-
-    @RequestMapping("getProFromEs")
-    @ResponseBody
-    public Object getProFromEs(EsSelect esSelect){
-        ResponseMessage responseMessage = productService.getProFromEs(esSelect);
-        return  responseMessage;
-    }
-
-    @RequestMapping("checkProductExitsByCategoryId")
-    @ResponseBody
-    public Object checkProductExitsByCategoryId(Category category){
-        ResponseMessage responseMessage = productService.checkProductExitsByCategoryId(category);
+    public ResponseMessage viewProductsList(String currentNo,String name){
+        ResponseMessage responseMessage = productService.viewProductsList(currentNo,name);
         return responseMessage;
     }
+    @RequestMapping("delProduct")
+    @ResponseBody
+    public ResponseMessage logout(Integer id) {
+        ResponseMessage responeseMsg = productService.delProById(id);
+        return responeseMsg;
+    }
 
+    @RequestMapping("/upload")
+    @ResponseBody
+    public ResponseMessage upload(@RequestParam(value = "filePath") MultipartFile filePath) {
+        String extsion = null;
+        String picPath = null;
+        if (filePath != null) {
+            if (!filePath.isEmpty()) {
+                String originalFilename = filePath.getOriginalFilename();
+                extsion = FilenameUtils.getExtension(originalFilename);
+                picPath = "D:\\IdeaProject\\study\\pic" + File.separator + UUID.randomUUID() + "." + extsion;
+            }
+            if (!extsion.equalsIgnoreCase("jpg") && !extsion.equalsIgnoreCase("png")) {
+                return ResponseMessage.error("文件格式有误只能上传jpg或者png");
+            }
+            if (filePath.getSize() > 5 * 1024 * 1024) {
+                return ResponseMessage.error("文件大小不能超过5MB");
+            }
+
+            try {
+                filePath.transferTo(new File(picPath));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+       return ResponseMessage.success(picPath);
+
+    }
+    @RequestMapping("addProduct")
+    @ResponseBody
+    public ResponseMessage addProduct(@RequestBody Product products){
+        ResponseMessage responseMessage = productService.addProduct(products);
+        return responseMessage;
+    }
+    @RequestMapping("updateProduct")
+    @ResponseBody
+
+    public ResponseMessage updateProduct(@RequestBody Product products){
+        ResponseMessage responseMessage = productService.updateProduct(products);
+        return responseMessage;
+    }
+    @RequestMapping("getProductByLogin")
+    @ResponseBody
+
+    public ResponseMessage getProductByLogin(String name){
+        ResponseMessage responseMessage = productService.getProductByLogin(name);
+        return responseMessage;
+    }
 }

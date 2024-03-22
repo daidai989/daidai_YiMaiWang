@@ -5,6 +5,7 @@ import com.kgc.easybuy.pojo.Address;
 import java.util.List;
 
 public interface AddressMapper {
+    public Address getDefaultAdd(Integer id);
     public List<Address> getAddressById(int userId);
     public int setDefaultOne(Address address);
     public int setDefaultTwo(Address address);

@@ -19,6 +19,13 @@ public class AddressServiceImpl implements AddressService {
 
     @Autowired
     private AddressMapper addressMapper;
+
+    @Override
+    public ResponseMessage getDefaultAdd(Integer id) {
+        Address defaultAdd = addressMapper.getDefaultAdd(id);
+        return ResponseMessage.success(defaultAdd);
+    }
+
     @Override
     public ResponseMessage getAddressById(int userId, Page page) {
         PageHelper.startPage(page.getCurrentPageNo(),page.getPageSize());

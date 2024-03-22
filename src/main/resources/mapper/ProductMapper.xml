@@ -22,7 +22,7 @@
         </where>
     </select>
 
-    <select id="getProductByFirstCategoryId" parameterType="int" resultType="Product">
+    <select id="getProductByCategoryId" parameterType="int" resultType="Product">
         SELECT p.id,
                p.name,
                description,
@@ -39,7 +39,7 @@
         FROM easybuy_product p,easybuy_file f,easybuy_product_category c
         WHERE p.id = f.productId and p.categoryLevelId = c.id
           and p.isDelete = 0
-          AND parentId IN (SELECT id FROM easybuy_product_category WHERE parentId = #{id})
+          AND parentId IN (SELECT id FROM easybuy_product_category WHERE parentId = #{parentId})
     </select>
 
     <select id="getHotProduct" resultType="Product">
@@ -79,86 +79,54 @@
             and p.isDelete = 0
         </where>
     </select>
-
-    <select id="getRecommendProduct" parameterType="Product" resultType="Product">
-        SELECT  p.id,
-                p.name,
-                description,
-                price,
-                stock,
-                categoryLevelId,
-                fileId,
-                p.isDelete,
-                p.createTime,
-                filePath,
-                c.name cname,
-                parentId,
-                type FROM easybuy_product p,easybuy_product_category c,easybuy_file
-        WHERE p.categoryLevelId = c.id and productId = p.id
-          AND c.parentId = #{parentId} AND p.id != #{id} AND p.isDelete = 0
-        limit 0,3
-    </select>
-
-    <select id="setProductTes" resultType="Product">
-        select  p.id,
-        p.name,
-        description,
-        price,
-        stock,
-        categoryLevelId,
-        fileId,
-        p.isDelete,
-        p.createTime,
-        filePath,
-        c.name cname,
-        brandId,
-        b.name brandName,
-        parentId,
-        type
-        from easybuy_product p,easybuy_file f,easybuy_product_category c,easybuy_brand b
-        <where>
-            p.id = f.productId and p.categoryLevelId = c.id
-            and b.id = brandId and f.isDelete = 0 and c.isDel = 0 and p.isDelete = 0
-        </where>
-    </select>
-
-    <select id="getProductBySecondCategoryId" parameterType="int" resultType="Product">
-        SELECT p.id,
-               p.name,
-               description,
-               price,
-               stock,
-               categoryLevelId,
-               fileId,
-               filePath,
-               p.isDelete,
-               p.createTime,
-               c.name,
-               parentId,
-               type
-        FROM easybuy_product p,easybuy_file f,easybuy_product_category c
-        WHERE p.id = f.productId and p.categoryLevelId = c.id
+    <select id="getProducts"  resultType="Product">
+        SELECT
+            c.name as categoryName,p.id,
+            p.name,
+            description,
+            price,
+            stock,
+            categoryLevelId,
+            fileId,
+            filePath,
+            p.isDelete,
+            p.createTime,
+            b.name as brandName,
+            parentId,
+            type
+        FROM easybuy_product p,easybuy_file f,easybuy_product_category c,easybuy_brand b
+        WHERE p.id = f.productId and p.categoryLevelId = c.id and b.id=p.brandId
           and p.isDelete = 0
-          AND parentId = #{id}
+
+    </select>
+    <update id="delProById">
+        update easybuy_product
+        set isDelete=1
+        where id = #{id}
+    </update>
+
+
+
+    <insert id="addProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO easybuy_product (description, name, price, brandId, stock, categoryLevelId, createTime)
+        VALUES (#{description}, #{name}, #{price}, #{brandId}, #{stock}, #{categoryLevelId}, now());
+    </insert>
+    <insert id="addFile"  useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO easybuy_file (filePath, userId, createTime)
+        VALUES (#{filePath}, #{userId}, now());
+    </insert>
+    <update id="updateProId"  >
+        update easybuy_file set productId=#{proId} where id = #{id}
+    </update>
+    <update id="updateFileId"  >
+        update easybuy_product set fileId=#{fileId} where id = #{id}
+    </update>
+
+    <select id="getProductByLogin"  resultType="Product">
+        SELECT id, name, description, price, brandId, stock, categoryLevelId, fileId, isDelete, createTime from easybuy_product where isDelete=0 and name=#{loginName}
+
     </select>
 
-    <select id="getProductByThreeCategoryId" parameterType="int" resultType="Product">
-        SELECT p.id,
-               p.name,
-               description,
-               price,
-               stock,
-               categoryLevelId,
-               fileId,
-               filePath,
-               p.isDelete,
-               p.createTime,
-               c.name,
-               parentId,
-               type
-        FROM easybuy_product p,easybuy_file f,easybuy_product_category c
-        WHERE p.id = f.productId and p.categoryLevelId = c.id
-          and p.isDelete = 0
-          AND c.id = #{id}
-    </select>
+
+
 </mapper>

@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link type="text/css" rel="stylesheet" href="css/style.css" />
     <!--[if IE 6]>
@@ -113,6 +114,7 @@
 <![endif]-->
 </html>
 <script>
+
     new Vue({
         el:"#root",
         data() {
@@ -125,24 +127,26 @@
         },
         methods:{
             login(){
-                if(this.loginName == null || this.loginName == ''){
+                if(this.loginName == null || this.loginName === ''){
                     this.isScuuess = true
                     this.error = "请输入用户名"
                     return;
                 }
-                if(this.password == null || this.password == ''){
+                if(this.password == null || this.password ===''){
                     this.isScuuess = true
                     this.error = "请输入密码"
                     return;
                 }
-                axios.get("userLogin",{
+                axios.get("http://localhost:8080/userLogin",{
                     params:{
                         loginName: this.loginName,
                         password:this.password
-                    }
+
+                    },
                 }).then((result) => {
                     console.log(result.data)
-                    if(result.data.code == "200"){
+                    if(result.data.code === 200){
+                        localStorage.setItem("token",result.data.data)
                         window.location.href="Index.html"
                     }else{
                         this.isScuuess = true

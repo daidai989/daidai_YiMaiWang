@@ -8,4 +8,6 @@ public interface UserService {
     public ResponseMessage updatePwd(User user);
     public ResponseMessage checkUserExist(User user);
     public ResponseMessage register(User user);
+    public ResponseMessage getUser(String token);
+    public ResponseMessage logOut(String token);
 }

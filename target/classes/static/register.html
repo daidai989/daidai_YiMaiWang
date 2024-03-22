@@ -31,7 +31,8 @@
 
     <script src="js/lrscroll_1.js" type="text/javascript"></script>
     <script src="js/vue.js" type="text/javascript"></script>
-    <script src="js/axios.js"></script>
+    <script src="js/axios.js" type="text/javascript"></script>
+
     <style>
         .error {
             margin-top: 12px;
@@ -67,7 +68,7 @@
 </head>
 
 <body>
-<div id="app">
+<div id="app1">
     <!--Begin Header Begin-->
     <div class="soubg">
         <div class="sou">
@@ -85,7 +86,7 @@
     <!--Begin Login Begin-->
     <div class="log_bg">
         <div class="top">
-            <div class="logo"><a href="Index.html"><img src="images/logo.png"/></a></div>
+            <div class="logo"><a href="index.html"><img src="images/logo.png"/></a></div>
         </div>
         <div class="regist">
             <div class="log_img"><img height="425" src="images/l_img.png" width="611"/></div>
@@ -179,8 +180,8 @@
                             </td>
                             <td>
                                 <input class="l_ipt" type="text" v-model.number="verify"/>
-                                <span style="font-size: 12px; font-family: '宋体'">
-                                    <button class="sendMsg" @click.prevent="sendVerificationCode()" :disabled="isVerificationButtonDisabled">发送</button>
+                                <span style="font-size: 12px; font-family: '宋体'" >
+                                    <button class="sendMsg" v-on:click.prevent="sendVerificationCode()"  :disabled="isVerificationButtonDisabled">{{send}}</button>
                                 </span>
 
                                 <span class="error" style="
@@ -224,8 +225,9 @@
 </body>
 <script>
     new Vue({
-        el: '#app',
+        el: '#app1',
         data: {
+            send:"发送",
             isVerificationButtonDisabled: false,
             verificationTimer: null,
             number:null,
@@ -353,12 +355,9 @@
                     return;
                 }
 
-                // 禁用 sendVerificationCode() 方法
-                this.isVerificationButtonDisabled = true;
-
+                    this.isVerificationButtonDisabled = true;
                 this.checkVerify();
 
-                // 设置定时器，在60秒后启用 sendVerificationCode() 方法
                 setTimeout(() => {
                     this.isVerificationButtonDisabled = false;
                 }, 60000);
@@ -367,7 +366,8 @@
             checkVerify() {
                 if (this.user.email.trim() === "") {
                     this.Cue.verifyInfo = "请填写邮箱";
-                    this.LoginFalg.verifyFalg = false;
+                    this.isVerificationButtonDisabled = false;
+
                     return;
                 } else {
                     axios.get('http://localhost:8080/sendEmailCode', {
@@ -375,7 +375,6 @@
                             userName: this.user.email
                         }
                     }).then((resp) => {
-                        console.log(resp.data);
                         if (resp.data !== null) {
                             this.number = resp.data;
                             this.startVerificationTimer();
@@ -388,9 +387,10 @@
                 this.verificationTimer = setInterval(() => {
                     count--;
                     if (count >= 0) {
-                        this.Cue.verifyInfo = count;
+                        this.send = "发送"+count+"秒后失效";
                     } else {
                         clearInterval(this.verificationTimer);
+                        this.send = "发送";
                         this.number = null;
                         this.isVerificationButtonDisabled = false;
                     }

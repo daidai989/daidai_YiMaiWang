@@ -1,21 +1,33 @@
 package com.kgc.easybuy.dao;
 
+import com.kgc.easybuy.pojo.Product;
+import org.apache.ibatis.annotations.Mapper;
 import com.kgc.easybuy.pojo.Category;
 import com.kgc.easybuy.pojo.Product;
-import com.kgc.easybuy.pojo.ResponseMessage;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
  * @author daidai
  */
+@Mapper
 public interface ProductMapper {
+    public List<Product> getProducts();
+
     public List<Product> getProductList();
-    public List<Product> getProductByFirstCategoryId(int id);
+
+    public List<Product> getProductByCategoryId(int parentId);
+
     public List<Product> getHotProduct();
+
     public Product getProductById(int id);
-    public List<Product> getRecommendProduct(Product product);
-    public List<Product> setProductTes();
-    public List<Product> getProductBySecondCategoryId(int id);
-    public List<Product> getProductByThreeCategoryId(int id);
+    public boolean delProById(@Param("id") Integer id);
+    public boolean addProduct(Product product);
+
+    public boolean updateProduct(Product products);
+    public boolean updateFileId(@Param("fileId")Integer fileId,@Param("id")Integer id);
+    public Product getProductByLogin(String loginName);
+
+
 }

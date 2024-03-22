@@ -28,4 +28,7 @@ public class ResponseMessage<T> {
     public static  ResponseMessage error(String message) {
         return new ResponseMessage<>(400,message,null);
     }
+    public static  <E>ResponseMessage <E>error(String message,E data) {
+        return new ResponseMessage<>(400,message,data);
+    }
 }

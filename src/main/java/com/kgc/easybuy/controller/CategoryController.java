@@ -1,7 +1,5 @@
 package com.kgc.easybuy.controller;
 
-import com.kgc.easybuy.pojo.Category;
-import com.kgc.easybuy.pojo.Page;
 import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.pojo.User;
 import com.kgc.easybuy.service.CategoryService;
@@ -38,45 +36,10 @@ public class CategoryController {
         ResponseMessage responeseMsg = categoryService.getSecondAllCategories();
         return responeseMsg;
     }
-
-    @RequestMapping("getAllCategories")
-    public ResponseMessage getAllCategories(Page page,Category category) {
-        ResponseMessage responeseMsg = categoryService.getAllCategories(page,category);
-        return responeseMsg;
-    }
     @RequestMapping("getAllCategory")
     public ResponseMessage getAllCategory() {
         ResponseMessage responeseMsg = categoryService.getAllCategory();
         return responeseMsg;
     }
 
-    @RequestMapping("checkCategoryName")
-    public ResponseMessage checkCategoryName(String name) {
-        ResponseMessage responeseMsg = categoryService.checkCategoryName(name);
-        return responeseMsg;
-    }
-
-    @RequestMapping("addCategory")
-    public ResponseMessage addCategory(@RequestBody Category category) {
-        ResponseMessage responeseMsg = categoryService.addCategory(category);
-        return responeseMsg;
-    }
-
-    @RequestMapping("deleteCategory")
-    public ResponseMessage deleteCategory(int id) {
-        ResponseMessage responeseMsg = categoryService.deleteCategory(id);
-        return responeseMsg;
-    }
-
-    @RequestMapping("getCategory")
-    public ResponseMessage getCategory(int id) {
-        ResponseMessage responeseMsg = categoryService.getCategory(id);
-        return responeseMsg;
-    }
-
-    @RequestMapping("updateCategory")
-    public ResponseMessage updateCategory(@RequestBody Category category) {
-        ResponseMessage responeseMsg = categoryService.updateCategory(category);
-        return responeseMsg;
-    }
 }

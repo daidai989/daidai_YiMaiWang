@@ -14,6 +14,12 @@ public class AddressController {
     @Autowired
     private AddressService addressService;
 
+    @RequestMapping("getDefaultAdd")
+    public ResponseMessage getDefaultAdd(Integer id) {
+        ResponseMessage defaultAdd = addressService.getDefaultAdd(id);
+        return defaultAdd;
+    }
+
     @RequestMapping("getAddressById")
     public Object getAddressById(int userId, Page page){
         ResponseMessage msg = addressService.getAddressById(userId,page);
