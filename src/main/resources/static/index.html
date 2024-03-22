@@ -199,8 +199,7 @@
             </div>
         </div>
     </div>
-    <!--End Header End-->
-    <!--Begin Menu Begin-->
+
     <div class="menu_bg">
         <div class="menu">
             <!--Begin 商品分类详情 Begin-->
@@ -246,7 +245,6 @@
             <div class="m_ad">中秋送好礼！</div>
         </div>
     </div>
-    <!--End Menu End-->
     <div class="i_bg bg_color">
         <div class="i_ban_bg">
             <!--Begin Banner Begin-->
@@ -393,7 +391,7 @@
                 </div>
                 <div class="sell_b1" @click="getProductDetail(specialSell[2].id)">
                     <div class="sb_img"><a href="#"><img height="356" :src="showImages(specialSell[2].filePath)" width="242"/></a></div>
-                    <div class="s_price">￥<span>{{hotProduct[2].price}}</span></div>
+                    <div class="s_price">￥<span>{{specialSell[2].price}}</span></div>
                     <div class="s_name">
                         <h2><a href="#">{{specialSell[2].categoryName}}</a></h2>
                         倒计时：<span>1200</span> 时 <span>30</span> 分 <span>28</span> 秒
@@ -670,28 +668,7 @@
     </div>
 
 
-    <div class="top">
-        <div class="logo"><a href="${ctx}/Home?action=index"></a></div>
-        <div class="search">
-            <form>
-                <input class="s_ipt" txype="text" value="">
-                <input class="s_btn" type="submit" value="搜索">
-            </form>
-            <span class="fl">
-            <a href="javascript:void(0)">咖啡</a>
-            <a href="javascript:void(0)">iphone 6S</a>
-            <a href="javascript:void(0)">新鲜美食</a>
-            <a href="javascript:void(0)">蛋糕</a>
-            <a href="javascript:void(0)">日用品</a>
-            <a href="javascript:void(0)">连衣裙</a>
-        </span>
-        </div>
-
-    </div>
 </div>
-</body>
-
-
 <script>
     new Vue({
         el: '#app',
@@ -728,11 +705,38 @@
             this.showNews();
         },
         methods: {
+            firstLoad() {
+                axios.get('http://localhost:8080/getFirstCategory')
+                    .then((resp) => {
+                        console.log(resp.data);
+                        this.theFirst = resp.data.data;
+                    });
+            },
+            loadSecondAndThird(id) {
+                this.secondLoad(id);
+            },
+            secondLoad(id) {
+                axios.get('http://localhost:8080/getSecondCategory', {params: {id: id}})
+                    .then((resp) => {
+                        console.log(resp.data);
+                        this.theSecond = resp.data.data;
+                        if (this.theSecond.length > 0) {
+                            this.thirdLoad(this.theSecond[0].id);
+                        }
+                    });
+            },
+            thirdLoad(id) {
+                axios.get('http://localhost:8080/getThirdCategory', {params: {id: id}})
+                    .then((resp) => {
+                        console.log(resp.data);
+                        this.theThird = resp.data.data;
+                    });
+            },
             getProductDetail(id){
                 window.location.href="Product.html?id=" + id;
             },
             showImages(filePath){
-              return 'getImage?filePath='+ filePath
+                return 'http://localhost:8080/getImage?filePath='+ filePath
             },
             getSpecialSell(currentPageNo,pageSize) {
                 axios.get('getProductList', {
@@ -763,33 +767,7 @@
                     this.allTheSecond = result.data.data
                 })
             },
-            firstLoad() {
-                axios.get('http://localhost:8080/getFirstCategory')
-                    .then((resp) => {
-                        console.log(resp.data);
-                        this.theFirst = resp.data.data;
-                    });
-            },
-            loadSecondAndThird(id) {
-                this.secondLoad(id);
-            },
-            secondLoad(id) {
-                axios.get('http://localhost:8080/getSecondCategory', {params: {id: id}})
-                    .then((resp) => {
-                        console.log(resp.data);
-                        this.theSecond = resp.data.data;
-                        if (this.theSecond.length > 0) {
-                            this.thirdLoad(this.theSecond[0].id);
-                        }
-                    });
-            },
-            thirdLoad(id) {
-                axios.get('http://localhost:8080/getThirdCategory', {params: {id: id}})
-                    .then((resp) => {
-                        console.log(resp.data);
-                        this.theThird = resp.data.data;
-                    });
-            },
+
             showNews() {
                 axios.get('http://localhost:8080/getNewsList')
                     .then((resp) => {
@@ -869,4 +847,8 @@
         }
     })
 </script>
+</body>
+
+
+
 </html>

@@ -35,15 +35,15 @@ public class ProductController {
 
     @RequestMapping("getProductByCategoryId")
     @ResponseBody
-    public Object getProductByCategoryId(){
-        Object list = productService.getProductByCategoryId();
-        return list;
+    public ResponseMessage getProductByCategoryId(){
+        ResponseMessage productByCategoryId = productService.getProductByCategoryId();
+        return productByCategoryId;
     }
 
     @RequestMapping("getHotProduct")
     @ResponseBody
-    public Object getHotProduct(){
-        List<Product> hotProduct = productService.getHotProduct();
+    public ResponseMessage getHotProduct(){
+        ResponseMessage hotProduct = productService.getHotProduct();
         return hotProduct;
     }
 
@@ -78,6 +78,7 @@ public class ProductController {
     }
 
     @RequestMapping("getProductById")
+    @ResponseBody
     public Object getProductById(int id){
         Product product = productService.getProductById(id);
         return  product;

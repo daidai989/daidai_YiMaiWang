@@ -21,8 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @CrossOrigin(origins = "*")
 
-
-
 public class UserController {
 
     @Autowired

@@ -12,9 +12,9 @@ public interface ProductService {
     public ResponseMessage getProducts();
     public Object getProductList(int currentPageNo,int pageSize);
 
-    public List<Product> getHotProduct();
+    public ResponseMessage getHotProduct();
 
-    public Object getProductByCategoryId();
+    public ResponseMessage getProductByCategoryId();
 
     public Product getProductById(int id);
     public ResponseMessage viewProductsList(String currentPageNo,String name);

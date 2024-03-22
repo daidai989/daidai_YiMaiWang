@@ -53,14 +53,14 @@ public class  ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getHotProduct() {
+    public ResponseMessage getHotProduct() {
         List<Product> productList = productMapper.getHotProduct();
         List<Product> encodingPro = EncodingUtil.encoding(productList);
-        return encodingPro;
+        return ResponseMessage.success(encodingPro);
     }
 
     @Override
-    public Object getProductByCategoryId() {
+    public ResponseMessage getProductByCategoryId() {
         List<Category> firstCategories = categoryMapper.getFirstCategories();
         List<List> productList = new ArrayList<>();
         for (Category category: firstCategories) {
@@ -70,7 +70,7 @@ public class  ProductServiceImpl implements ProductService {
             PageInfo pageInfo = new PageInfo(encodingPro);
             productList.add(pageInfo.getList());
         }
-        return productList;
+        return ResponseMessage.success(productList);
     }
 
     @Override
