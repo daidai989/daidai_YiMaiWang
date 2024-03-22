@@ -4,63 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9fc81221-48de-4197-8a68-dfa9a6fcbfce" name="Changes" comment="0.0.4（2）易买网项目">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a/storage_v2/_src_/schema/banksystem.a9sjPA.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a/storage_v2/_src_/schema/banksystem.a9sjPA.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a/storage_v2/_src_/schema/cinema.8fLqrg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a/storage_v2/_src_/schema/class35.2jHhMg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a/storage_v2/_src_/schema/easy_buy.yUAm0g.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a/storage_v2/_src_/schema/filemanage.4YWzlg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a/storage_v2/_src_/schema/kgcnews.2o2k0Q.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a/storage_v2/_src_/schema/mysql.osA4Bg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a/storage_v2/_src_/schema/newsmanagersystem.KTBe4g.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a/storage_v2/_src_/schema/performance_schema.kIw0nw.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a/storage_v2/_src_/schema/product.78yN7Q.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a/storage_v2/_src_/schema/smbms.7piHBg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a/storage_v2/_src_/schema/standardinfo.69wWmQ.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a/storage_v2/_src_/schema/sys.zb4BAA.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a/storage_v2/_src_/schema/sys.zb4BAA.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a/storage_v2/_src_/schema/temp.1EM2AA.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a/storage_v2/_src_/schema/test.kkQ2AA.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a/storage_v2/_src_/schema/yimai.RXzaBg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Member_Category.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Member_Category_Add.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Member_Category_Update.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/static/Member_Category.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/static/Member_Category_Add.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/static/Member_Category_Update.html" afterDir="false" />
+    <list default="true" id="9fc81221-48de-4197-8a68-dfa9a6fcbfce" name="Changes" comment="0.0.5（1）易买网项目">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/dfd2aed1-87c3-4ea4-9491-1975f41d370a.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/controller/BrandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/controller/BrandController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/controller/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/controller/CategoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/controller/ProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/dao/CategoryMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/dao/CategoryMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/dao/ProductMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/dao/ProductMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/dao/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/dao/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/pojo/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/pojo/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/service/CategoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/service/CategoryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/service/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/service/impl/CategoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/service/impl/CategoryServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kgc/easybuy/service/impl/ProductServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/CategoryMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/CategoryMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/ProductMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/ProductMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/CategoryList.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/CategoryList.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/controller/BrandController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/controller/BrandController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/controller/CategoryController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/controller/CategoryController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/controller/ProductController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/controller/ProductController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/dao/CategoryMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/dao/CategoryMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/dao/ProductMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/dao/ProductMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/pojo/Category.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/pojo/Category.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/service/CategoryService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/service/CategoryService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/service/ProductService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/service/ProductService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/service/impl/CategoryServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/service/impl/CategoryServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/service/impl/ProductServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kgc/easybuy/service/impl/ProductServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/mapper/CategoryMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mapper/CategoryMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/mapper/ProductMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mapper/ProductMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/CategoryList.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/CategoryList.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <list id="e9fe8b5b-53e3-44f2-bac7-53eb31414c7b" name="notcommit" comment="">
       <change afterPath="$PROJECT_DIR$/debug.log" afterDir="false" />
@@ -75,6 +23,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="spring-beans.schema" />
+        <option value="FxmlFile" />
         <option value="Interface" />
         <option value="Class" />
       </list>
@@ -144,8 +93,10 @@
   </component>
   <component name="RunManager">
     <configuration name="EasyBuyApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateResources" />
       <module name="easyBuy" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.kgc.easybuy.EasyBuyApplication" />
+      <option name="UPDATE_ACTION_UPDATE_POLICY" value="UpdateResources" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.kgc.easybuy.*" />
@@ -174,7 +125,9 @@
       <workItem from="1710905769733" duration="22170000" />
       <workItem from="1710934907206" duration="14608000" />
       <workItem from="1710980087282" duration="31426000" />
-      <workItem from="1711024325596" duration="12418000" />
+      <workItem from="1711024325596" duration="12484000" />
+      <workItem from="1711066773082" duration="4324000" />
+      <workItem from="1711072464659" duration="22978000" />
     </task>
     <task id="LOCAL-00001" summary="0.0.4易买网项目">
       <option name="closed" value="true" />
@@ -192,7 +145,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710948995989</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="0.0.5（1）易买网项目">
+      <option name="closed" value="true" />
+      <created>1711040236667</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1711040236668</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -212,7 +173,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="0.0.4易买网项目" />
     <MESSAGE value="0.0.4（2）易买网项目" />
-    <option name="LAST_COMMIT_MESSAGE" value="0.0.4（2）易买网项目" />
+    <MESSAGE value="0.0.5（1）易买网项目" />
+    <option name="LAST_COMMIT_MESSAGE" value="0.0.5（1）易买网项目" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
