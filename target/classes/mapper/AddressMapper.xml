@@ -52,4 +52,23 @@
             order by createTime desc
         </where>
     </select>
+
+    <update id="updateAddress" parameterType="Address" keyProperty="id" useGeneratedKeys="true">
+        update  easybuy_user_address
+        <set>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="recipient != null and recipient != ''">
+                recipient = #{recipient},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>
