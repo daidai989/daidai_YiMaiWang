@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kgc.easybuy.dao.CatMapper">
+    <select id="getProductsById" resultType="Product">
+        SELECT p.id,
+               p.name,
+               p.stock,
+               p.description,
+               p.price,
+               p.categoryLevelId,
+               f.filePath,
+               c.count,
+               c.id as catId
+        FROM easybuy_user u
+                 JOIN easybuy_shopping_cat c ON u.id = c.userId
+                 JOIN easybuy_product p ON c.productId = p.id
+                 JOIN easybuy_file f ON p.fileId = f.id
+        WHERE u.id = #{userId} and c.isDel=0
+
+    </select>
+    <update id="deleteProduct">
+        update easybuy_shopping_cat
+        set isDel=1
+        where id = #{id}
+    </update>
+    <update id="delProductList" parameterType="java.util.List">
+        UPDATE easybuy_shopping_cat
+        SET isDel = 1
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="updateProduct">
+        update easybuy_shopping_cat
+        set count=#{count}
+        where productId = #{productId} and userId=#{userId}
+    </update>
+    <insert id="addProduct">
+        insert into easybuy_shopping_cat(userId, productId, isDel, createTime, count) values (#{userId},#{productId},0,NOW(),#{count})
+    </insert>
+    <select id="getProductsByProId" resultType="Product">
+        select p.id, p.name, e.count, p.price, p.stock, p.categoryLevelId, p.fileId, p.isDelete, p.createTime
+        from easybuy_shopping_cat e,easybuy_product p
+        where e.productId=p.id and e.userId=#{userId} and e.productId=#{productId} and e.isDel=0
+
+    </select>
+</mapper>

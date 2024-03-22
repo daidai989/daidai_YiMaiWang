@@ -1,0 +1,460 @@
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <link href="css/style.css" rel="stylesheet" type="text/css"/>
+    <!--[if IE 6]>
+    <script src="js/iepng.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        EvPNG.fix('div, ul, img, li, input, a');
+    </script>
+    <![endif]-->
+    <script src="js/jquery-1.11.1.min_044d0927.js" type="text/javascript"></script>
+    <script src="js/jquery.bxslider_e88acd1b.js" type="text/javascript"></script>
+
+    <script src="js/jquery-1.8.2.min.js" type="text/javascript"></script>
+    <script src="js/menu.js" type="text/javascript"></script>
+
+    <script src="js/select.js" type="text/javascript"></script>
+
+    <script src="js/lrscroll.js" type="text/javascript"></script>
+
+    <script src="js/iban.js" type="text/javascript"></script>
+    <script src="js/fban.js" type="text/javascript"></script>
+    <script src="js/f_ban.js" type="text/javascript"></script>
+    <script src="js/mban.js" type="text/javascript"></script>
+    <script src="js/bban.js" type="text/javascript"></script>
+    <script src="js/hban.js" type="text/javascript"></script>
+    <script src="js/tban.js" type="text/javascript"></script>
+
+    <script src="js/lrscroll_1.js" type="text/javascript"></script>
+    <script src="js/vue.js" type="text/javascript"></script>
+    <script src="js/axios.js" type="text/javascript"></script>
+
+    <style>
+        .error {
+            margin-top: 12px;
+            color: red;
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+
+            75% {
+                transform: translateX(-5px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div id="app1">
+    <!--Begin Header Begin-->
+    <div class="soubg">
+        <div class="sou">
+        <span class="fr">
+          <span class="fl">你好，请<a href="Login.html">登录</a>&nbsp; <a href="regist.html"
+                                                                         style="color:#ff4e00;">免费注册</a>&nbsp; </span>
+          <span class="fl">|&nbsp;关注我们：</span>
+          <span class="s_sh"><a class="sh1" href="#">新浪</a><a class="sh2" href="#">微信</a></span>
+          <span class="fr">|&nbsp;<a href="#">手机版&nbsp;<img align="absmiddle" src="images/s_tel.png"/></a></span>
+        </span>
+        </div>
+    </div>
+    <!--End Header End-->
+    <!--Begin Login Begin-->
+    <!--Begin Login Begin-->
+    <div class="log_bg">
+        <div class="top">
+            <div class="logo"><a href="index.html"><img src="images/logo.png"/></a></div>
+        </div>
+        <div class="regist">
+            <div class="log_img"><img height="425" src="images/l_img.png" width="611"/></div>
+            <div class="reg_c">
+                <form id="form">
+                    <table border="0" cellpadding="0" cellspacing="0"
+                           style="width: 420px; font-size: 14px; margin-top: 20px">
+                        <tr height="50" valign="top">
+                            <td width="95">&nbsp;</td>
+                            <td>
+                                <span class="fl" style="font-size: 24px">注册</span>
+                                <span class="fr">已有商城账号，<a href="Login.html"
+                                                                 style="color: #ff4e00">我要登录</a></span>
+                            </td>
+                        </tr>
+                        <tr height="50">
+                            <td align="right">
+                                <font color="#ff4e00">*</font>&nbsp;用户名 &nbsp;
+                            </td>
+                            <td>
+                                <input @blur="checkUsername()" class="l_user" type="text" v-model="user.loginName"/>
+                                <span class="error" style="position: absolute">{{
+                                        Cue.userNameInfo
+                                    }}</span>
+                            </td>
+
+
+                        </tr>
+                        <tr height="50">
+                            <td align="right">
+                                <font color="#ff4e00">*</font>&nbsp;密码 &nbsp;
+                            </td>
+                            <td>
+                                <input @blur="checkPassword()" class="l_pwd" type="password" v-model="user.password"/>
+                                <span class="error" style="position: absolute">{{
+                                        Cue.passwordInfo
+                                    }}</span>
+                            </td>
+
+
+                        </tr>
+                        <tr height="50">
+                            <td align="right">
+                                <font color="#ff4e00">*</font>&nbsp;确认密码 &nbsp;
+                            </td>
+                            <td>
+                                <input @blur="checkRePassword()" class="l_pwd" type="password"
+                                       v-model="user.repassword"/>
+                                <span class="error" style="position: absolute">{{
+                                        Cue.repasswordInfo
+                                    }}</span>
+                            </td>
+
+
+                        </tr>
+                        <tr height="50">
+                            <td align="right">
+                                <font color="#ff4e00">*</font>&nbsp;邮箱 &nbsp;
+                            </td>
+                            <td>
+                                <input @blur="checkEmail()" class="l_email" type="text" v-model="user.email"/>
+                                <span class="error" style="position: absolute">{{
+                                        Cue.emailInfo
+                                    }}</span>
+                            </td>
+
+                        </tr>
+                        <tr height="50">
+                            <td align="right">
+                                <font color="#ff4e00">*</font>&nbsp;手机 &nbsp;
+                            </td>
+                            <td>
+                                <input @blur="checkMobile()" class="l_tel" type="text" v-model="user.mobile"/>
+                                <span class="error" style="position: absolute">{{
+                                        Cue.mobileInfo
+                                    }}</span>
+                            </td>
+
+                        </tr>
+                        <tr height="50">
+                            <td align="right">邀请人会员名 &nbsp;</td>
+                            <td><input class="l_mem" type="text" value=""/></td>
+                        </tr>
+                        <tr height="50">
+                            <td align="right">邀请人ID号 &nbsp;</td>
+                            <td><input class="l_num" type="text" value=""/></td>
+                        </tr>
+                        <tr height="50">
+                            <td align="right">
+                                <font color="#ff4e00">*</font>&nbsp;验证码 &nbsp;
+                            </td>
+                            <td>
+                                <input class="l_ipt" type="text" v-model.number="verify"/>
+                                <span style="font-size: 12px; font-family: '宋体'" >
+                                    <button class="sendMsg" v-on:click.prevent="sendVerificationCode()"  :disabled="isVerificationButtonDisabled">{{send}}</button>
+                                </span>
+
+                                <span class="error" style="
+                      position: absolute;
+                      margin-left: 17px;
+                      margin-top: 8px;
+                    ">{{ Cue.verifyInfo }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td style="font-size: 12px; padding-top: 20px">
+                  <span class="fl" style="font-family: '宋体'">
+                    <label class="r_rad"><input type="checkbox" v-model="ischeck"/></label><label class="r_txt"
+                                                                                                  style="margin-top: 4px; margin-left: 12px">我已阅读并接受《用户协议》</label>
+                  </span>
+                            </td>
+                        </tr>
+                        <tr height="60">
+                            <td>&nbsp;</td>
+                            <td>
+                                <input @click="register()" class="log_btn" type="submit" value="立即注册"/>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="btmbg">
+        <div class="btm">
+            备案/许可证编号：蜀ICP备12009302号-1-www.dingguagua.com Copyright © 2015-2018 尤洪商城网 All Rights Reserved.
+            复制必究 , Technical
+            Support: Dgg Group <br/>
+            <img height="33" src="images/b_1.gif" width="98"/><img height="33" src="images/b_2.gif" width="98"/><img
+                height="33" src="images/b_3.gif" width="98"/><img height="33" src="images/b_4.gif" width="98"/><img
+                height="33" src="images/b_5.gif" width="98"/><img height="33" src="images/b_6.gif" width="98"/>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    new Vue({
+        el: '#app1',
+        data: {
+            send:"发送",
+            isVerificationButtonDisabled: false,
+            verificationTimer: null,
+            number:null,
+            ischeck: false,
+            verify: null,
+            user: {
+                loginName: "",
+                password: "",
+                repassword: "",
+                email: "",
+                mobile: "",
+            },
+            Cue: {
+                userNameInfo: "",
+                passwordInfo: "",
+                repasswordInfo: "",
+                emailInfo: "",
+                mobileInfo: "",
+                verifyInfo: "",
+            },
+            LoginFalg: {
+                userNameFalg: false,
+                passwordFalg: false,
+                repasswordFalg: false,
+                emailFalg: false,
+                mobileFalg: false,
+                verifyFalg: false,
+                shakeFalg: false,
+            },
+        },
+        methods: {
+            checkUsername() {
+                if (this.user.loginName.trim() === "") {
+                    this.Cue.userNameInfo = "用户名不为空";
+                    this.LoginFalg.userNameFalg = false;
+                    return;
+                } else if (
+                    this.user.loginName.length < 3 ||
+                    this.user.loginName.length > 20
+                ) {
+                    this.Cue.userNameInfo = "用户名长度异常";
+                    this.LoginFalg.userNameFalg = false;
+                    return;
+                } else {
+                    axios.get('http://localhost:8080/checkUserExist',{params:{
+                            loginName:this.user.loginName
+                        }}).then( (resp) =>{
+                        console.log(resp.data)
+                        if (resp.data.code===400){
+                            this.Cue.userNameInfo = "√";
+                            this.LoginFalg.userNameFalg = true;
+                        }else {
+                            this.Cue.userNameInfo = "账号已经存在";
+                            this.LoginFalg.userNameFalg = false;
+                        }
+                    })
+                }
+            },
+            checkPassword() {
+                let rel1 = /^[a-zA-Z0-9]{6,12}$/;
+                if (this.user.password.trim() === "") {
+                    this.Cue.passwordInfo = "密码不为空";
+                    this.LoginFalg.passwordFalg = false;
+                    return;
+                } else if (!rel1.test(this.user.password)) {
+                    this.Cue.passwordInfo = "密码格式错误";
+                    this.LoginFalg.passwordFalg = false;
+                    return;
+                } else {
+                    this.Cue.passwordInfo = "√";
+                    this.LoginFalg.passwordFalg = true;
+                }
+            },
+            checkRePassword() {
+                let rel1 = /^[a-zA-Z0-9]{6,12}$/;
+                if (this.user.repassword.trim() === "") {
+                    this.Cue.repasswordInfo = "确认密码不为空";
+                    this.LoginFalg.repasswordFalg = false;
+                    return;
+                } else if (!rel1.test(this.user.repassword)) {
+                    this.Cue.repasswordInfo = "确认密码格式错误";
+                    this.LoginFalg.repasswordFalg = false;
+                    return;
+                } else if (this.user.password !== this.user.repassword) {
+                    this.Cue.repasswordInfo = "确认密码不一致";
+                    this.LoginFalg.repasswordFalg = false;
+                    return;
+                } else {
+                    this.Cue.repasswordInfo = "√";
+                    this.LoginFalg.repasswordFalg = true;
+                }
+            },
+            checkEmail() {
+                let rel2 = /\w+@+.\w+.com/;
+                if (this.user.email.trim() === "") {
+                    this.Cue.emailInfo = "邮箱不能为空";
+                    this.LoginFalg.emailFalg = false;
+                    return;
+                } else if (!rel2.test(this.user.email)) {
+                    this.Cue.emailInfo = "邮箱格式不对";
+                    this.LoginFalg.emailFalg = false;
+                    return;
+                } else {
+                    this.Cue.emailInfo = "√";
+                    this.LoginFalg.emailFalg = true;
+                }
+            },
+            checkMobile() {
+                let rel2 = /^[1][3,5,7][0-9]{9}$/;
+                if (this.user.mobile.trim() === "") {
+                    this.Cue.mobileInfo = "手机不能为空";
+                    this.LoginFalg.mobileFalg = false;
+                    return;
+                } else if (!rel2.test(this.user.mobile)) {
+                    this.Cue.mobileInfo = "手机格式不对";
+                    this.LoginFalg.mobileFalg = false;
+                    return;
+                } else {
+                    this.Cue.mobileInfo = "√";
+                    this.LoginFalg.mobileFalg = true;
+                }
+            },
+            sendVerificationCode() {
+                if (this.isVerificationButtonDisabled) {
+                    return;
+                }
+
+                    this.isVerificationButtonDisabled = true;
+                this.checkVerify();
+
+                setTimeout(() => {
+                    this.isVerificationButtonDisabled = false;
+                }, 60000);
+            },
+
+            checkVerify() {
+                if (this.user.email.trim() === "") {
+                    this.Cue.verifyInfo = "请填写邮箱";
+                    this.isVerificationButtonDisabled = false;
+
+                    return;
+                } else {
+                    axios.get('http://localhost:8080/sendEmailCode', {
+                        params: {
+                            userName: this.user.email
+                        }
+                    }).then((resp) => {
+                        if (resp.data !== null) {
+                            this.number = resp.data;
+                            this.startVerificationTimer();
+                        }
+                    })
+                }
+            },
+            startVerificationTimer() {
+                let count = 60;
+                this.verificationTimer = setInterval(() => {
+                    count--;
+                    if (count >= 0) {
+                        this.send = "发送"+count+"秒后失效";
+                    } else {
+                        clearInterval(this.verificationTimer);
+                        this.send = "发送";
+                        this.number = null;
+                        this.isVerificationButtonDisabled = false;
+                    }
+                }, 1000);
+            },
+            checkIsCheckd() {
+                if (!this.ischeck) {
+                    const checkboxLabel = document.querySelector(".r_txt");
+                    checkboxLabel.classList.add("shake");
+
+                    setTimeout(() => {
+                        checkboxLabel.classList.remove("shake");
+                    }, 500);
+                    this.LoginFalg.shakeFalg = false;
+                    return;
+                } else {
+                    this.LoginFalg.shakeFalg = true;
+                }
+            },
+            register() {
+                event.preventDefault();
+                this.checkUsername();
+                this.checkPassword();
+                this.checkRePassword();
+                this.checkEmail();
+                this.checkMobile();
+
+                if (this.verify === null) {
+                    this.Cue.verifyInfo = "验证码未输入";
+                    this.LoginFalg.verifyFalg = false;
+                    return;
+                }
+
+                // 判断验证码是否存在并且与后端发送的验证码相同，或者验证码是否失效
+                if (!this.number || this.number !== this.verify) {
+                    this.Cue.verifyInfo = "验证码错误或失效";
+                    this.LoginFalg.verifyFalg = false;
+                    return;
+                }else {
+                    this.LoginFalg.verifyFalg = true;
+                }
+
+                this.checkIsCheckd();
+
+                if (this.LoginFalg.userNameFalg === false || this.LoginFalg.passwordFalg === false || this.LoginFalg.repasswordFalg === false || this.LoginFalg.emailFalg === false || this.LoginFalg.mobileFalg === false || this.LoginFalg.shakeFalg === false || this.LoginFalg.verifyFalg === false) {
+                    return;
+                }
+
+                axios.post('http://localhost:8080/doRegister', this.user).then((resp) => {
+                    console.log(resp.data);
+                    if (resp.data.code === 200) {
+                        window.location.href = "index.html";
+                    }
+                })
+            },
+
+        },
+        beforeDestroy() {
+            // Clear the verification timer when the component is destroyed
+            clearInterval(this.verificationTimer);
+        }
+
+    })
+</script>
+
+
+</html>

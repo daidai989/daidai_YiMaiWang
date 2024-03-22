@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kgc.easybuy.dao.NewsMapper">
+    <select id="getNewsList" resultType="News">
+        select id, title, content, createTime, isDel,shortTitle from easy_buy.easybuy_news where isDel=0 limit 0,5
+    </select>
+    <select id="getNewsListByPage" resultType="News">
+        select id, title, content, createTime, isDel, shortTitle from easy_buy.easybuy_news where isDel=0
+        <if test="title!=null and title!=''">
+            and title like Concat('%',#{title},'%')
+        </if>
+        order by createTime Desc
+
+    </select>
+    <update id="delNews">
+        update easy_buy.easybuy_news set isDel=1 where id=#{id}
+
+    </update>
+
+    <select id="getNewsByTitle" resultType="News">
+        select id, title, content, createTime, isDel,shortTitle from easy_buy.easybuy_news where isDel=0  and title=#{title}
+    </select>
+    <select id="getNewsById" resultType="News">
+        select id, title, content, createTime, isDel,shortTitle from easy_buy.easybuy_news where isDel=0  and id=#{id}
+    </select>
+
+    <insert id="addNews" >
+            insert into easy_buy.easybuy_news (title, content, createTime, shortTitle) values(#{title}, #{content},now(),#{shortTitle})
+     </insert>
+
+    <update id="updateNews" >
+        update easy_buy.easybuy_news set title=#{title},content=#{content},shortTitle=#{shortTitle} where id=#{id}
+    </update>
+</mapper>
