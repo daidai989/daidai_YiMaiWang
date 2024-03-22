@@ -20,5 +20,6 @@ public class Category {
     private String iconClass;
     private int isDel;
     private Date createTime;
+    private String parentName;
     private List<Category> childCategory;
 }
