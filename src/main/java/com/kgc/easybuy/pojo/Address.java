@@ -24,4 +24,7 @@ public class Address {
     private String email;
     private String mobile;
 
+    private String phone;
+    private String recipient;
+    private int isSure;
 }

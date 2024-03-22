@@ -6,4 +6,69 @@
         from  easybuy_user_address a ,easybuy_user u where a.userId =u.id and a.isDefault=1 and a.isDel=0 and u.id=#{id}
     </select>
 
+    <select id="getAddressById" resultType="Address">
+        select id,
+            userId,
+            address,
+            createTime,
+            isDefault,
+            remark,
+            isDel,
+            phone,
+            recipient
+        from easybuy_user_address
+        <where>
+            userId = #{userId} and isDel = 0
+        order by createTime desc
+        </where>
+    </select>
+
+    <update id="setDefaultTwo">
+        update easybuy_user_address set isDefault = 1 where userId = #{userId} and id = #{id} and isDel = 0
+    </update>
+
+    <update id="setDefaultOne">
+        update easybuy_user_address set isDefault = 0 where userId = #{userId} and isDel = 0
+    </update>
+
+    <insert id="addAddress" parameterType="Address" keyProperty="id" useGeneratedKeys="true">
+        insert into easybuy_user_address(userId,address,createTime,remark,phone,recipient)
+        values (#{userId},#{address},now(),#{remark},#{phone},#{recipient})
+    </insert>
+
+    <select id="getAddressByIdAndUserId" resultType="Address">
+        select id,
+        userId,
+        address,
+        createTime,
+        isDefault,
+        remark,
+        isDel,
+        phone,
+        recipient
+        from easybuy_user_address
+        <where>
+            id = #{id} and  userId = #{userId} and isDel = 0
+            order by createTime desc
+        </where>
+    </select>
+
+    <update id="updateAddress" parameterType="Address" keyProperty="id" useGeneratedKeys="true">
+        update  easybuy_user_address
+        <set>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="recipient != null and recipient != ''">
+                recipient = #{recipient},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

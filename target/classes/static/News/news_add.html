@@ -252,6 +252,7 @@
                             <a-form-model-item >
                                 <a-button type="primary" @click="onSubmit('productsForm')">添加</a-button>
                                 <a-button style="margin-left: 10px" @click="resetForm('productsForm')">重置</a-button>
+                                <a href="javascript:history.back();"><a-button type="primary">返回</a-button></a>
                             </a-form-model-item>
                         </a-form-model>
                     </a-col>
@@ -451,6 +452,9 @@
             },
             onFieldBlur(field) {
                 this.$refs.productsForm.validateField(field);
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
             },
 
         },
