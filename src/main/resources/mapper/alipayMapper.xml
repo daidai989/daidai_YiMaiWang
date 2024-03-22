@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kgc.easybuy.dao.AlipayDao">
+    <insert id="addAlipay" >
+        INSERT INTO easybuy_alipay(out_trade_no,total_amount) VALUES(#{out_trade_no},#{total_amount})
+    </insert>
+
+    <update id="updAlipay" >
+        UPDATE easybuy_alipay SET `status`=1 WHERE out_trade_no=#{out_trade_no}
+    </update>
+</mapper>

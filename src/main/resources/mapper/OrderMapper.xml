@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kgc.easybuy.dao.OrderMapper">
+
+    <insert id="addNewOrder" keyProperty="id" useGeneratedKeys="true">
+        insert into  easy_buy.easybuy_order( userId, loginName, userAddress, createTime, cost, serialNumber) values(#{userId}, #{loginName},now(), #{userAddress}, #{cost},#{serialNumber})
+    </insert>
+
+</mapper>
