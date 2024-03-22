@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EsSelect {
     private String name;
+
     private double begin;
+
     private double end;
     private int brandId;
     private int currentPageNo;
