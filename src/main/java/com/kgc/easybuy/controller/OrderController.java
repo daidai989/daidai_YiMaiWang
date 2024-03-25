@@ -41,7 +41,6 @@ public class OrderController {
         orderService.showCrossTime();
         return newsList;
     }
-
     @RequestMapping("delOrder")
     public ResponseMessage delOrder(Integer id) {
         ResponseMessage responseMessage = orderService.delOrder(id);
@@ -73,7 +72,7 @@ public class OrderController {
         return responseMessage;
     }
     @RequestMapping("combineOrder")
-    public ResponseMessage combineOrder(List<Order> orders){
+    public ResponseMessage combineOrder(@RequestBody List<Order> orders) {
         ResponseMessage responseMessage = orderService.combineOrder(orders);
         return responseMessage;
     }

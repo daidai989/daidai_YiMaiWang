@@ -33,7 +33,6 @@ public class OrderServiceImpl implements OrderService {
 
 
 
-
     @Override
     public PageInfo<Order> getOrderListByPage(String serialNumber, Page page,Integer userId) {
 
@@ -104,8 +103,8 @@ public class OrderServiceImpl implements OrderService {
                 flag=false;
             }
              sum+= order.getCost();
-            if (order.getStatus()==0){
-                return ResponseMessage.error(order.getSerialNumber()+"这个未支付的订单不能合并哦");
+            if (order.getStatus()==1){
+                return ResponseMessage.error(order.getSerialNumber()+"这个订单已经支付啦");
             }
             if (order.getStatus()==2){
                 return ResponseMessage.error(order.getSerialNumber()+"这个订单已经取消啦");
@@ -115,8 +114,7 @@ public class OrderServiceImpl implements OrderService {
         String uuid = UUID.randomUUID().toString();
         secondOrder.setSerialNumber(uuid);
         boolean b = orderMapper.addNewOrder(secondOrder);
-        boolean b1 = orderMapper.updateOrderStatusWithPay(secondOrder.getSerialNumber());
-        if (b&&b1){
+        if (b){
             return ResponseMessage.success("合并成功");
         }else {
             return ResponseMessage.error("合并失败");
