@@ -19,4 +19,8 @@ public interface CatMapper {
     public boolean updateProduct(Cat cat);
     public boolean delProductList(@Param("ids") List ids);
 
+    public boolean updateCat(Cat cat);
+    public List<Cat> getProductListByLst(@Param("ids")List ids);
+
+
 }

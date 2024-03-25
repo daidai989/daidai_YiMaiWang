@@ -6,10 +6,7 @@ import com.kgc.easybuy.config.ProductEsRepository;
 import com.kgc.easybuy.dao.CategoryMapper;
 import com.kgc.easybuy.dao.FileMapper;
 import com.kgc.easybuy.dao.ProductMapper;
-import com.kgc.easybuy.pojo.Category;
-import com.kgc.easybuy.pojo.File;
-import com.kgc.easybuy.pojo.Product;
-import com.kgc.easybuy.pojo.ResponseMessage;
+import com.kgc.easybuy.pojo.*;
 import com.kgc.easybuy.service.ProductService;
 import com.kgc.easybuy.util.EncodingUtil;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -74,14 +71,14 @@ public class  ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProductById(int id) {
+    public ResponseMessage getProductById(int id) {
         Product product = productMapper.getProductById(id);
         try {
             product.setFilePath(URLEncoder.encode(product.getFilePath(),"utf-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return product;
+        return ResponseMessage.success(product);
     }
 
     @Override
@@ -131,6 +128,7 @@ public class  ProductServiceImpl implements ProductService {
     public ResponseMessage getProducts() {
         List<Product> products = productMapper.getProducts();
         ResponseMessage response = new ResponseMessage();
+        per.deleteAll();
         Iterable<Product> products1 = per.saveAll(products);
         if (products1 != null && products1.iterator().hasNext()) {
             response = ResponseMessage.success(products1);
@@ -185,8 +183,21 @@ public class  ProductServiceImpl implements ProductService {
     public ResponseMessage getProductByLogin(String loginName) {
         Product productByLogin = productMapper.getProductByLogin(loginName);
         if (productByLogin!=null){
-            return ResponseMessage.error("不可以使用");
+            return ResponseMessage.error("不可以使用",productByLogin);
         }
-        return ResponseMessage.success();
+        return ResponseMessage.success(productByLogin);
+    }
+
+    @Override
+    public ResponseMessage getRecommendProduct(int parentId, int id) {
+        List<Product> recommendProduct = productMapper.getRecommendProduct(parentId,id);
+        List<Product> productList = EncodingUtil.encoding(recommendProduct);
+        return ResponseMessage.success(productList);
+    }
+
+    @Override
+    public ResponseMessage getProductListByproductList(List ids) {
+        List<Product> productListByLst = productMapper.getProductListByproductList(ids);
+        return ResponseMessage.success(productListByLst);
     }
 }

@@ -241,7 +241,7 @@
                     @change="handleTableChange"
             >
                 <div slot="action" slot-scope="text, record">
-                    <span><a >修改</a></span>
+                    <span><a :href="'product_update.html?id=' + record.id">修改</a></span>
                     <span><a @click="delProduct(record.id)">删除</a></span>
                 </div>
             </a-table>
@@ -381,6 +381,7 @@
                 { title: "商品名称", dataIndex: "name", key: "name" },
                 { title: "库存", dataIndex: "stock", key: "stock" },
                 { title: "价格", dataIndex: "price", key: "price" },
+                { title: "品牌", dataIndex: "brandName", key: "brandName" },
                 { title: "类别", dataIndex: "categoryName", key: "categoryName" },
                 { title: "上架时间", dataIndex: "createTime", key: "createTime" },
                 {

@@ -13,7 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class AlipayDBPojo implements Serializable {
     private String out_trade_no;//订单号
-    private int total_amount;//总金额
+    private double total_amount;//总金额
     private int status;//状态
 
 

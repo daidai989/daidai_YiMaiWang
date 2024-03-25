@@ -17,5 +17,7 @@ public class User {
     private String mobile;
     private int roleId;
     private int isDel;
+    private String phone;
+    private String address;
 
 }

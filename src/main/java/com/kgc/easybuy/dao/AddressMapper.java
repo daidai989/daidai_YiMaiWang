@@ -1,9 +1,10 @@
 package com.kgc.easybuy.dao;
 
 import com.kgc.easybuy.pojo.Address;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-
+@Mapper
 public interface AddressMapper {
     public Address getDefaultAdd(Integer id);
     public List<Address> getAddressById(int userId);

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLDecoder;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -80,8 +81,8 @@ public class ProductController {
     @RequestMapping("getProductById")
     @ResponseBody
     public Object getProductById(int id){
-        Product product = productService.getProductById(id);
-        return  product;
+        ResponseMessage productById = productService.getProductById(id);
+        return  productById;
     }
     @RequestMapping("getproducts")
     @ResponseBody
@@ -147,6 +148,20 @@ public class ProductController {
 
     public ResponseMessage getProductByLogin(String name){
         ResponseMessage responseMessage = productService.getProductByLogin(name);
+        return responseMessage;
+    }
+    @RequestMapping("getRecommendProduct")
+    @ResponseBody
+    public Object getRecommendProduct(Product product){
+        ResponseMessage responseMessage = productService.getRecommendProduct(product.getParentId(),product.getId());
+        return  responseMessage;
+    }
+    @RequestMapping("getProductListByproductList")
+    @ResponseBody
+
+    public ResponseMessage getProductListByproductList(@RequestBody Map<String,List<Integer>> ids){
+        List<Integer> idList = ids.get("ids");
+        ResponseMessage responseMessage = productService.getProductListByproductList(idList);
         return responseMessage;
     }
 }

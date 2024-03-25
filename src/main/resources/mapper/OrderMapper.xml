@@ -3,7 +3,50 @@
 <mapper namespace="com.kgc.easybuy.dao.OrderMapper">
 
     <insert id="addNewOrder" keyProperty="id" useGeneratedKeys="true">
-        insert into  easy_buy.easybuy_order( userId, loginName, userAddress, createTime, cost, serialNumber) values(#{userId}, #{loginName},now(), #{userAddress}, #{cost},#{serialNumber})
+        insert into  easy_buy.easybuy_order( userId, loginName, userAddress, createTime, cost, serialNumber) values(#{userId}, #{loginName},#{userAddress}, now(), #{cost},#{serialNumber})
     </insert>
+    <select id="getOrderListByPage" resultType="Order">
+        select o.id, userId, o.loginName, userAddress, o.createTime, cost, serialNumber, o.isDel,status from easy_buy.easybuy_order o,easy_buy.easybuy_user u
+        where o.userId=u.id and o.isDel=0 and o.userId=#{userId}
+        <if test="serialNumber!=null and serialNumber!=''">
+            and serialNumber like Concat('%',#{serialNumber},'%')
+        </if>
+        order by createTime Desc
+
+    </select>
+    <select id="getAllOrder" resultType="Order">
+        select o.id, userId, o.loginName, userAddress, o.createTime, cost, serialNumber, o.isDel,status from easy_buy.easybuy_order o,easy_buy.easybuy_user u
+        where o.userId=u.id and o.isDel=0 and o.userId=#{userId}
+        order by createTime Desc
+
+    </select>
+
+
+    <select id="getOrderById" resultType="Order">
+        select o.id, userId, o.loginName, userAddress, o.createTime, cost, serialNumber, o.isDel,status from easy_buy.easybuy_order o,easy_buy.easybuy_user u
+        where o.userId=u.id and o.id=#{id}
+    </select>
+
+    <update id="delOrder">
+        update easy_buy.easybuy_order set isDel=1 where id=#{id}
+
+    </update>
+
+    <update id="updateOrderStatusWithCancel">
+        update easy_buy.easybuy_order set status=2 where id=#{id}
+
+    </update>
+
+    <update id="updateOrderStatusWithPay">
+        update easy_buy.easybuy_order set status=1 where serialNumber=#{serialNumber}
+
+    </update>
+
+    <select id="showCrossTime"  resultType="Order">
+        SELECT id, userId, loginName, userAddress, createTime, cost, serialNumber, isDel, status
+        FROM easy_buy.easybuy_order
+        WHERE createTime &lt;= DATE_SUB(NOW(), INTERVAL 2 MINUTE);
+    </select>
+
 
 </mapper>

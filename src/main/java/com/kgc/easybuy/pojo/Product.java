@@ -56,4 +56,6 @@ public class Product {
     @Field(type = FieldType.Integer)
     private int userId;
 
+    private boolean isCollection;
+
 }

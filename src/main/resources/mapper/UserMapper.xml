@@ -30,7 +30,7 @@
     </update>
 
     <select id="checkUserExist" parameterType="com.kgc.easybuy.pojo.User" resultType="com.kgc.easybuy.pojo.User">
-        select  id,
+        select  u.id,
                 loginName,
                 userName,
                 password,
@@ -38,10 +38,12 @@
                 identityCode,
                 email,
                 mobile,
+                phone,
                 roleId,
-                createTime,
-                isDel from easybuy_user
-        where loginName = #{loginName} and isDel = 0
+                u.createTime,
+                a.address
+        from easybuy_user u,easybuy_user_address a
+        where loginName = #{loginName} and u.isDel = 0 and a.userId=u.id and a.isDefault=1
     </select>
     <insert id="register">
         insert into easybuy_user(loginName, password, email, mobile, createTime,isDel,roleId) value (#{loginName}, #{password}, #{email}, #{mobile},

@@ -13,10 +13,13 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cat {
+   private  String name;
    private  Integer userId;
    private  Integer id;
    private  Integer productId;
    private  Date createTime;
    private  Integer count;
    private  Integer isDel;
+   private double price;
+   private String filePath;
 }

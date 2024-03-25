@@ -5,11 +5,9 @@ import com.kgc.easybuy.pojo.Product;
 import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.service.CatService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,5 +40,29 @@ public class CatController {
 
         ResponseMessage responeseMsg = catService.delProductList(idList);
         return responeseMsg;
+    }
+    @RequestMapping("updateProducts")
+    public ResponseMessage updateProducts(@RequestBody Map<String,List> ids) {
+        List<Map<String, Object>> idList = ids.get("ids");
+        List<Cat> catList = new ArrayList<>();
+
+        for (Map<String, Object> idMap : idList) {
+            Cat cat = new Cat();
+            cat.setCount((Integer) idMap.get("count"));
+            cat.setId((Integer) idMap.get("catId"));
+            cat.setPrice(((Integer) idMap.get("price")).doubleValue()); // 将Integer转换为double
+            catList.add(cat);
+        }
+
+        ResponseMessage responseMsg = catService.updateProducts(catList);
+        return responseMsg;
+    }
+    @RequestMapping("getProductListByLst")
+    @ResponseBody
+
+    public ResponseMessage getProductListByLst(@RequestBody Map<String,List> ids){
+        List idList = ids.get("ids");
+        ResponseMessage responseMessage = catService.getProductListByLst(idList);
+        return responseMessage;
     }
 }

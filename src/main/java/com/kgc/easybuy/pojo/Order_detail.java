@@ -16,7 +16,7 @@ public class Order_detail {
       private   Integer orderId;
       private   Integer id;
       private   Integer productId;
-      private   Integer quantity;
+      private   Integer count;
       private   double cost;
       private   Date createTime;
 }

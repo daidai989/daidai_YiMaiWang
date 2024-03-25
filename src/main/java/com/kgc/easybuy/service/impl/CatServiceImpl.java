@@ -45,7 +45,7 @@ public class CatServiceImpl implements CatService {
             boolean isFlag = catMapper.addProduct(cat);
 
             if (isFlag){
-                return ResponseMessage.error("添加商品成功",isFlag);
+                return ResponseMessage.success("添加商品成功",isFlag);
             }
             return ResponseMessage.error("添加商品失败",isFlag);
         }
@@ -66,5 +66,21 @@ public class CatServiceImpl implements CatService {
             return ResponseMessage.success("遍历删除商品成功",isFlag);
         }
         return ResponseMessage.error("遍历删除商品失败",isFlag);
+    }
+
+    @Override
+    public ResponseMessage updateProducts(List<Cat> ids) {
+        for (Cat cat :ids) {
+            boolean b = catMapper.updateCat(cat);
+            if (b) {
+                return ResponseMessage.success(b);
+            }
+        }
+        return ResponseMessage.error("修改失败");
+    }
+    @Override
+    public ResponseMessage getProductListByLst(List ids) {
+        List<Cat> productListByLst = catMapper.getProductListByLst(ids);
+        return ResponseMessage.success(productListByLst);
     }
 }
