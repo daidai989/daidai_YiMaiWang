@@ -3,17 +3,20 @@ package com.kgc.easybuy.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.kgc.easybuy.config.ProductEsRepository;
+import com.kgc.easybuy.dao.CatMapper;
 import com.kgc.easybuy.dao.CategoryMapper;
 import com.kgc.easybuy.dao.FileMapper;
 import com.kgc.easybuy.dao.ProductMapper;
-import com.kgc.easybuy.pojo.Category;
-import com.kgc.easybuy.pojo.File;
-import com.kgc.easybuy.pojo.Product;
-import com.kgc.easybuy.pojo.ResponseMessage;
+import com.kgc.easybuy.pojo.*;
+import com.kgc.easybuy.service.CatService;
+import com.kgc.easybuy.service.CategoryService;
+import com.kgc.easybuy.service.CollectService;
 import com.kgc.easybuy.service.ProductService;
 import com.kgc.easybuy.util.EncodingUtil;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -43,6 +46,10 @@ public class  ProductServiceImpl implements ProductService {
     private ProductEsRepository per;
     @Autowired
     ElasticsearchRestTemplate es;
+    @Autowired
+    private CollectService collectService;
+    @Autowired
+    private CatService catService;
     @Override
     public ResponseMessage getProductList(int currentPageNo,int pageSize) {
         PageHelper.startPage(currentPageNo,pageSize);
@@ -109,7 +116,6 @@ public class  ProductServiceImpl implements ProductService {
     }
 
 
-
     public Map sameMethods(QueryBuilder queryBuilder,int current, int pageSize) {
         List<Product> productList = new ArrayList<>();
         Map map=new HashMap<>();
@@ -127,6 +133,7 @@ public class  ProductServiceImpl implements ProductService {
         map.put("total",totalHits);
         return map;
     }
+
     @Override
     public ResponseMessage getProducts() {
         List<Product> products = productMapper.getProducts();
@@ -188,5 +195,105 @@ public class  ProductServiceImpl implements ProductService {
             return ResponseMessage.error("不可以使用");
         }
         return ResponseMessage.success();
+    }
+
+    @Override
+    public ResponseMessage setProductTes() {
+        List<Product> productList = productMapper.setProductTes();
+        per.saveAll(productList);
+        return ResponseMessage.success("成功",productList);
+    }
+
+    @Override
+    public ResponseMessage getProFromEs(EsSelect esSelect) {
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        Page page = new Page();
+        page.setCurrentPageNo(esSelect.getCurrentPageNo());
+        page.setPageSize(esSelect.getPageSize());
+        //匹配查询
+        if(esSelect.getName() != null && !"".equals(esSelect.getName())){
+            boolQueryBuilder.must(QueryBuilders.matchQuery("name",esSelect.getName()));
+        }
+        if (esSelect.getEnd() > 1){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("price").from(esSelect.getBegin()).to(esSelect.getEnd()));
+        }
+        if (esSelect.getEnd() == -1){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("price").gte(esSelect.getBegin()));
+        }
+        if (esSelect.getBrandId() > 0){
+            boolQueryBuilder.must(QueryBuilders.matchQuery("brandId",esSelect.getBrandId()));
+        }
+        NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
+        nativeSearchQueryBuilder.withQuery(boolQueryBuilder);
+        if (esSelect.isSortPrice()){
+            nativeSearchQueryBuilder.withSort(SortBuilders.fieldSort("price").order(SortOrder.ASC));
+        }else {
+            nativeSearchQueryBuilder.withSort(SortBuilders.fieldSort("price").order(SortOrder.DESC));
+        }
+        nativeSearchQueryBuilder.withPageable(PageRequest.of(page.getCurrentPageNo() -1, page.getPageSize()));
+
+        HighlightBuilder highlightBuilder = new HighlightBuilder();
+        highlightBuilder.field("name");
+        highlightBuilder.preTags("<font style='color:red'>");
+        highlightBuilder.postTags("</font>");
+
+        nativeSearchQueryBuilder.withHighlightBuilder(highlightBuilder);
+        SearchHits<Product> search = es.search(nativeSearchQueryBuilder.build(), Product.class);
+        List<Product> productList = new ArrayList<>();
+        long totalHits = search.getTotalHits();
+        int totalPage = (int) totalHits;
+        page.setTotalPage(totalPage);
+        for(SearchHit<Product> hits: search) {
+            Product prod = hits.getContent();
+            Map<String, List<String>> highlightFields = hits.getHighlightFields();
+            List<String> hightList = highlightFields.get("name");
+            if (hightList != null && !hightList.isEmpty()){
+                prod.setName(hightList.get(0));
+            }
+            if (esSelect.getUserId() != 0){
+                //设置查找是否被收藏
+                Collect collect = new Collect();
+                collect.setProductId(prod.getId());
+                collect.setUserId(esSelect.getUserId());
+                ResponseMessage msg = collectService.getCollectionByproductIdAndUserId(collect);
+                if (msg.getCode() == 200){
+                    prod.setCollection(true);
+                }
+            }
+            productList.add(prod);
+        }
+        page.setData(productList);
+        return ResponseMessage.success(page);
+    }
+
+    @Override
+    public ResponseMessage getCollectProduct(Collect collect,Page page) {
+        PageHelper.startPage(page.getCurrentPageNo(),page.getPageSize());
+        List<Product> collectProduct = productMapper.getCollectProduct(collect);
+        PageInfo pageInfo = new PageInfo(collectProduct);
+        List<Product> encoding = EncodingUtil.encoding(collectProduct);
+        for (Product p : encoding) {
+            collect.setProductId(p.getId());
+            ResponseMessage responseMessage = catService.checkProductExits(collect);
+            if (responseMessage.getCode() == 200) {
+                p.setShoppingCat(true);
+            }
+        }
+        pageInfo.setList(encoding);
+        return ResponseMessage.success(pageInfo);
+    }
+
+    @Override
+    public ResponseMessage getRecommendProduct(int parentId, int id) {
+        List<Product> recommendProduct = productMapper.getRecommendProduct(parentId,id);
+        List<Product> productList = EncodingUtil.encoding(recommendProduct);
+        return ResponseMessage.success(productList);
+    }
+
+    @Override
+    public ResponseMessage getHistoryProduct(int userId) {
+        List<Product> products= productMapper.getHistoryProduct(userId);
+        List<Product> productList = EncodingUtil.encoding(products);
+        return ResponseMessage.success(productList);
     }
 }

@@ -2,10 +2,11 @@ package com.kgc.easybuy.service.impl;
 
 import com.kgc.easybuy.dao.CatMapper;
 import com.kgc.easybuy.pojo.Cat;
+import com.kgc.easybuy.pojo.Collect;
 import com.kgc.easybuy.pojo.Product;
 import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.service.CatService;
-import com.kgc.easybuy.util.JwtUtil;
+//import com.kgc.easybuy.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +24,7 @@ public class CatServiceImpl implements CatService {
     private CatMapper catMapper;
     @Override
     public ResponseMessage getProductsById(String token) {
-        Map<String, Object> map = JwtUtil.parseToken(token);
-        Integer userId = (Integer) map.get("id");
-
-        List<Product> productsById = catMapper.getProductsById(userId);
-        return ResponseMessage.success(productsById);
+        return  null;
     }
 
     @Override
@@ -35,6 +32,7 @@ public class CatServiceImpl implements CatService {
         Product productsByProId = catMapper.getProductsByProId(cat);
         if (productsByProId!=null){
             cat.setCount(productsByProId.getCount()+cat.getCount());
+            cat.setPrice(cat.getCount() * productsByProId.getPrice());
             boolean isFlag  = catMapper.updateProduct(cat);
             if (isFlag) {
                 return ResponseMessage.success("商品数量更新成功", isFlag);
@@ -43,9 +41,8 @@ public class CatServiceImpl implements CatService {
             }
         }else {
             boolean isFlag = catMapper.addProduct(cat);
-
             if (isFlag){
-                return ResponseMessage.error("添加商品成功",isFlag);
+                return ResponseMessage.success("添加商品成功",isFlag);
             }
             return ResponseMessage.error("添加商品失败",isFlag);
         }
@@ -60,11 +57,21 @@ public class CatServiceImpl implements CatService {
         }
         return ResponseMessage.error("删除商品失败",isFlag);
     }
+
     public ResponseMessage delProductList(List ids){
         boolean isFlag = catMapper.delProductList(ids);
         if (isFlag){
             return ResponseMessage.success("遍历删除商品成功",isFlag);
         }
         return ResponseMessage.error("遍历删除商品失败",isFlag);
+    }
+
+    @Override
+    public ResponseMessage checkProductExits(Collect collect) {
+        int count = catMapper.checkProductExits(collect);
+        if (count > 0){
+            return ResponseMessage.success();
+        }
+        return ResponseMessage.error("购物车不存在该商品");
     }
 }

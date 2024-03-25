@@ -1,6 +1,7 @@
 package com.kgc.easybuy.controller;
 
 import com.kgc.easybuy.pojo.Cat;
+import com.kgc.easybuy.pojo.Collect;
 import com.kgc.easybuy.pojo.Product;
 import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.service.CatService;
@@ -41,6 +42,11 @@ public class CatController {
         List idList = ids.get("ids");
 
         ResponseMessage responeseMsg = catService.delProductList(idList);
+        return responeseMsg;
+    }
+    @RequestMapping("checkProductExits")
+    public ResponseMessage checkProductExits(Collect collect) {
+        ResponseMessage responeseMsg = catService.checkProductExits(collect);
         return responeseMsg;
     }
 }

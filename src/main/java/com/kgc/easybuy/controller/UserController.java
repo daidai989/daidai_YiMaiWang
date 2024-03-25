@@ -1,6 +1,7 @@
 package com.kgc.easybuy.controller;
 
 import com.kgc.easybuy.config.SendEmail;
+import com.kgc.easybuy.pojo.Page;
 import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.pojo.User;
 import com.kgc.easybuy.service.UserService;
@@ -18,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-
 @CrossOrigin(origins = "*")
 public class UserController {
 
@@ -32,7 +32,7 @@ public class UserController {
 
     @RequestMapping("userLogin")
     @ResponseBody
-    public Object login(HttpServletResponse res, User user){
+    public ResponseMessage login(HttpServletResponse res, User user){
         ResponseMessage message = userService.login(user);
 //        Cookie cookie = new Cookie("token", (String) message.getData());
 //        cookie.setMaxAge(3600); // 设置cookie的有效期为1小时
@@ -42,14 +42,14 @@ public class UserController {
 
     @RequestMapping("updatePwd")
     @ResponseBody
-    public Object updatePwd(User user){
+    public ResponseMessage updatePwd(User user){
         ResponseMessage message = userService.updatePwd(user);
         return message;
     }
 
     @RequestMapping("checkUserExist")
     @ResponseBody
-    public Object checkUserExist(User user){
+    public ResponseMessage checkUserExist(User user){
         ResponseMessage message = userService.checkUserExist(user);
         return message;
     }
@@ -59,7 +59,6 @@ public class UserController {
         ResponseMessage user = userService.getUser(token);
         return user;
     }
-
 
     @RequestMapping("sendEmailCode")
     @ResponseBody
@@ -80,5 +79,29 @@ public class UserController {
         return responeseMsg;
     }
 
+    @RequestMapping("getUserList")
+    @ResponseBody
+    public ResponseMessage getUserList(User user,Page page){
+        ResponseMessage userList = userService.getUserList(user,page);
+        return userList;
+    }
+    @RequestMapping("updateUser")
+    @ResponseBody
+    public ResponseMessage updateUser(@RequestBody User user){
+        ResponseMessage updateUser = userService.updateUser(user);
+        return updateUser;
+    }
 
+    @RequestMapping("deleteUser")
+    @ResponseBody
+    public ResponseMessage deleteUser(int id){
+        ResponseMessage updateUser = userService.deleteUser(id);
+        return updateUser;
+    }
+    @RequestMapping("getUserById")
+    @ResponseBody
+    public ResponseMessage getUserById(int id) {
+        ResponseMessage userById = userService.getUserById(id);
+        return userById;
+    }
 }

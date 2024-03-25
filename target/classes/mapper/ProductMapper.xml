@@ -97,15 +97,12 @@
         FROM easybuy_product p,easybuy_file f,easybuy_product_category c,easybuy_brand b
         WHERE p.id = f.productId and p.categoryLevelId = c.id and b.id=p.brandId
           and p.isDelete = 0
-
     </select>
     <update id="delProById">
         update easybuy_product
         set isDelete=1
         where id = #{id}
     </update>
-
-
 
     <insert id="addProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO easybuy_product (description, name, price, brandId, stock, categoryLevelId, createTime)
@@ -124,9 +121,50 @@
 
     <select id="getProductByLogin"  resultType="Product">
         SELECT id, name, description, price, brandId, stock, categoryLevelId, fileId, isDelete, createTime from easybuy_product where isDelete=0 and name=#{loginName}
-
     </select>
 
+    <select id="getCollectProduct" parameterType="Collect" resultType="Product">
+        select p.id, name, description, price, brandId,filepath, stock, categoryLevelId, fileId, p.createTime
+        from easybuy_product p,easybuy_collections c,easybuy_file f
+        where p.id = c.productId and f.productId = p.id and c.userId = #{userId}
+        and p.isDelete = 0 and c.isDel = 0 and f.isDelete = 0
+    </select>
 
+    <select id="getRecommendProduct" parameterType="Product" resultType="Product">
+        SELECT  p.id,
+                p.name,
+                description,
+                price,
+                stock,
+                categoryLevelId,
+                fileId,
+                p.isDelete,
+                p.createTime,
+                filePath,
+                c.name cname,
+                parentId,
+                type FROM easybuy_product p,easybuy_product_category c,easybuy_file
+        WHERE p.categoryLevelId = c.id and productId = p.id
+          AND c.parentId = #{parentId} AND p.id != #{id} AND p.isDelete = 0
+            limit 0,3
+    </select>
 
+    <select id="getHistoryProduct" parameterType="History" resultType="Product">
+        select p.id,
+               p.name,
+               description,
+               price,
+               stock,
+               categoryLevelId,
+               fileId,
+               p.isDelete,
+               p.createTime,
+               filePath,
+               c.parentId,
+               type FROM easybuy_product p,easybuy_history h,easybuy_file f,easybuy_product_category c
+                WHERE p.id = h.productid and f.productId = p.id and p.categoryLevelId = c.id
+                and h.userId = #{userId}
+                order by h.createTime desc
+                limit 0,5
+    </select>
 </mapper>

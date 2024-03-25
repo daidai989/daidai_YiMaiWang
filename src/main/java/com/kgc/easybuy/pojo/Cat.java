@@ -19,4 +19,5 @@ public class Cat {
    private  Date createTime;
    private  Integer count;
    private  Integer isDel;
+   private  double price;
 }

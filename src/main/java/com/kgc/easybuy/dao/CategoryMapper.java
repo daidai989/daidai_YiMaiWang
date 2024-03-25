@@ -13,4 +13,10 @@ public interface CategoryMapper {
     public List<Category> getFirstCategories();
     public List<Category> getSecondCategories(Integer id);
     public List<Category> getThirdCategories(Integer id);
+    public List<Category> getAllCategories(Category category);
+    public String checkCategoryName(String name);
+    public int addCategory(Category category);
+    public int deleteCategory(int id);
+    public Category getCategory(int id);
+    public int updateCategory(Category category);
 }

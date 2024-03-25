@@ -9,19 +9,24 @@
            EvPNG.fix('div, ul, img, li, input, a'); 
         </script>
     <![endif]-->
-    
-    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="js/menu.js"></script>    
-            
-	<script type="text/javascript" src="js/lrscroll_1.js"></script>
-    
-    
-	<script type="text/javascript" src="js/n_nav.js"></script>
     <script type="text/javascript" src="js/vue.js"></script>
     <script type="text/javascript" src="js/axios.js"></script>
     <link type="text/css" rel="stylesheet" href="css/element.css"/>
     <script type="text/javascript" src="js/element.js"></script>
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>    
+	<script type="text/javascript" src="js/lrscroll_1.js"></script>
+	<script type="text/javascript" src="js/n_nav.js"></script>
     <title>商品搜索</title>
+    <style>
+        a.ss.yes{
+            color: #888888; 
+            background-color: transparent;
+            background-image: url('images/heart_h.png') !important;
+            background-repeat: no-repeat;
+            background-position: 10px center;
+        }
+    </style>
 </head>
 <body>
 <div id="root3">
@@ -154,10 +159,8 @@
     <div class="top">
         <div class="logo"><a href="Index.html"><img src="images/logo.png" /></a></div>
         <div class="search">
-            <form>
                 <input class="s_ipt" type="text" v-model="searchValue"/>
                 <input class="s_btn" type="submit" @click="jumpSearch" value="搜索"/>
-            </form>
             <span class="fl"><a href="#">咖啡</a><a href="#">iphone 6S</a><a href="#">新鲜美食</a><a href="#">蛋糕</a><a href="#">日用品</a><a href="#">连衣裙</a></span>
         </div>
         <div class="i_car">
@@ -507,34 +510,6 @@
                             <font>￥<span>368.00</span></font> &nbsp; 18R
                         </div>
                     </li>
-                    <li>
-                        <div class="img"><a href="#"><img src="images/his_2.jpg" width="185" height="162" /></a></div>
-                        <div class="name"><a href="#">Dior/迪奥香水2件套装</a></div>
-                        <div class="price">
-                            <font>￥<span>768.00</span></font> &nbsp; 18R
-                        </div>
-                    </li>
-                    <li>
-                        <div class="img"><a href="#"><img src="images/his_3.jpg" width="185" height="162" /></a></div>
-                        <div class="name"><a href="#">Dior/迪奥香水2件套装</a></div>
-                        <div class="price">
-                            <font>￥<span>680.00</span></font> &nbsp; 18R
-                        </div>
-                    </li>
-                    <li>
-                        <div class="img"><a href="#"><img src="images/his_4.jpg" width="185" height="162" /></a></div>
-                        <div class="name"><a href="#">Dior/迪奥香水2件套装</a></div>
-                        <div class="price">
-                            <font>￥<span>368.00</span></font> &nbsp; 18R
-                        </div>
-                    </li>
-                    <li>
-                        <div class="img"><a href="#"><img src="images/his_5.jpg" width="185" height="162" /></a></div>
-                        <div class="name"><a href="#">Dior/迪奥香水2件套装</a></div>
-                        <div class="price">
-                            <font>￥<span>368.00</span></font> &nbsp; 18R
-                        </div>
-                    </li>
                 </ul>
             </div>
             <div class="l_list">
@@ -557,7 +532,7 @@
                 </div>
                 <div class="list_c">
                     <ul class="cate_list">
-                        <li v-for="product in productList" :key="product.id">
+                        <li  v-for="(product,index) in productList" :key="product.id">
                             <div @click="productDetail(product.id)">
                                 <div class="img"><a href="#"><img src="images/per_1.jpg" width="210" height="185" /></a></div>
                                 <div class="price">
@@ -566,21 +541,21 @@
                                 <div class="name"><a href="#" v-html="product.name"></a></div>
                             </div>
                             <div class="carbg">
-                                <a href="#" class="ss">收藏</a>
-                                <a href="#" class="j_car">加入购物车</a>
+                                <a class="ss" :class="product.collection ? {'yes':true} : ''" @click="switchClass(index)">收藏</a>
+                                <a class="j_car">加入购物车</a>
                             </div>
                         </li>
                     </ul>
             </div>
-        </div>
-            <div class="pages">
-                <el-pagination
+            <el-pagination 
+                        style="float: right;"
                         layout="prev, pager, next"
                         :current-page="page.currentPageNo"
                         :page-size="page.pageSize"
                         :total="page.totalPage"
                         @current-change="handleCurrentChange"/>
-            </div>
+        </div>
+                
         <!--Begin Footer Begin -->
         <div class="b_btm_bg bg_color">
             <div class="b_btm">
@@ -678,68 +653,135 @@
         return {
             brandList:[],
             productList:[],
-            select:{
+            esSelect:{
                 name:'',
                 begin:0.0,
                 end:0.0,
                 currentPageNo:1,
-                brandId:0
+                pageSize:20,
+                brandId:0,
+                sortPrice:false,
+                userId:0
             },
             searchValue:'',
             page:[],
-            sortPrice:false
+            currentUser:{},
+            historyProduct:[]
         }
     },
-    mounted() {
+    async mounted() {
         axios.get("getBrand").then((result) => {
             console.log(result.data);
           this.brandList = result.data.data
         });
+        var token = localStorage.getItem("token");
+        if(token != null && token != ''){
+            await this.getToken(token);
+        }
         const search = new URLSearchParams(window.location.search);
         const name = search.get("name");
-        this.select.name = name
+        this.esSelect.name = name
         this.getBrandProduct(1);
+        this.getHistoryProduct();
     },
     methods: {
+      async  getToken(token){
+              await axios.get('http://localhost:8080/getUser',{
+                    params:{
+                        token:token
+                    }
+                }).then((result) => {
+                    console.log(result.data);
+                    this.currentUser = result.data.data
+                    this.esSelect.userId = result.data.data.id
+                });
+            },
         handleCurrentChange(val){
             this.getBrandProduct(val);
         },
         jumpSearch() {
-            this.select.name = this.searchValue
+            this.esSelect.name = this.searchValue
             this.getBrandProduct(1)
         },
         getBrandProduct(val){
-            axios.get("getProFromEs",{
-                params:{
-                    name:this.select.name,
-                    begin:this.select.begin,
-                    end:this.select.end,
-                    currentPageNo:val,
-                    pageSize:20,
-                    brandId:this.select.brandId,
-                    sortPrice:this.sortPrice
-                }
-            }).then((result) => {
+            this.esSelect.currentPageNo = val
+            axios.post("getProFromEs",this.esSelect).then((result) => {
               console.log(result.data)
                 this.page = result.data.data;
               this.productList = result.data.data.data
             });
         },
         getPriceRange(begin,end){
-            this.select.begin = begin;
-            this.select.end = end;
+            this.esSelect.begin = begin;
+            this.esSelect.end = end;
             this.getBrandProduct(1);
         },
         getBrand(brandId){
-            this.select.brandId = brandId
+            this.esSelect.brandId = brandId
             this.getBrandProduct(1);
         },
         productDetail(id){
-            window.location.href='Product.html?id='+ id
+            if(this.currentUser != null && this.currentUser != ''){
+                this.addHistoryProduct(id);
+            }
+            // window.location.href='Product.html?id='+ id
         },
         priceSort(){
-            this.sortPrice = !this.sortPrice
+            this.esSelect.sortPrice = !this.esSelect.sortPrice
             this.getBrandProduct(this.page.currentPageNo)
+        },
+        switchClass(index){
+            if(this.esSelect.userId != 0){
+                const productId = this.productList[index].id;
+                this.productList[index].collection = !this.productList[index].collection;
+                if(this.productList[index].collection){
+                    this.collectProduct(productId);
+                }else{
+                    this.deleteCollection(productId);
+                }
+            }
+        },
+        collectProduct(productId){
+            axios.get('collectProduct',{
+                params:{
+                    userId:this.currentUser.id,
+                    productId:productId
+                }
+            }).then((result) => {
+                console.log(result.data)
+            });
+        },
+        deleteCollection(productId){
+            axios.get('deleteCollection',{
+                params:{
+                    userId:this.currentUser.id,
+                    productId:productId
+                }
+            }).then((result) => {
+                console.log(result.data)
+            });
+        },
+        getHistoryProduct(){
+            axios.get('getHistoryProduct',{
+                params:{
+                    userId:this.currentUser.id
+                }
+            }).then((result) => {
+                console.log(result.data);
+                if(result.data.code  = 200){
+                    this.historyProduct = result.data.data
+                }
+            });
+        },
+        addHistoryProduct(val){
+            axios.get('addProductHistory',{
+                params:{
+                    userId:this.currentUser.id,
+                    productId:val
+                }
+            }).then((result) => {
+                console.log(result.data)
+            });
         }
     },
   })

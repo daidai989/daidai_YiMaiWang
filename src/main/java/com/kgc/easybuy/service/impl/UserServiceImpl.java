@@ -1,6 +1,9 @@
 package com.kgc.easybuy.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.kgc.easybuy.dao.UserMapper;
+import com.kgc.easybuy.pojo.Page;
 import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.pojo.User;
 import com.kgc.easybuy.service.UserService;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -37,7 +41,6 @@ public class UserServiceImpl implements UserService {
                 return ResponseMessage.error("token为空");
             }
             redisUtil.setStrToRedis(token,token);
-
             return  ResponseMessage.success("登录成功",token);
         }
         return  ResponseMessage.error("登录失败");
@@ -60,6 +63,7 @@ public class UserServiceImpl implements UserService {
         }
         return ResponseMessage.error("用户不存在");
     }
+
     @Override
     public ResponseMessage register(User user) {
         user.setPassword(Md5Util.getMD5String(user.getPassword()));
@@ -92,4 +96,41 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public ResponseMessage getUserList(User user, Page page) {
+        PageHelper.startPage(page.getCurrentPageNo(), page.getPageSize());
+        List<User> userList = userMapper.getUserList(user);
+        PageInfo pageInfo = new PageInfo(userList);
+        if (userList != null){
+            return ResponseMessage.success(pageInfo);
+        }
+        return ResponseMessage.error("数据为空");
+    }
+
+    @Override
+    public ResponseMessage updateUser(User user) {
+        int count = userMapper.updateUser(user);
+        if (count > 0){
+            return ResponseMessage.success();
+        }
+        return ResponseMessage.error("修改失败！");
+    }
+
+    @Override
+    public ResponseMessage deleteUser(int id) {
+        int count = userMapper.deleteUser(id);
+        if (count > 0){
+            return ResponseMessage.success();
+        }
+        return ResponseMessage.error("修改失败！");
+    }
+
+    @Override
+    public ResponseMessage getUserById(int id) {
+        User user = userMapper.getUserById(id);
+        if (user != null){
+            return ResponseMessage.success(user);
+        }
+        return ResponseMessage.error("没用该用户！");
+    }
 }

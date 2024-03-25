@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(indexName = "prou")
+@Document(indexName = "easybuy_product")
 public class Product {
     @Id
     private int id;
@@ -55,5 +55,6 @@ public class Product {
     private int catId;
     @Field(type = FieldType.Integer)
     private int userId;
-
+    private boolean isCollection;
+    private boolean isShoppingCat;
 }

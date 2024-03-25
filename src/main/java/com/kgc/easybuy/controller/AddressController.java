@@ -21,26 +21,36 @@ public class AddressController {
     }
 
     @RequestMapping("getAddressById")
-    public Object getAddressById(int userId, Page page){
+    public ResponseMessage getAddressById(int userId, Page page){
         ResponseMessage msg = addressService.getAddressById(userId,page);
         return msg;
     }
 
     @RequestMapping("setDefault")
-    public Object setDefaultAddress(Address address){
+    public ResponseMessage setDefaultAddress(Address address){
         ResponseMessage msg = addressService.setDefaultAddress(address);
         return msg;
     }
 
     @RequestMapping("addAddress")
-    public Object addAddress(Address address){
+    public ResponseMessage addAddress(Address address){
         ResponseMessage msg = addressService.addAddress(address);
         return msg;
     }
 
     @RequestMapping("getAddressByIdAndUserId")
-    public Object getAddressByIdAndUserId(Address address){
+    public ResponseMessage getAddressByIdAndUserId(Address address){
         ResponseMessage msg = addressService.getAddressByIdAndUserId(address);
         return msg;
+    }
+    @RequestMapping("updateAddress")
+    public ResponseMessage updateAddress(Address address) {
+        ResponseMessage responseMessage = addressService.updateAddress(address);
+        return responseMessage;
+    }
+    @RequestMapping("deleteAddress")
+    public ResponseMessage deleteAddress(Address address) {
+        ResponseMessage responseMessage = addressService.deleteAddress(address);
+        return  responseMessage;
     }
 }

@@ -43,8 +43,141 @@
                 isDel from easybuy_user
         where loginName = #{loginName} and isDel = 0
     </select>
+
     <insert id="register">
-        insert into easybuy_user(loginName, password, email, mobile, createTime,isDel,roleId) value (#{loginName}, #{password}, #{email}, #{mobile},
-                                                                                                     now(), 0,3);
+        insert into easybuy_user(loginName, password, email, mobile, createTime,isDel,roleId) value (#{loginName}, #{password}, #{email}, #{mobile},now(), 0,3);
     </insert>
+
+    <insert id="addUser">
+        insert into easybuy_user(loginName, password, email, mobile, createTime,isDel,roleId) value (#{loginName}, #{password}, #{email}, #{mobile},
+            now(), 0,#{userId});
+        insert into easybuy_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="loginName != null">
+                loginName,
+            </if>
+            <if test="password != password">
+                password,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="roleId > 0">
+                roleId,
+            </if>
+            createTime,isDel
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="loginName != null">
+                #{loginName},
+            </if>
+            <if test="password != password">
+                #{password},
+            </if>
+            <if test="email != null">
+                #{email},
+            </if>
+            <if test="mobile != null">
+                #{mobile},
+            </if>
+            <if test="roleId > 0">
+                #{roleId},
+            </if>
+            now(),0
+        </trim>
+    </insert>
+
+    <select id="getUserList" parameterType="User" resultType="User">
+        select id,
+               loginName,
+               userName,
+               password,
+               sex,
+               identityCode,
+               email,
+               mobile,
+               roleId,
+               createTime,
+               isDel from easybuy_user
+            <where>
+                roleId > #{roleId} and isDel = 0
+                <if test="loginName != null and loginName != ''">
+                   and loginName like concat("%",#{loginName},"%")
+                </if>
+                <if test="sex > 0">
+                   and sex = #{sex}
+                </if>
+
+            </where>
+    </select>
+
+    <update id="updateUser" parameterType="User">
+        update easybuy_user
+        <set>
+            <if test="loginName != null and loginName != ''">
+                loginName = #{loginName},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="sex > 0">
+                sex = #{sex},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="mobile != null and mobile != ''">
+                mobile = #{mobile},
+            </if>
+            <if test="roleId > 0">
+                roleId = #{roleId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="deleteUser">
+        update easybuy_user set isDel = 1 where id = #{id}
+    </update>
+
+    <select id="getUserById" resultType="User">
+        select  id,
+                loginName,
+                userName,
+                password,
+                sex,
+                identityCode,
+                email,
+                mobile,
+                roleId,
+                createTime,
+                isDel from easybuy_user
+        where id = #{id} and isDel = 0
+    </select>
+
+    <select id="setProductTes" resultType="Product">
+        select  p.id,
+        p.name,
+        description,
+        price,
+        stock,
+        categoryLevelId,
+        fileId,
+        p.isDelete,
+        p.createTime,
+        filePath,
+        c.name cname,
+        brandId,
+        b.name brandName,
+        parentId,
+        type
+        from easybuy_product p,easybuy_file f,easybuy_product_category c,easybuy_brand b
+        <where>
+            p.id = f.productId and p.categoryLevelId = c.id
+            and b.id = brandId and f.isDelete = 0 and c.isDel = 0 and p.isDelete = 0
+        </where>
+    </select>
 </mapper>

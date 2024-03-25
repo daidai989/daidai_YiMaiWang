@@ -731,7 +731,6 @@
             theSecond: [],
             theThird: [],
         },
-
          async mounted(){
                 this.firstLoad();
                 this.initLogin()
@@ -742,7 +741,6 @@
                 this.getRecommendProduct();
 
         },
-
          methods:{
              async getProductInfo(){
                 await axios.get('getProductById',{
@@ -759,6 +757,7 @@
                     this.product.filePath = result.data.data.filePath;
                     this.product.categoryName = result.data.data.categoryName;
                     this.product.parentId = result.data.data.parentId;
+                    // this.allPrice = this.product.price * this.productNum
                 });
             },
             showImages(filePath){
@@ -778,6 +777,7 @@
                     return;
                 }
                 this.productNum = this.productNum + 1
+                // this.allPrice = this.product.price * this.productNum
             },
             reduce(){
                 this.checkNum(this.productNum)
@@ -786,6 +786,7 @@
                     return;
                 }
                 this.productNum = this.productNum - 1
+                // this.allPrice = this.product.price * this.productNum
             },
              getRecommendProduct(){
                 axios.get('getRecommendProduct',{

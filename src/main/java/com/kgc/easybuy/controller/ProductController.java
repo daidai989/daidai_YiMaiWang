@@ -1,8 +1,6 @@
 package com.kgc.easybuy.controller;
 
-import com.kgc.easybuy.pojo.Category;
-import com.kgc.easybuy.pojo.Product;
-import com.kgc.easybuy.pojo.ResponseMessage;
+import com.kgc.easybuy.pojo.*;
 import com.kgc.easybuy.service.ProductService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +13,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.io.File;
 import java.net.URLDecoder;
 import java.util.List;
 import java.util.UUID;
@@ -148,5 +147,38 @@ public class ProductController {
     public ResponseMessage getProductByLogin(String name){
         ResponseMessage responseMessage = productService.getProductByLogin(name);
         return responseMessage;
+    }
+    @RequestMapping("setProductTes")
+    @ResponseBody
+    public ResponseMessage setProductTes(){
+        ResponseMessage responseMessage = productService.setProductTes();
+        return  responseMessage;
+    }
+    @RequestMapping("getProFromEs")
+    @ResponseBody
+    public ResponseMessage getProFromEs(@RequestBody EsSelect esSelect){
+        ResponseMessage responseMessage = productService.getProFromEs(esSelect);
+        return  responseMessage;
+    }
+
+    @RequestMapping("getCollectProduct")
+    @ResponseBody
+    public ResponseMessage getCollectProduct(Collect collect,Page page){
+        ResponseMessage responseMessage = productService.getCollectProduct(collect,page);
+        return  responseMessage;
+    }
+
+    @RequestMapping("getRecommendProduct")
+    @ResponseBody
+    public ResponseMessage getRecommendProduct(Product product){
+        ResponseMessage responseMessage = productService.getRecommendProduct(product.getParentId(),product.getId());
+        return  responseMessage;
+    }
+
+    @RequestMapping("getHistoryProduct")
+    @ResponseBody
+    public ResponseMessage getHistoryProduct(int userId){
+        ResponseMessage responseMessage = productService.getHistoryProduct(userId);
+        return  responseMessage;
     }
 }

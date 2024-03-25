@@ -34,16 +34,20 @@
 
     <update id="updateProduct">
         update easybuy_shopping_cat
-        set count=#{count}
+        set count=#{count},price=#{price}
         where productId = #{productId} and userId=#{userId}
     </update>
     <insert id="addProduct">
-        insert into easybuy_shopping_cat(userId, productId, isDel, createTime, count) values (#{userId},#{productId},0,NOW(),#{count})
+        insert into easybuy_shopping_cat(userId, productId, isDel, createTime, count,price) values (#{userId},#{productId},0,NOW(),#{count},#{price})
     </insert>
     <select id="getProductsByProId" resultType="Product">
         select p.id, p.name, e.count, p.price, p.stock, p.categoryLevelId, p.fileId, p.isDelete, p.createTime
         from easybuy_shopping_cat e,easybuy_product p
         where e.productId=p.id and e.userId=#{userId} and e.productId=#{productId} and e.isDel=0
+    </select>
 
+    <select id="checkProductExits" parameterType="com.kgc.easybuy.pojo.Collect" resultType="int">
+        select count(1) from easybuy_shopping_cat where userId = #{userId}
+        and productId = #{productId} and isDel = 0
     </select>
 </mapper>

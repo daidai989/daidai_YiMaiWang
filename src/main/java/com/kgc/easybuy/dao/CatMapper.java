@@ -1,6 +1,7 @@
 package com.kgc.easybuy.dao;
 
 import com.kgc.easybuy.pojo.Cat;
+import com.kgc.easybuy.pojo.Collect;
 import com.kgc.easybuy.pojo.Product;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -18,5 +19,5 @@ public interface CatMapper {
     public Product getProductsByProId( Cat cat);
     public boolean updateProduct(Cat cat);
     public boolean delProductList(@Param("ids") List ids);
-
+    public int checkProductExits(Collect collect);
 }

@@ -71,4 +71,8 @@
         </set>
         where id = #{id}
     </update>
+
+    <update id="deleteAddress">
+    update  easybuy_user_address set isDel = 1 where id = #{id}
+    </update>
 </mapper>

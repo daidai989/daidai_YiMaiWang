@@ -15,7 +15,7 @@ public class BrandController {
 
     @RequestMapping("getBrand")
     @ResponseBody
-    public Object getBrand(){
+    public ResponseMessage getBrand(){
         ResponseMessage brand = brandService.getBrand();
         return brand;
     }

@@ -79,7 +79,26 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public int updateAddress(Address address) {
-        return 0;
+    public ResponseMessage updateAddress(Address address) {
+        int count = addressMapper.updateAddress(address);
+        if (count > 0){
+            if (address.getIsSure() == 1){
+                ResponseMessage responseMessage = this.setDefaultAddress(address);
+                if (responseMessage.getCode() == 200){
+                    return ResponseMessage.success();
+                }
+                return ResponseMessage.error("设置默认地址失败！");
+            }
+        }
+        return ResponseMessage.error("更新失败！");
+    }
+
+    @Override
+    public ResponseMessage deleteAddress(Address address) {
+        int count = addressMapper.deleteAddress(address);
+        if (count > 0){
+            return ResponseMessage.success();
+        }
+        return ResponseMessage.error("更新失败！");
     }
 }
