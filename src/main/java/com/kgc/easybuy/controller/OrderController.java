@@ -40,11 +40,31 @@ public class OrderController {
         orderService.showCrossTime();
         return newsList;
     }
+
+    @RequestMapping("getOrder_tailListByPage")
+    public Object getOrder_tailListByPage(String name,String currentNo,Integer orderId) {
+        int _currentPageNo = 1;
+
+        if (currentNo!=null&&!"".equals(currentNo)) {
+            _currentPageNo = Integer.parseInt(currentNo);
+        }
+        Page page = new Page();
+        page.setPageSize(2);
+        page.setCurrentPageNo(_currentPageNo);
+        PageInfo<Order_detail> detailList = orderService.getOrder_tailListByPage(name, page,orderId);
+        return detailList;
+    }
     @RequestMapping("delOrder")
     public ResponseMessage delOrder(Integer id) {
         ResponseMessage responseMessage = orderService.delOrder(id);
         return responseMessage;
     }
+    @RequestMapping("delOrder_detail")
+    public ResponseMessage delOrder_detail(Integer id) {
+        ResponseMessage responseMessage = orderService.delOrder_tailId(id);
+        return responseMessage;
+    }
+
 
     @RequestMapping("OrderSubmit")
     public ResponseMessage OrderSubmit(@RequestBody Map<String, Object> data) {

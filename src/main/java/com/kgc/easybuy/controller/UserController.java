@@ -63,6 +63,14 @@ public class UserController {
         return user;
     }
 
+    @RequestMapping("checkRoled")
+    @ResponseBody
+    public ResponseMessage checkRoled(String token){
+        ResponseMessage user = userService.getUser(token);
+        return user;
+    }
+
+
 
     @RequestMapping("sendEmailCode")
     @ResponseBody

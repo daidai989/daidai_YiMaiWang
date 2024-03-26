@@ -7,6 +7,7 @@ import com.kgc.easybuy.service.UserService;
 import com.kgc.easybuy.util.JwtUtil;
 import com.kgc.easybuy.util.Md5Util;
 import com.kgc.easybuy.util.RedisUtil;
+import com.kgc.easybuy.util.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

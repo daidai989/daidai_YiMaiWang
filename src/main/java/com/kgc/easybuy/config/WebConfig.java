@@ -21,12 +21,12 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/Product.html","/product_add.html","/product_update.html","/User_detail.html")
                 .addPathPatterns("/**")
                 .excludePathPatterns("/checkUserExist","/getUser","/logout","/sendEmailCode","/updatePwd")
-                .excludePathPatterns("/css/**","/register.html","/images/**","/js/**")
-                .excludePathPatterns("/getProductList","/getProductByCategoryId","/getHotProduct","/getImage","/getProductById","/getproducts","/upload","/getProductByLogin","/getRecommendProduct")
-                .excludePathPatterns("/getAllCats")
+                .excludePathPatterns("/css/**","/register.html","/images/**","/js/**", "/*.html")
+                .excludePathPatterns("/getProductList","/getProductByCategoryId","/getHotProduct","/getImage","/getProductById","/getproducts","/upload","/getProductByLogin")
+                .excludePathPatterns("/getAllCats","/getProFromEs","/getBrand")
                 .excludePathPatterns("/createOrder","/alipayNotify")
                 .excludePathPatterns("/getFirstCategory","/getSecondCategory","/getThirdCategory","/getSecondAllCategories","/getAllCategory")
-                .excludePathPatterns("/getNewsListByPage","/getNewsList");
+                .excludePathPatterns("/getNewsListByPage","/getNewsList", "/error");
 
 
 

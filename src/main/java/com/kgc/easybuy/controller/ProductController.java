@@ -80,7 +80,7 @@ public class ProductController {
 
     @RequestMapping("getProductById")
     @ResponseBody
-    public Object getProductById(int id){
+    public Object getProductById(Integer id){
         ResponseMessage productById = productService.getProductById(id);
         return  productById;
     }
