@@ -39,20 +39,29 @@
         identityCode,
         email,
         mobile,
-        phone,
+        a.phone,
         roleId,
         u.createTime,
-        MAX(a.address) AS address,
-        SUM(o.cost) AS total_cost
-
+        a.address,
+        total_cost
         FROM easybuy_user u
-        LEFT JOIN easybuy_user_address a ON u.id = a.userId
-        left join easybuy_order o on u.id=o.userId
+        LEFT JOIN (
+        SELECT userId, MAX(address) AS address, MAX(phone) AS phone
+        FROM easybuy_user_address
+        <where>
+            <if test="isDefault > 0">
+                isDefault = #{isDefault}
+            </if>
+        </where>
+        GROUP BY userId
+        LIMIT 1
+        ) a ON u.id = a.userId
+        LEFT JOIN (
+        SELECT userId, SUM(cost) AS total_cost
+        FROM easybuy_order
+        GROUP BY userId
+        ) o ON u.id = o.userId
         WHERE u.loginName = #{loginName} AND u.isDel = 0
-        <if test="isDefault!=null">
-            AND a.isDefault=1
-        </if>
-        GROUP BY u.id, u.loginName, u.userName, password, sex, identityCode, email, mobile, phone, roleId, u.createTime
     </select>
     <insert id="register">
         insert into easybuy_user(loginName, password, email, mobile, createTime,isDel,roleId) value (#{loginName}, #{password}, #{email}, #{mobile},
