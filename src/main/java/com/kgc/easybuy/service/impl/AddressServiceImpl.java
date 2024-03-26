@@ -19,7 +19,6 @@ public class AddressServiceImpl implements AddressService {
 
     @Autowired
     private AddressMapper addressMapper;
-
     @Override
     public ResponseMessage getDefaultAdd(Integer id) {
         Address defaultAdd = addressMapper.getDefaultAdd(id);

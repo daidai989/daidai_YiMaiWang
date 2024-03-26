@@ -16,12 +16,18 @@ import java.util.List;
 @Mapper
 public interface ProductMapper {
     public List<Product> getProducts();
+
+
     public List<Product> getProductList();
+
     public List<Product> getProductByCategoryId(int parentId);
+
     public List<Product> getHotProduct();
+
     public Product getProductById(int id);
     public boolean delProById(@Param("id") Integer id);
     public boolean addProduct(Product product);
+
     public boolean updateProduct(Product products);
     public boolean updateFileId(@Param("fileId")Integer fileId,@Param("id")Integer id);
     public Product getProductByLogin(String loginName);

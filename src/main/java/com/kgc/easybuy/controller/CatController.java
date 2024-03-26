@@ -32,7 +32,6 @@ public class CatController {
         ResponseMessage responeseMsg = catService.addProduct(cat);
         return responeseMsg;
     }
-
     @RequestMapping("delCats")
     public ResponseMessage delCats(Integer catId) {
         ResponseMessage responeseMsg = catService.delProduct(catId);

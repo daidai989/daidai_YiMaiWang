@@ -48,6 +48,7 @@ public class UserController {
         return message;
     }
 
+
     @RequestMapping("checkUserExist")
     @ResponseBody
     public ResponseMessage checkUserExist(User user){

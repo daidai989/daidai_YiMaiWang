@@ -21,6 +21,7 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryMapper categoryMapper;
+
     @Override
     public ResponseMessage getFirstCategories() {
         List<Category> firstCategories = categoryMapper.getFirstCategories();

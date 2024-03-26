@@ -26,7 +26,6 @@ public class AddressController {
         ResponseMessage msg = addressService.getAddressById(userId,page);
         return msg;
     }
-
     @RequestMapping("setDefault")
     public ResponseMessage setDefaultAddress(Address address){
         ResponseMessage msg = addressService.setDefaultAddress(address);
