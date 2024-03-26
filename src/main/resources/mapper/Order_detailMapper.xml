@@ -13,7 +13,23 @@
         </foreach>
     </update>
 
+    <update id="delOrder_tailId"  >
+        update easybuy_order_detail set isDel = 1 where id  =#{id}
+
+    </update>
+
     <select id="getOrder_tailList" resultType="Order_detail">
-        select d.orderId,d.productId,d.count,d.cost,o.status  from easybuy_order o,easybuy_order_detail d where o.id=d.orderId and o.isDel=0 and o.id=#{id}
+        select d.id,d.orderId,d.productId,o.serialNumber, f.filePath,p.name,d.count,d.cost,o.createTime,o.status from easybuy_order o,easybuy_order_detail d,easybuy_file f,easybuy_product p
+        where o.id=d.orderId and p.id=d.productId and f.productId=p.id and o.id=#{id} and o.isDel=0
     </select>
+
+    <select id="getOrder_tailListByPage" resultType="Order_detail">
+        select d.id,d.orderId,d.productId,o.serialNumber, f.filePath,p.name,d.count,d.cost,o.createTime,o.status from easybuy_order o,easybuy_order_detail d,easybuy_file f,easybuy_product p
+        where o.id=d.orderId and p.id=d.productId and f.productId=p.id and o.id=#{orderId} and d.isDel=0
+        <if test="name!=null and name!=''">
+            and p.name like Concat('%',#{name},'%')
+        </if>
+    </select>
+
+
 </mapper>

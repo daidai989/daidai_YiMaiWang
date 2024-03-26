@@ -63,9 +63,9 @@
         ) o ON u.id = o.userId
         WHERE u.loginName = #{loginName} AND u.isDel = 0
     </select>
-
     <insert id="register">
-        insert into easybuy_user(loginName, password, email, mobile, createTime,isDel,roleId) value (#{loginName}, #{password}, #{email}, #{mobile},now(), 0,3);
+        insert into easybuy_user(loginName, password, email, mobile, createTime,isDel,roleId) value (#{loginName}, #{password}, #{email}, #{mobile},
+                                                                                                     now(), 0,3);
     </insert>
 
     <update id="updateUser" parameterType="User">
