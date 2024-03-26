@@ -13,7 +13,7 @@ public interface OrderService {
 
     public ResponseMessage addNewOrder(List<Cat> cats,User user);
     public PageInfo<Order_detail> getOrder_tailListByPage(String name, Page page,Integer orderId);
-    public PageInfo<Order> getOrderListByPage(String title, Page page,Integer userId);
+    public PageInfo<Order> getOrderListByPage(Page page,Order order);
 
     public ResponseMessage delOrder(Integer id);
     public ResponseMessage updateOrderStatusWithCancel(Integer id);
