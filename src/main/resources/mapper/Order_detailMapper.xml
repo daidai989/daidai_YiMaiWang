@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kgc.easybuy.dao.Order_detailMapper">
 
-    <insert id="addNews" >
-        insert into easy_buy.easybuy_news (title, content, createTime, shortTitle) values(#{title}, #{content},now(),#{shortTitle})
+    <insert id="addNewOrder_detail"  keyProperty="id" useGeneratedKeys="true">
+        insert into easybuy_order_detail (productId,count,cost,createTime) values(#{productId},#{count},#{cost},now())
     </insert>
 
     <update id="updateOrderId"  >
@@ -16,5 +16,17 @@
     <select id="getOrder_tailList" resultType="Order_detail">
         select d.orderId,d.productId,d.count,d.cost,o.status  from easybuy_order o,easybuy_order_detail d where o.id=d.orderId and o.isDel=0 and o.id=#{id}
     </select>
+
+    <update id="updateOrderId"  >
+        update easybuy_order_detail set  orderId = #{orderId} where id  IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="getOrder_tailList" resultType="Order_detail">
+        select d.orderId,d.productId,d.count,d.cost,o.status  from easybuy_order o,easybuy_order_detail d where o.id=d.orderId and o.isDel=0 and o.id=#{id}
+    </select>
+
 
 </mapper>

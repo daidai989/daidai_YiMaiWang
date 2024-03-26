@@ -6,7 +6,6 @@ import com.kgc.easybuy.pojo.Collect;
 import com.kgc.easybuy.pojo.Product;
 import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.service.CatService;
-//import com.kgc.easybuy.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,10 @@ public class CatServiceImpl implements CatService {
     private CatMapper catMapper;
     @Override
     public ResponseMessage getProductsById(String token) {
-        return  null;
+        Map<String, Object> map = JwtUtil.parseToken(token);
+        Integer userId = (Integer) map.get("id");
+        List<Product> productsById = catMapper.getProductsById(userId);
+        return ResponseMessage.success(productsById);
     }
 
     @Override
@@ -46,7 +48,6 @@ public class CatServiceImpl implements CatService {
             }
             return ResponseMessage.error("添加商品失败",isFlag);
         }
-
     }
 
     @Override
@@ -57,7 +58,6 @@ public class CatServiceImpl implements CatService {
         }
         return ResponseMessage.error("删除商品失败",isFlag);
     }
-
     public ResponseMessage delProductList(List ids){
         boolean isFlag = catMapper.delProductList(ids);
         if (isFlag){
@@ -73,5 +73,22 @@ public class CatServiceImpl implements CatService {
             return ResponseMessage.success();
         }
         return ResponseMessage.error("购物车不存在该商品");
+    }
+
+    @Override
+    public ResponseMessage updateProducts(List<Cat> ids) {
+        for (Cat cat :ids) {
+            boolean b = catMapper.updateCat(cat);
+            if (b) {
+                return ResponseMessage.success(b);
+            }
+        }
+        return ResponseMessage.error("修改失败");
+    }
+
+    @Override
+    public ResponseMessage getProductListByLst(List ids) {
+        List<Cat> productListByLst = catMapper.getProductListByLst(ids);
+        return ResponseMessage.success(productListByLst);
     }
 }

@@ -8,6 +8,7 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.response.AlipayTradePagePayResponse;
 import com.kgc.easybuy.dao.AlipayDao;
+import com.kgc.easybuy.dao.OrderMapper;
 import com.kgc.easybuy.pojo.AlipayDBPojo;
 import com.kgc.easybuy.pojo.AlipayPojo;
 import com.kgc.easybuy.pojo.ResponseMessage;
@@ -28,9 +29,11 @@ public class AlipayServiceImpl implements AlipayService {
     private AlipayPojo alipayPojo;
     @Autowired
     private AlipayDao alipayDao;
+    @Autowired
+    private OrderMapper orderMapper;
 
     @Override
-    public ResponseMessage createOrder(Integer price, String shopName) {
+    public ResponseMessage createOrder(Integer price, String shopName,String serialNumber) {
         AlipayClient alipayClient = new DefaultAlipayClient(alipayPojo.getGateway(), alipayPojo.getAppId(), alipayPojo.getPrivateKey(), "json", "utf-8", alipayPojo.getAlipayPublicKey(), "RSA2");
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
         //异步接收地址，仅支持http/https，公网可访问
@@ -40,8 +43,12 @@ public class AlipayServiceImpl implements AlipayService {
         /******必传参数******/
         JSONObject bizContent = new JSONObject();
         //商户订单号，商家自定义，保持唯一性
-        String uuid = UUID.randomUUID().toString();
-        bizContent.put("out_trade_no", uuid);
+        if (serialNumber==null||"".equals(serialNumber)){
+            String uuid = UUID.randomUUID().toString();
+            bizContent.put("out_trade_no", uuid);
+        }else {
+            bizContent.put("out_trade_no", serialNumber);
+        }
         //支付金额，最小值0.01元
         bizContent.put("total_amount", price);
         //订单标题，不可使用特殊符号
@@ -109,12 +116,19 @@ public class AlipayServiceImpl implements AlipayService {
             //验签
             boolean rsa2= AlipaySignature.rsaCheckV1(params,alipayPojo.getAlipayPublicKey(),"utf-8", "RSA2");
             if(rsa2){
-//                AlipayRunner runner = new AlipayRunner();
-//                runner.setAlipayDBPojo(alipayDBPojo);
-//                Thread t1 = new Thread(runner);
-//                t1.start();
-                this.updAlipay(alipayDBPojo);
-                return  ResponseMessage.success();
+                String tradeStatus = params.get("trade_status");
+                if ("TRADE_SUCCESS".equals(tradeStatus)) {
+                    this.updAlipay(alipayDBPojo);
+                    boolean flag = orderMapper.updateOrderStatusWithPay(alipayDBPojo.getOut_trade_no());
+
+                    if (flag) {
+                        return ResponseMessage.error("没有支付");
+                    }
+                    return  ResponseMessage.success("支付成功");
+                }else {
+                    return  ResponseMessage.error("支付失败");
+                }
+
             }else{
                 return  ResponseMessage.error("没有通过验证");
 

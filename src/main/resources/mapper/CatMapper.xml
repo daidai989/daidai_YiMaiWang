@@ -50,4 +50,35 @@
         select count(1) from easybuy_shopping_cat where userId = #{userId}
         and productId = #{productId} and isDel = 0
     </select>
+
+    <update id="updateCat" >
+        UPDATE easybuy_shopping_cat
+        SET count=#{count},price=#{price}
+        WHERE id=#{id}
+    </update>
+    <select id="getProductListByLst" resultType="Cat">
+        SELECT
+            c.id,
+        p.id as productId,
+        p.name,
+        description,
+        c.price,
+        c.count,
+        stock,
+        categoryLevelId,
+        fileId,
+        filePath,
+        p.isDelete,
+        p.createTime,
+        u.id as userId
+        FROM easybuy_product p, easybuy_file f, easybuy_shopping_cat c,easybuy_user u
+        WHERE p.id = f.productId
+        AND p.id = c.productId
+        and c.userId=u.id
+        AND p.isDelete = 0
+        AND c.id IN
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

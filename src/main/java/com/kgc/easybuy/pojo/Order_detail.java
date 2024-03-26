@@ -13,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Order_detail {
+
       private   Integer orderId;
       private   Integer id;
       private   Integer productId;

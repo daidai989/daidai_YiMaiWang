@@ -17674,7 +17674,7 @@ _:-ms-fullscreen .ant-picker-range-wrapper .ant-picker-year-panel .ant-picker-ce
   line-height: normal;
 }
 .ant-form input[type='file'] {
-  display: block;
+  display: none;
 }
 .ant-form input[type='range'] {
   display: block;

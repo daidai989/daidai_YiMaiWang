@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,7 +25,6 @@ import java.util.Map;
 @Controller
 @CrossOrigin("*")
 public class AlipayController {
-
     @Autowired
     private AlipayServiceImpl alipayServiceImpl;
     @Autowired
@@ -33,7 +33,7 @@ public class AlipayController {
     private AlipayDBPojo alipayDBPojo;
 
     @RequestMapping("createOrder")
-    public void createOrder(HttpServletResponse resp,Integer price,String shopName){
+    public void createOrder(HttpServletResponse resp,Integer price,String shopName,String serialNumber){
         resp.setContentType("text/html;charset=utf-8");
         PrintWriter pw = null;
         try {
@@ -41,7 +41,7 @@ public class AlipayController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        ResponseMessage msg = alipayServiceImpl.createOrder(price,shopName);
+        ResponseMessage msg = alipayServiceImpl.createOrder(price,shopName,serialNumber);
         if(msg.getCode()==200){
             pw.print(msg.getData());
             return;
@@ -51,7 +51,7 @@ public class AlipayController {
 
     @RequestMapping("alipayNotify")
     @ResponseBody
-    public void alipayNotify(HttpServletRequest req,HttpServletResponse resp){
+    public void alipayNotify(HttpServletRequest req, HttpServletResponse resp){
         resp.setContentType("text/html;charset=utf-8");
         Map<String, String[]> values = req.getParameterMap();
         Map<String,String> params=new HashMap<>();
@@ -70,9 +70,9 @@ public class AlipayController {
             System.out.println("params:"+params);
             params.remove("sign_type");
         }
-            alipayDBPojo.setOut_trade_no(params.get("out_trade_no"));
-            alipayDBPojo.setTotal_amount(Integer.parseInt(params.get("total_amount")));
-            ResponseMessage msg = alipayServiceImpl.alipayNotify(params,alipayDBPojo);
+        alipayDBPojo.setOut_trade_no(params.get("out_trade_no"));
+        alipayDBPojo.setTotal_amount(Double.parseDouble(params.get("total_amount")));
+        ResponseMessage msg = alipayServiceImpl.alipayNotify(params, alipayDBPojo);
         PrintWriter pw = null;
         try {
             pw = resp.getWriter();
@@ -80,10 +80,10 @@ public class AlipayController {
             throw new RuntimeException(e);
         }
         if(msg.getCode()==200){
-                pw.print("success");
-                
-            }else{
-                pw.print("fail");
-            }
+            pw.print("success");
+        } else {
+            pw.print("fail");
+        }
     }
+
 }

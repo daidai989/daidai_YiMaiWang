@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class JwtUtil {
 
+
     private static final String KEY = "kgc";
 
 	//接收业务数据,生成token并返回

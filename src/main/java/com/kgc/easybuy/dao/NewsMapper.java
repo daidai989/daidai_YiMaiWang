@@ -12,6 +12,7 @@ import java.util.List;
  */
 @Mapper
 public interface NewsMapper {
+
     public List<News> getNewsList();
     public List<News> getNewsListByPage(@Param("title") String title);
     public News getNewsByTitle(String title);

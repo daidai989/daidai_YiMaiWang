@@ -9,18 +9,23 @@
            EvPNG.fix('div, ul, img, li, input, a'); 
         </script>
     <![endif]-->
+    
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
+	<script type="text/javascript" src="js/lrscroll_1.js"></script>
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
+    <script type="text/javascript" src="js/lrscroll_1.js"></script>
+    <script type="text/javascript" src="js/n_nav.js"></script>
+	<script type="text/javascript" src="js/n_nav.js"></script>
     <script type="text/javascript" src="js/vue.js"></script>
     <script type="text/javascript" src="js/axios.js"></script>
     <link type="text/css" rel="stylesheet" href="css/element.css"/>
     <script type="text/javascript" src="js/element.js"></script>
-    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="js/menu.js"></script>    
-	<script type="text/javascript" src="js/lrscroll_1.js"></script>
-	<script type="text/javascript" src="js/n_nav.js"></script>
     <title>商品搜索</title>
     <style>
         a.ss.yes{
-            color: #888888; 
+            color: #888888;
             background-color: transparent;
             background-image: url('images/heart_h.png') !important;
             background-repeat: no-repeat;
@@ -159,8 +164,10 @@
     <div class="top">
         <div class="logo"><a href="Index.html"><img src="images/logo.png" /></a></div>
         <div class="search">
+            <form>
                 <input class="s_ipt" type="text" v-model="searchValue"/>
                 <input class="s_btn" type="submit" @click="jumpSearch" value="搜索"/>
+            </form>
             <span class="fl"><a href="#">咖啡</a><a href="#">iphone 6S</a><a href="#">新鲜美食</a><a href="#">蛋糕</a><a href="#">日用品</a><a href="#">连衣裙</a></span>
         </div>
         <div class="i_car">
@@ -547,7 +554,7 @@
                         </li>
                     </ul>
             </div>
-            <el-pagination 
+            <el-pagination
                         style="float: right;"
                         layout="prev, pager, next"
                         :current-page="page.currentPageNo"
@@ -555,7 +562,7 @@
                         :total="page.totalPage"
                         @current-change="handleCurrentChange"/>
         </div>
-                
+
         <!--Begin Footer Begin -->
         <div class="b_btm_bg bg_color">
             <div class="b_btm">

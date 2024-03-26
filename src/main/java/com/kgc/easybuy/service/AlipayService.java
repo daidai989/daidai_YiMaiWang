@@ -7,7 +7,8 @@ import com.kgc.easybuy.pojo.ResponseMessage;
 import java.util.Map;
 
 public interface AlipayService {
-    public ResponseMessage createOrder(Integer price,String shopName);
+
+    public ResponseMessage createOrder(Integer price,String shopName,String serialNumber);
 
     public ResponseMessage addAlipay(AlipayDBPojo alipayDB);
 

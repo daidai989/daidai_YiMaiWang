@@ -7,28 +7,28 @@
     <!--[if IE 6]>
     <script src="js/iepng.js" type="text/javascript"></script>
         <script type="text/javascript">
-           EvPNG.fix('div, ul, img, li, input, a'); 
+           EvPNG.fix('div, ul, img, li, input, a');
         </script>
     <![endif]-->
-    
+
     <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="js/menu.js"></script>    
-            
-	<script type="text/javascript" src="js/lrscroll_1.js"></script>   
-     
-    
+    <script type="text/javascript" src="js/menu.js"></script>
+
+	<script type="text/javascript" src="js/lrscroll_1.js"></script>
+
+
 	<script type="text/javascript" src="js/n_nav.js"></script>
-    
+
     <link rel="stylesheet" type="text/css" href="css/ShopShow.css" />
     <link rel="stylesheet" type="text/css" href="css/MagicZoom.css" />
     <script type="text/javascript" src="js/MagicZoom.js"></script>
-    
+
     <script type="text/javascript" src="js/num.js">
     	var jq = jQuery.noConflict();
     </script>
-        
+
     <script type="text/javascript" src="js/p_tab.js"></script>
-    
+
     <script type="text/javascript" src="js/shade.js"></script>
     <script src="js/vue.js"></script>
     <script src="js/axios.js"></script>
@@ -122,7 +122,7 @@
         </span>
         <!--End 所在收货地区 End-->
         <span class="fr">
-        	 <span class="fl">你好，{{$data.username ?  $data.username : '请登录'}}&nbsp;<a v-if="!$data.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
+        	 <span class="fl">你好，{{$data.user.username ?  $data.user.username : '请登录'}}&nbsp;<a v-if="!$data.user.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.user.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
                      href="#">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
@@ -299,8 +299,8 @@
                     </div>
                     <div class="d_care"><a onclick="ShowDiv('MyDiv','fade')">关注商品</a></div>
                 </div>
-                <div class="des_join"> 
-                    <div class="j_nums"> 
+                <div class="des_join">
+                    <div class="j_nums">
                          <input type="text" v-model="productNum" @change="checkNum" class="n_ipt" />
                         <input type="button" value="" @click="add" class="n_btn_1" />
                         <input type="button" value="" @click="reduce" class="n_btn_2" />
@@ -379,7 +379,7 @@
                     <div class="team_sum">
                         套餐价：￥<span>{{productPrice}}</span><br />
                         <input type="text" v-model="recommendNum" @change="checkNumber" class="sum_ipt" /><br />
-                        <a href="#"><img src="images/z_buy.gif" /></a>
+                        <a @click="isSubmit()"><img src="images/z_buy.gif" /></a>
                     </div>
                 </div>
                 <div class="des_border">
@@ -716,6 +716,7 @@
             totalPrice:"",
             totalCount:"",
             user:{
+
                 username:"",
                 id:null,
             },
@@ -724,7 +725,7 @@
             //     productId:null,
             //     count:null,
             // },
-
+            ids:[],
             isTrue:1,
             products:[],
             theFirst: [],
@@ -748,7 +749,6 @@
                         id:this.product.id
                     }
                 }).then((result) => {
-                    console.log(result.data);
                     this.product.id = result.data.data.id;
                     this.product.name = result.data.data.name;
                     this.product.description = result.data.data.description;
@@ -795,18 +795,23 @@
                         id:this.product.id
                     }
                  }).then((result) => {
-                    console.log(result.data);
                     this.recommendList = result.data.data
                  });
              },
-             getCheckbox($event,product){
-                 if ($event.target.checked){
-                     this.recommendPrice += product.price
-                 }else {
-                     this.recommendPrice -= product.price
+             getCheckbox($event, product) {
+                 if ($event.target.checked) {
+                     this.ids.push(product.id);
+                     this.recommendPrice += product.price;
+                 } else {
+                     const index = this.ids.indexOf(product.id);
+                     if (index > -1) {
+                         this.ids.splice(index, 1);
+                     }
+                     this.recommendPrice -= product.price;
                  }
-                 this.productPrice = this.recommendPrice * this.recommendNum
+                 this.productPrice = this.recommendPrice * this.recommendNum;
              },
+
              checkNumber(){
                  var check = /^[1-9]\d*$/
                  if (!check.test(this.recommendNum) || this.recommendNum > 20){
@@ -820,7 +825,6 @@
              firstLoad() {
                  axios.get('http://localhost:8080/getFirstCategory')
                      .then((resp) => {
-                         console.log(resp.data);
                          this.theFirst = resp.data.data;
                      });
              },
@@ -881,6 +885,11 @@
                              this.isBounce=true;
                          }
                      });
+             },
+
+             isSubmit(){
+                 window.location.href = "BuyCar_Two.html?ids=" + encodeURIComponent(JSON.stringify(this.ids)) + "&recommendNum=" + this.recommendNum;
+
              },
              logout() {
                  let token=localStorage.getItem("token");

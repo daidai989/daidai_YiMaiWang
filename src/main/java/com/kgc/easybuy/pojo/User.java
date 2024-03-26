@@ -22,4 +22,7 @@ public class User {
     private int isDel;
     private String phone;
     private String address;
+    private Integer isDefault;
+    private float total_cost;
+    private Date createTime;
 }

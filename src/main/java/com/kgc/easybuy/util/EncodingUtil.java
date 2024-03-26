@@ -9,6 +9,7 @@ import java.util.List;
 
 public class EncodingUtil {
 
+
     public static List<Product> encoding(List<Product> products) {
         List<Product> productList = new ArrayList<>();
         String path = null;

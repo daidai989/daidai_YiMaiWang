@@ -8,6 +8,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.net.UnknownHostException;
 
+
 public class RedisConfig {
     @Bean
     @ConditionalOnMissingBean(name = {"redisTemplate"},value = RedisConfig.class)

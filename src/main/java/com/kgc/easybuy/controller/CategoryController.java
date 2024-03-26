@@ -44,6 +44,7 @@ public class CategoryController {
         ResponseMessage responeseMsg = categoryService.getAllCategories(page,category);
         return responeseMsg;
     }
+
     @RequestMapping("getAllCategory")
     public ResponseMessage getAllCategory() {
         ResponseMessage responeseMsg = categoryService.getAllCategory();

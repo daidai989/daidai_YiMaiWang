@@ -14,6 +14,7 @@ public interface NewsService {
     public ResponseMessage getNewsList();
     public PageInfo<News> getNewsListByPage(String title, Page page);
     public ResponseMessage delNews(Integer id);
+
     public ResponseMessage getNewsByTitle(String title);
     public ResponseMessage getNewsById(Integer id);
     public ResponseMessage addNews(News news);

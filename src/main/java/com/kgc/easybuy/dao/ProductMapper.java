@@ -1,8 +1,11 @@
 package com.kgc.easybuy.dao;
 
 import com.kgc.easybuy.pojo.Collect;
+import com.kgc.easybuy.pojo.Cat;
 import com.kgc.easybuy.pojo.Product;
 import org.apache.ibatis.annotations.Mapper;
+import com.kgc.easybuy.pojo.Category;
+import com.kgc.easybuy.pojo.Product;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

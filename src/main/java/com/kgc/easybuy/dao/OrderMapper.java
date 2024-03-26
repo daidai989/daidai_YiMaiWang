@@ -1,14 +1,21 @@
 package com.kgc.easybuy.dao;
 
+import com.kgc.easybuy.pojo.News;
 import com.kgc.easybuy.pojo.Order;
 import com.kgc.easybuy.pojo.ResponseMessage;
 import io.lettuce.core.dynamic.annotation.Param;
+
+import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.aspectj.weaver.ast.Or;
 
 import java.util.List;
 
 /**
  * @author daidai
  */
+@Mapper
 public interface OrderMapper {
 
     public boolean addNewOrder(Order order);

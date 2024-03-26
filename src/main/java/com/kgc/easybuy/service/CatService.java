@@ -4,6 +4,7 @@ import com.kgc.easybuy.pojo.Cat;
 import com.kgc.easybuy.pojo.Collect;
 import com.kgc.easybuy.pojo.Product;
 import com.kgc.easybuy.pojo.ResponseMessage;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface CatService {
     public ResponseMessage delProduct(Integer id );
     public ResponseMessage delProductList(List ids);
     public ResponseMessage checkProductExits(Collect collect);
+    public ResponseMessage updateProducts(List<Cat> ids);
+    public ResponseMessage getProductListByLst(List ids);
 }

@@ -7,14 +7,11 @@
     <link type="text/css" rel="stylesheet" href="css/style.css" />
     <link type="text/css" rel="stylesheet" href="css/antd.css">
     <link rel="stylesheet" href="css/element.css">
-    <!-- 引入组件库 -->
-    <!--[if IE 6]>
     <script src="js/iepng.js" type="text/javascript"></script>
     <script type="text/javascript">
         EvPNG.fix('div, ul, img, li, input, a');
     </script>
     <![endif]-->
-
     <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
 
@@ -24,10 +21,11 @@
     <script src="js/antd.js"></script>
     <script src="js/element.js"></script>
     <title>尤洪</title>
+
 </head>
 
 <body>
-<div id="app6">
+<div id="app15">
 
     <div class="soubg">
         <div class="sou">
@@ -263,7 +261,6 @@
                             </a-form-model-item>
                             <a-form-model-item prop="filePaths" label="图片上传">
                                 <el-upload
-                                        class="upload-demo"
                                         action="/upload"
                                         name="filePath"
                                         :before-upload="beforeUpload"
@@ -272,9 +269,12 @@
                                         :limit="1"
                                         :on-exceed="handleExceed"
                                 >
+                                    <el-button size="small" type="primary">点击上传</el-button>
                                     <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2mb</div>
                                 </el-upload>
                             </a-form-model-item>
+
+
 
 
                             <a-form-model-item >
@@ -375,7 +375,7 @@
 </body>
 <script type="text/javascript">
     new Vue({
-        el: '#app6',
+        el: '#app15',
 
         data() {
             let checkProductName=(rule, value, callback) =>{

@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category {
+
     private int id;
     private String name;
     private int parentId;

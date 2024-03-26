@@ -89,10 +89,12 @@
         filePath,
         c.name cname,
         parentId,
-        type
-        from easybuy_product p,easybuy_file f,easybuy_product_category c
+        type,
+        b.id as brandId,
+        b.name as brandName
+        from easybuy_product p,easybuy_file f,easybuy_product_category c,easybuy_brand b
         <where>
-            p.id = f.productId and p.categoryLevelId = c.id
+            p.id = f.productId and p.categoryLevelId = c.id and b.id=p.brandId
             and p.id = #{id}
             and p.isDelete = 0
         </where>
@@ -138,7 +140,8 @@
     </update>
 
     <select id="getProductByLogin"  resultType="Product">
-        SELECT id, name, description, price, brandId, stock, categoryLevelId, fileId, isDelete, createTime from easybuy_product where isDelete=0 and name=#{loginName}
+        SELECT id, name, description, price, brandId, stock, categoryLevelId, fileId, isDelete, createTime
+        from easybuy_product where isDelete=0 and name=#{loginName}
     </select>
 
     <select id="getCollectProduct" parameterType="Collect" resultType="Product">
@@ -252,4 +255,6 @@
           and p.isDelete = 0
           AND c.id = #{id}
     </select>
+
+
 </mapper>

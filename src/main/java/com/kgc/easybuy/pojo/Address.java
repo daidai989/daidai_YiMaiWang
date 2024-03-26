@@ -13,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Address {
+
     private int id;
     private int userId;
     private String address;

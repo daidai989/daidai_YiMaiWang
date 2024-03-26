@@ -14,15 +14,13 @@
         </if>
         </where>
         order by createTime Desc
-
-
     </select>
+
     <select id="getAllOrder" resultType="Order">
         select o.id, userId, o.loginName, userAddress, o.createTime, cost, serialNumber, o.isDel,status from easy_buy.easybuy_order o,easy_buy.easybuy_user u
         where o.userId=u.id and o.isDel=0 and o.userId=#{userId}
         order by createTime Desc
     </select>
-
 
     <select id="getOrderById" resultType="Order">
         select o.id, userId, o.loginName, userAddress, o.createTime, cost, serialNumber, o.isDel,status from easy_buy.easybuy_order o,easy_buy.easybuy_user u
@@ -31,12 +29,10 @@
 
     <update id="delOrder">
         update easy_buy.easybuy_order set isDel=1 where id=#{id}
-
     </update>
 
     <update id="updateOrderStatusWithCancel">
         update easy_buy.easybuy_order set status=2 where id=#{id}
-
     </update>
 
     <update id="updateOrderStatusWithPay">

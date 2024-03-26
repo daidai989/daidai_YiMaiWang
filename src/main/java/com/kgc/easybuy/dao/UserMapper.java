@@ -1,5 +1,6 @@
 package com.kgc.easybuy.dao;
 
+import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.pojo.User;
 import org.springframework.stereotype.Repository;
 

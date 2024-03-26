@@ -8,21 +8,24 @@
     <script type="text/javascript">
         EvPNG.fix('div, ul, img, li, input, a');
     </script>
+
     <![endif]-->
-    
+    <link type="text/css" rel="stylesheet" href="css/element.css"/>
+
     <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
-                
+
 	<script type="text/javascript" src="js/n_nav.js"></script>
-    
+
     <script type="text/javascript" src="js/num.js">
     	var jq = jQuery.noConflict();
-    </script>     
-    
+    </script>
+
     <script type="text/javascript" src="js/shade.js"></script>
     <script src="js/vue.js"></script>
     <script src="js/axios.js"></script>
-    <script src="js/element.js"></script>
+
+    <script type="text/javascript" src="js/element.js"></script>
 <title>尤洪</title>
 </head>
 <body>
@@ -107,7 +110,7 @@
         </span>
         <!--End 所在收货地区 End-->
         <span class="fr">
-        	 <span class="fl">你好，{{$data.username ?  $data.username : '请登录'}}&nbsp;<a v-if="!$data.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
+        	 <span class="fl">你好，{{$data.user.username ?  $data.user.username : '请登录'}}&nbsp;<a v-if="!$data.user.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.user.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
                      href="#">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
@@ -120,7 +123,7 @@
                                 <li><a href="#">我的收藏夹</a></li>
                             </ul>
                         </div>
-                    </div>     
+                    </div>
                 </div>
                 <div class="ss_list">
                 	<a href="#">客户服务</a>
@@ -133,7 +136,7 @@
                                 <li><a href="#">客户服务</a></li>
                             </ul>
                         </div>
-                    </div>    
+                    </div>
                 </div>
                 <div class="ss_list">
                 	<a href="#">网站导航</a>
@@ -145,7 +148,7 @@
                                 <li><a href="#">网站导航</a></li>
                             </ul>
                         </div>
-                    </div>    
+                    </div>
                 </div>
             </span>
             <span class="fl">|&nbsp;关注我们：</span>
@@ -160,12 +163,12 @@
     	<form>
         	<input type="text" value="" class="s_ipt" />
             <input type="submit" value="搜索" class="s_btn" />
-        </form>                      
+        </form>
         <span class="fl"><a href="#">咖啡</a><a href="#">iphone 6S</a><a href="#">新鲜美食</a><a href="#">蛋糕</a><a href="#">日用品</a><a href="#">连衣裙</a></span>
     </div>
 
 </div>
-<!--End Header End--> 
+<!--End Header End-->
 <!--Begin Menu Begin-->
 <div class="menu_bg">
 	<div class="menu">
@@ -174,7 +177,7 @@
             <div class="nav_t">全部商品分类</div>
             <div class="leftNav none">
                 <ul>
-                    <li v-for="(item, index) in theFirst" :key="index" @mouseenter="loadSecondAndThird(item.id)">
+                    <li v-for="(item, index) in theFirst" :key="index" @mouseenter="loadSecondAndThird(item.catId)">
                         <div class="fj">
                             <span class="n_img"><span></span><img src="images/nav1.png" /></span>
                             <span class="fl">{{item.name}}</span>
@@ -192,8 +195,8 @@
                 </ul>
             </div>
         </div>
-        <!--End 商品分类详情 End-->                                                     
-    	<ul class="menu_r">                                                                                                                                               
+        <!--End 商品分类详情 End-->
+    	<ul class="menu_r">
         	<li><a href="Index.html">首页</a></li>
             <li><a href="Food.html">美食</a></li>
             <li><a href="Fresh.html">生鲜</a></li>
@@ -206,17 +209,18 @@
         <div class="m_ad">中秋送好礼！</div>
     </div>
 </div>
-<!--End Menu End--> 
-<div class="i_bg">  
+<!--End Menu End-->
+<div class="i_bg">
     <div class="content mar_20">
     	<img src="images/img1.jpg" />
     </div>
-    
+
     <!--Begin 第一步：查看购物车 Begin -->
     <div class="content mar_20" v-if="products.length>0">
     	<table border="0" class="car_tab" style="width:1200px; margin-bottom:50px;" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="car_th" width="490">商品名称</td>
+              <td class="car_th" width="93px">请选择</td>
+            <td class="car_th" width="490" style="text-align:justify">商品名称</td>
             <td class="car_th" width="140">属性</td>
             <td class="car_th" width="150">购买数量</td>
             <td class="car_th" width="130">小计</td>
@@ -224,19 +228,25 @@
             <td class="car_th" width="150">操作</td>
           </tr>
           <tr v-for="(item,index) in products" :key="index">
+              <td>
+                  <div>
+                      <input type="checkbox" :checked="selectedIds.includes(item.id)" @change="handleCheckboxChange($event, item.catId,item)" />
+                  </div>
+              </td>
             <td>
             	<div class="c_s_img"><img :src="'http://localhost:8080/getImage?filePath=' + item.filePath" width="73" height="73" /></div>
                 {{item.name}}
             </td>
             <td align="center">颜色：灰色</td>
             <td align="center">
-            	<div class="c_num">
-                    <input type="button" value="" onclick="jianUpdate1(jq(this));" class="car_btn_1" />
-                	<input type="text" value="1" name="" class="car_ipt" />  
-                    <input type="button" value="" onclick="addUpdate1(jq(this));" class="car_btn_2" />
+                <div class="c_num" style="display: flex; align-items: center;">
+                    <input type="button" value="-" @click="reduce(item)" style="margin-right: 5px;" />
+                    <input type="text" v-model="item.count" @change="checkNum(item)" style="text-align: center; width: 30px;" />
+                    <input type="button" value="+" @click="add(item)" style="margin-left: 5px;" />
                 </div>
+
             </td>
-            <td align="center" style="color:#ff4e00;">￥{{item.price*item.count}}</td>
+              <td >￥{{ item.price * item.count }}</td>
             <td align="center">{{(item.price*item.count*0.1).toFixed(1)}}R</td>
             <td align="center"><a @click="delProduct(item.catId)">删除</a>&nbsp; &nbsp;<a href="#">加入收藏</a></td>
           </tr>
@@ -244,34 +254,34 @@
 
           <tr height="70">
           	<td colspan="6" style="font-family:'Microsoft YaHei'; border-bottom:0;">
-            	<label class="r_rad"> <input type="checkbox" :class="{ 'checked': isChecked }" @change="handleClearCart" />
-                </label><label class="r_txt">清空购物车</label>
+            	<label class="r_rad"> <input type="button" value="清空购物车"  @click="delProductList()"/>
+                </label>
                 <span class="fr">商品总价：<b style="font-size:22px; color:#ff4e00;">￥{{totalPrice}}</b></span>
             </td>
           </tr>
           <tr valign="top" height="150">
           	<td colspan="6" align="right">
-            	<a href="index.html"><img src="images/buy1.gif" /></a>&nbsp; &nbsp; <a href="BuyCar_Two.html"><img src="images/buy2.gif" /></a>
+            	<a href="index.html"><img src="images/buy1.gif" /></a>&nbsp; &nbsp; <img src="images/buy2.gif"  @click="redirectToBuyCarTwo"/>
             </td>
           </tr>
         </table>
-        
+
     </div>
     <div v-else class="content mar_20" >
         暂无购买内容
     </div>
-	<!--End 第一步：查看购物车 End--> 
-    
-    
+	<!--End 第一步：查看购物车 End-->
+
+
     <!--Begin 弹出层-删除商品 Begin-->
     <div id="fade" class="black_overlay"></div>
-    <div id="MyDiv" class="white_content">             
+    <div id="MyDiv" class="white_content">
         <div class="white_d">
             <div class="notice_t">
                 <span class="fr" style="margin-top:10px; cursor:pointer;" onclick="CloseDiv('MyDiv','fade')"><img src="images/close.gif" /></span>
             </div>
             <div class="notice_c">
-           		
+
                 <table border="0" align="center" style="font-size:16px;" cellspacing="0" cellpadding="0">
                   <tr valign="top">
                     <td>您确定要把该商品移除购物车吗？</td>
@@ -280,13 +290,13 @@
                     <td><a href="#" class="b_sure">确定</a><a href="#" class="b_buy">取消</a></td>
                   </tr>
                 </table>
-                    
+
             </div>
         </div>
-    </div>    
+    </div>
     <!--End 弹出层-删除商品 End-->
-    
-    
+
+
     <!--Begin Footer Begin -->
     <div class="b_btm_bg bg_color">
         <div class="b_btm">
@@ -317,7 +327,7 @@
         </div>
     </div>
     <div class="b_nav">
-    	<dl>                                                                                            
+    	<dl>
         	<dt><a href="#">新手上路</a></dt>
             <dd><a href="#">售后流程</a></dd>
             <dd><a href="#">购物流程</a></dd>
@@ -350,7 +360,7 @@
             <dd><a href="#">投诉与建议</a></dd>
         </dl>
         <div class="b_tel_bg">
-        	<a href="#" class="b_sh1">新浪微博</a>            
+        	<a href="#" class="b_sh1">新浪微博</a>
         	<a href="#" class="b_sh2">腾讯微博</a>
             <p>
             服务热线：<br />
@@ -361,14 +371,14 @@
             <div class="b_er_c"><img src="images/er.gif" width="118" height="118" /></div>
             <img src="images/ss.png" />
         </div>
-    </div>    
+    </div>
     <div class="btmbg">
 		<div class="btm">
         	备案/许可证编号：蜀ICP备12009302号-1-www.dingguagua.com   Copyright © 2015-2018 尤洪商城网 All Rights Reserved. 复制必究 , Technical Support: Dgg Group <br />
             <img src="images/b_1.gif" width="98" height="33" /><img src="images/b_2.gif" width="98" height="33" /><img src="images/b_3.gif" width="98" height="33" /><img src="images/b_4.gif" width="98" height="33" /><img src="images/b_5.gif" width="98" height="33" /><img src="images/b_6.gif" width="98" height="33" />
-        </div>    	
+        </div>
     </div>
-    <!--End Footer End -->    
+    <!--End Footer End -->
 </div>
 </div>
 
@@ -378,9 +388,12 @@
     new Vue({
         el: '#app3',
         data:{
+            selectProducts:[],
+            productNum:1,
+            selectedIds: [],
             isChecked:false,
             ids:[],
-            totalPrice:null,
+            totalPrice:0,
             user:{
                 username:"",
                 id:null,
@@ -392,6 +405,45 @@
             theThird: [],
         },
         methods: {
+            checkNum(item){
+                var check = /^[1-9]\d*$/
+                console.log(item.count)
+                if (!check.test(item.count) || item.count > 5){
+                    item.count = 1;
+                    return;
+                }
+            },
+            reduce(item) {
+                if (item.count > 1) {
+                    item.count--;
+                    this.calculateTotalPrice();
+                }
+            },
+            add(item) {
+                item.count++;
+                this.calculateTotalPrice();
+            },
+            handleCheckboxChange(event, id,item) {
+                console.log(item)
+                if (event.target.checked) {
+                    this.selectedIds.push(id);
+                    this.selectProducts.push(item)
+                } else {
+                    const index = this.selectedIds.indexOf(id);
+                    if (index > -1) {
+                        this.selectedIds.splice(index, 1);
+                    }
+                }
+                this.calculateTotalPrice();
+            },
+            calculateTotalPrice() {
+                this.totalPrice = this.products.reduce((total, product) => {
+                    if (this.selectedIds.includes(product.catId)) {
+                        return total + (product.price * product.count);
+                    }
+                    return total;
+                }, 0);
+            },
             firstLoad() {
                 axios.get('http://localhost:8080/getFirstCategory')
                     .then((resp) => {
@@ -434,16 +486,14 @@
                     .then((resp) => {
                         console.log(resp.data);
                         this.products=resp.data.data
-                        let sum = 0;
                         this.productLength=this.products.length
                         for (let i = 0; i < this.products.length; i++) {
                             this.ids.push(this.products[i].catId)
-                            sum += this.products[i].price*this.products[i].count;
-                            this.totalPrice=sum;
                         }
 
                     });
             },
+
             delProduct(catId) {
                 if (!confirm("确认要删除吗")) {
                     return;
@@ -455,22 +505,17 @@
                     });
             },
             delProductList() {
+                console.log(this.ids)
                 if (!confirm("确认要删除吗")) {
-                    this.isChecked = false;
                     return;
                 }
                 axios.post('http://localhost:8080/delCatsList', { ids: this.ids })
                     .then((resp) => {
                         console.log(resp.data);
-                        this.isChecked = false;
                         this.initCat();
                     });
             },
-            handleClearCart() {
-                if (!this.isChecked) {
-                    this.delProductList();
-                }
-            },
+
             logout() {
                 let token=localStorage.getItem("token");
                 localStorage.removeItem("token");
@@ -480,13 +525,27 @@
                         window.location.href="index.html"
                     });
             },
+            redirectToBuyCarTwo() {
+                axios.post('http://localhost:8080/updateProducts', {ids: this.selectProducts})
+                    .then((resp) => {
+                        console.log(resp.data);
+                        if (resp.data.code===200){
+                            const selectedIdsStr = this.selectedIds.join(',');
+                            window.location.href = `BuyCar_Two.html?selectedIds=${selectedIdsStr}`;
+                        }
+                    });
 
+
+            }
         },
         mounted() {
             this.firstLoad();
             this.initLogin()
             this.initCat()
-        }
+
+
+
+        },
     })
 </script>
 

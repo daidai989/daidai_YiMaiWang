@@ -8,9 +8,6 @@ import com.kgc.easybuy.dao.CategoryMapper;
 import com.kgc.easybuy.dao.FileMapper;
 import com.kgc.easybuy.dao.ProductMapper;
 import com.kgc.easybuy.pojo.*;
-import com.kgc.easybuy.service.CatService;
-import com.kgc.easybuy.service.CategoryService;
-import com.kgc.easybuy.service.CollectService;
 import com.kgc.easybuy.service.ProductService;
 import com.kgc.easybuy.util.EncodingUtil;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -45,7 +42,7 @@ public class  ProductServiceImpl implements ProductService {
     @Autowired
     private ProductEsRepository per;
     @Autowired
-    ElasticsearchRestTemplate es;
+    private ElasticsearchRestTemplate es;
     @Autowired
     private CollectService collectService;
     @Autowired
@@ -82,14 +79,14 @@ public class  ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProductById(int id) {
+    public ResponseMessage getProductById(int id) {
         Product product = productMapper.getProductById(id);
         try {
             product.setFilePath(URLEncoder.encode(product.getFilePath(), "utf-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return product;
+        return ResponseMessage.success(product);
     }
 
     @Override
@@ -110,19 +107,20 @@ public class  ProductServiceImpl implements ProductService {
             return ResponseMessage.success(map);
         }
         QueryBuilder queryBuilder = QueryBuilders.matchQuery("name", name);
-        map = sameMethods(queryBuilder, current, pageSize);
+        map= sameMethods(queryBuilder, current, pageSize);
         map.put("current", current);
         map.put("pageSize", pageSize);
         return ResponseMessage.success(map);
     }
 
 
-    public Map sameMethods(QueryBuilder queryBuilder, int current, int pageSize) {
+
+    public Map sameMethods(QueryBuilder queryBuilder,int current, int pageSize) {
         List<Product> productList = new ArrayList<>();
-        Map map = new HashMap<>();
+        Map map=new HashMap<>();
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
         SortBuilder sortBuilder = SortBuilders.fieldSort("price").order(SortOrder.DESC);
-        nativeSearchQueryBuilder = nativeSearchQueryBuilder.withQuery(queryBuilder)
+        nativeSearchQueryBuilder= nativeSearchQueryBuilder.withQuery(queryBuilder)
                 .withSort(sortBuilder)
                 .withPageable(PageRequest.of(current - 1, pageSize));
         SearchHits<Product> searchHits = es.search(nativeSearchQueryBuilder.build(), Product.class);
@@ -131,25 +129,24 @@ public class  ProductServiceImpl implements ProductService {
             productList.add(searchHit.getContent());
         }
         map.put("list", productList);
-        map.put("total", totalHits);
+        map.put("total",totalHits);
         return map;
     }
-
     @Override
     public ResponseMessage getProducts() {
         List<Product> products = productMapper.getProducts();
         ResponseMessage response = new ResponseMessage();
+        per.deleteAll();
         Iterable<Product> products1 = per.saveAll(products);
         if (products1 != null && products1.iterator().hasNext()) {
             response = ResponseMessage.success(products1);
         }
         return response;
     }
-
     @Override
     public ResponseMessage delProById(Integer id) {
-        boolean flag = productMapper.delProById(id);
-        if (flag) {
+        boolean flag= productMapper.delProById(id);
+        if (flag){
             per.deleteById(id.toString());
             return ResponseMessage.success("删除成功", flag);
         }
@@ -164,10 +161,10 @@ public class  ProductServiceImpl implements ProductService {
         File file = new File();
         file.setFilePath(filePath);
         file.setUserId(userId);
-        int count = fileMapper.addFile(file);
+        int count=fileMapper.addFile(file);
         boolean b = productMapper.updateFileId(file.getId(), product.getId());
         boolean b2 = fileMapper.updateProId(product.getId(), file.getId());
-        if (b && b2) {
+        if (b&&b2) {
             Product save = per.save(product);
             if (save == null) {
                 return ResponseMessage.error("数据保存失败，对象为空");
@@ -182,7 +179,7 @@ public class  ProductServiceImpl implements ProductService {
         boolean b = productMapper.updateProduct(products);
 
         if (b) {
-            Date date = new Date();
+            Date date=new Date();
             products.setCreateTime(date);
             Product save = per.save(products);
             return ResponseMessage.success(save);
@@ -193,10 +190,10 @@ public class  ProductServiceImpl implements ProductService {
     @Override
     public ResponseMessage getProductByLogin(String loginName) {
         Product productByLogin = productMapper.getProductByLogin(loginName);
-        if (productByLogin != null) {
+        if (productByLogin!=null){
             return ResponseMessage.error("不可以使用");
         }
-        return ResponseMessage.success();
+        return ResponseMessage.success(productByLogin);
     }
 
     @Override
