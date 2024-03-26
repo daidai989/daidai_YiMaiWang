@@ -39,7 +39,7 @@ public class  ProductServiceImpl implements ProductService {
     @Autowired
     private ProductEsRepository per;
     @Autowired
-    ElasticsearchRestTemplate es;
+    private ElasticsearchRestTemplate es;
     @Override
     public ResponseMessage getProductList(int currentPageNo,int pageSize) {
         PageHelper.startPage(currentPageNo,pageSize);

@@ -106,7 +106,7 @@
         </span>
             <!--End 所在收货地区 End-->
             <span class="fr">
-        	<span class="fl">你好，{{$data.user.username ?  $data.user.username : '请登录'}}&nbsp;<a v-if="!$data.user.username" href="../Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.user.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
+        	<span class="fl">你好，{{$data.user.username ?  $data.user.username : '请登录'}}&nbsp;<a v-if="!$data.user.username" href="../Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.user.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="../register.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
                     href="#">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
@@ -189,37 +189,31 @@
                     <div class="left_m_t t_bg1">订单中心</div>
 
                     <ul>
-                        <li><a href="../Member_Product.html" class="now">我的订单</a></li>
-                        <li><a href="Member_Address.html">收货地址</a></li>
-                        <li><a href="#">缺货登记</a></li>
-                        <li><a href="#">跟踪订单</a></li>
+                        <li><a href="user_order.html" class="now">我的订单</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="">全部订单</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
                     <div class="left_m_t t_bg2">会员中心</div>
                     <ul>
-                        <li><a href="Member_User.html">用户信息</a></li>
-                        <li><a href="Member_Collect.html">我的收藏</a></li>
-                        <li><a href="Member_Msg.html">我的留言</a></li>
-                        <li><a href="Member_Links.html">推广链接</a></li>
-                        <li><a href="#">我的评论</a></li>
+                        <li><a href="">用户信息</a></li>
+                        <li><a href="">用户列表</a></li>
+                        <li><a href="">我的收藏</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg3">账户中心</div>
+                    <div class="left_m_t t_bg3">商品管理</div>
                     <ul>
-                        <li><a href="Member_Safe.html">账户安全</a></li>
-                        <li><a href="Member_Packet.html">我的红包</a></li>
-                        <li><a href="Member_Money.html">资金管理</a></li>
+                        <li><a href="">分类管理</a></li>
+                        <li><a href="../Member_Product.html">商品管理</a></li>
+                        <li><a href="../product_add.html">分类管理</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg4">分销中心</div>
+                    <div class="left_m_t t_bg4">咨询管理</div>
                     <ul>
-                        <li><a href="Member_Member.html">我的会员</a></li>
-                        <li><a href="Member_Results.html">我的业绩</a></li>
-                        <li><a href="Member_Commission.html">我的佣金</a></li>
-                        <li><a href="Member_Cash.html">申请提现</a></li>
+                        <li><a href="../News/news.html">咨询列表</a></li>
+
                     </ul>
                 </div>
             </div>
@@ -406,6 +400,7 @@
             user:{
                 username:"",
                 id:null,
+                roleId:null,
             },
             products:[],
             selectedOrdersList:[],
@@ -423,6 +418,7 @@
                         console.log(resp.data);
                         this.user.username=resp.data.data.userName
                         this.user.id=resp.data.data.id
+                        this.user.roleId=resp.data.data.roleId
                         this.viewOrderList(1)
                         this.initOtherOrders(this.user.id)
                     });
@@ -484,9 +480,9 @@
                     .then((resp) => {
                         console.log(resp.data);
                         if (resp.data.code===200){
-                            let order = this.AllOrders.find(order => order.id === id);
-                            if (order) {
-                                order.status = 2;
+                            let order = this.AllOrders.find(order => user_order.id === id);
+                            if (user_order) {
+                                user_order.status = 2;
                             }
                         }
                     });
@@ -509,8 +505,8 @@
                 }
             },
             handleOrderChange() {
-                const order1= this.otherOrders.find(order => order.serialNumber === this.selectedOrder1);
-                const order2 = this.otherOrders.find(order => order.serialNumber === this.selectedOrder2);
+                const order1= this.otherOrders.find(order => user_order.serialNumber === this.selectedOrder1);
+                const order2 = this.otherOrders.find(order => user_order.serialNumber === this.selectedOrder2);
                 this.selectedOrdersList= [order1];
                 if (order2) {
                     this.selectedOrdersList.push(order2);
@@ -518,17 +514,51 @@
             },
 
             combineOrders() {
-                axios.post('http://localhost:8080/combineOrder',this.selectedOrdersList )
+                if (this.selectedOrdersList.length < 2) {
+                    this.$message.error("请选择完你的订单哦");
+                    return;
+                }
+                let hasDuplicate = false;
+                this.selectedOrdersList.forEach((order1, index1) => {
+                    this.selectedOrdersList.forEach((order2, index2) => {
+                        if (index1 !== index2 && order1.serialNumber === order2.serialNumber) {
+                            this.$message.error("你选择的订单重复了哦");
+                            hasDuplicate = true;
+                        }
+                    });
+                });
+                if (!hasDuplicate) {
+                    axios.post('http://localhost:8080/combineOrder', this.selectedOrdersList)
+                        .then((resp) => {
+                            console.log(resp.data);
+                            if (resp.data.code === 400) {
+                                this.$message.error(resp.data.message);
+                            } else {
+                                this.$message.success("订单合并成功啦");
+                                this.viewOrderList(1)
+
+                            }
+                        });
+                }
+            },
+            logout() {
+                let token=localStorage.getItem("token");
+                localStorage.removeItem("token");
+                axios.get('http://localhost:8080/logout', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-
+                        window.location.href="../index.html"
                     });
             },
+
+
+
         },
 
         mounted() {
             this.initLogin()
             this.initCat()
+
         },
 
     })

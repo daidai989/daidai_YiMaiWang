@@ -25,7 +25,6 @@ import java.util.Map;
 @Controller
 @CrossOrigin("*")
 public class AlipayController {
-
     @Autowired
     private AlipayServiceImpl alipayServiceImpl;
     @Autowired

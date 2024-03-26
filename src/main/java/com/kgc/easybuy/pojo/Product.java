@@ -19,6 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @Document(indexName = "prou")
 public class Product {
+
     @Id
     private int id;
     @Field(type = FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_max_word")

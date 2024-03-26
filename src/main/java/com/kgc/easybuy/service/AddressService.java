@@ -6,6 +6,7 @@ import com.kgc.easybuy.pojo.ResponseMessage;
 import org.springframework.stereotype.Service;
 
 public interface AddressService {
+
     public ResponseMessage getDefaultAdd(Integer id);
     public ResponseMessage getAddressById(int userId,Page page);
     public ResponseMessage setDefaultAddress(Address address);

@@ -32,6 +32,15 @@
     <script src="js/axios.js"></script>
     <script src="js/element.js"></script>
     <title>尤洪</title>
+    <style>
+        .leftNav .zj.block1 {
+            display: block;
+        }
+
+        .leftNav .zj.none1 {
+            display: none;
+        }
+    </style>
 
 </head>
 <body>
@@ -182,7 +191,7 @@
             <div class="car_bg">
                 <!--Begin 购物车未登录 Begin-->
                     <ul v-if="$data.username" class="cars">
-                        <li v-for="(item, index) in products" :key="index" >
+                        <li v-for="(item, index) in products" :key="item.id" >
                             <div class="img"><a href="#"><img height="58" :src="'http://localhost:8080/getImage?filePath=' + item.filePath" width="58"/></a></div>
                             <div class="name"><a href="#">{{item.name}}</a></div>
                             <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
@@ -207,18 +216,18 @@
                 <div class="nav_t">全部商品分类</div>
                 <div class="leftNav">
                     <ul>
-                        <li v-for="(item, index) in theFirst" :key="index" @mouseenter="loadSecondAndThird(item.id)">
+                        <li v-for="(item, index) in theFirst" :key="item.id" @mouseenter="loadSecondAndThird(item.id,index)" @mouseleave="hideSecondAndThird(index)">
                             <div class="fj">
                                 <span class="n_img"><span></span><img src="images/nav1.png"/></span>
                                 <span class="fl">{{item.name}}</span>
                             </div>
-                            <div class="zj" >
+                            <div class="zj" :class="[{ 'block1': activeIndex === index, 'none1': activeIndex !== index }]">
                                 <div class="zj_l">
-                                    <div class="zj_l_c" v-for="(subItem, index) in theSecond" :key="index">
+                                    <div class="zj_l_c" v-for="(subItem, index) in theSecond" :key="subItem.id">
                                         <h2>
                                             {{subItem.name}}
                                         </h2>
-                                        <a v-for="(subItem, index) in theThird" :key="index">{{subItem.name}}|</a>|
+                                        <a v-for="(subItem, index) in theThird" :key="subItem.id">{{subItem.name}}|</a>|
                                     </div>
                                 </div>
                                 <div class="zj_r">
@@ -276,7 +285,7 @@
                     <span class="fr"><a href="#">更多 ></a></span>新闻资讯
                 </div>
                 <ul>
-                    <li v-for="(item, index) in newsList" :key="index" ><span>{{item.shortTitle}}</span><a href="#">{{item.title}}</a></li>
+                    <li v-for="(item, index) in newsList" :key="item.id" ><span>{{item.shortTitle}}</span><a href="#">{{item.title}}</a></li>
 
                 </ul>
                 <div class="charge_t" v-model="shopName">
@@ -428,11 +437,11 @@
             <img height="110" src="images/mban_1.jpg" width="1200"/>
         </div>
         <!--Begin 进口 生鲜 Begin-->
-        <div v-for="(first, index) in theFirst" :key="index">
+        <div v-for="(first, index) in theFirst" :key="first.id">
             <div class="i_t mar_10">
                 <span class="floor_num">{{index+1}}F</span>
                 <span class="fl">{{theFirst[index].name}}</span>
-                <span class="i_mores fr"><a href="#" v-for="secondCategory in allTheSecond[index]" :key="index">{{secondCategory.name}}</a>&nbsp; &nbsp; &nbsp;</span>
+                <span class="i_mores fr"><a href="#" v-for="secondCategory in allTheSecond[index]" :key="secondCategory.id">{{secondCategory.name}}</a>&nbsp; &nbsp; &nbsp;</span>
             </div>
             <div class="content">
                 <div class="fresh_left">
@@ -670,9 +679,37 @@
 
 </div>
 <script>
+
+    function getCookie(name) {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // 判断是否为指定名称的cookie
+            if (cookie.startsWith(name + '=')) {
+                return cookie.substring(name.length + 1);
+            }
+        }
+        return null;
+    }
+    // 请求拦截器，将cookie值放入请求头中
+    axios.interceptors.request.use(
+        config => {
+            const cookies = document.cookie.split(';');
+            const cookieString = cookies.map(cookie => cookie.trim()).join('; ');
+
+            if (cookieString) {
+                config.headers.Cookie = cookieString;
+            }
+            return config;
+        },
+        error => {
+            return Promise.reject(error);
+        }
+    );
     new Vue({
         el: '#app',
         data: {
+            activeIndex: null,
             productLength:null,
             totalPrice:"",
             username:"",
@@ -705,18 +742,16 @@
             this.showNews();
         },
         methods: {
-            firstLoad() {
-                axios.get('http://localhost:8080/getFirstCategory')
+            async firstLoad() {
+                await axios.get('http://localhost:8080/getFirstCategory')
                     .then((resp) => {
                         console.log(resp.data);
                         this.theFirst = resp.data.data;
                     });
             },
-            loadSecondAndThird(id) {
-                this.secondLoad(id);
-            },
-            secondLoad(id) {
-                axios.get('http://localhost:8080/getSecondCategory', {params: {id: id}})
+
+            async secondLoad(id) {
+                await axios.get('http://localhost:8080/getSecondCategory', {params: {id: id}})
                     .then((resp) => {
                         console.log(resp.data);
                         this.theSecond = resp.data.data;
@@ -725,12 +760,19 @@
                         }
                     });
             },
-            thirdLoad(id) {
-                axios.get('http://localhost:8080/getThirdCategory', {params: {id: id}})
+            async thirdLoad(id) {
+                await axios.get('http://localhost:8080/getThirdCategory', {params: {id: id}})
                     .then((resp) => {
                         console.log(resp.data);
                         this.theThird = resp.data.data;
                     });
+            },
+            loadSecondAndThird(id,index) {
+                this.secondLoad(id);
+                this.activeIndex = index;
+            },
+            hideSecondAndThird(index) {
+                this.activeIndex = null;
             },
             getProductDetail(id){
                 window.location.href="Product.html?id=" + id;

@@ -13,6 +13,7 @@ import java.util.List;
 @Mapper
 public interface CatMapper {
     public List<Product> getProductsById(Integer userId);
+
     public boolean addProduct( Cat cat );
     public boolean deleteProduct( Integer id);
     public Product getProductsByProId( Cat cat);

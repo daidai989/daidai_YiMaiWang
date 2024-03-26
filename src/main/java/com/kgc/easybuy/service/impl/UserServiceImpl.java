@@ -92,4 +92,15 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public ResponseMessage updateUser(User user) {
+        int count = userMapper.updateUser(user);
+        if (count > 0){
+            return ResponseMessage.success();
+        }
+        return ResponseMessage.error("修改失败！");
+    }
+
+
+
 }

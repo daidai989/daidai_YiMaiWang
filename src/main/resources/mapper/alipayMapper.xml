@@ -8,6 +8,7 @@
         INSERT INTO easybuy_alipay(out_trade_no,total_amount) VALUES(#{out_trade_no},#{total_amount})
     </insert>
 
+
     <update id="updAlipay" >
         UPDATE easybuy_alipay SET `status`=1 WHERE out_trade_no=#{out_trade_no}
     </update>

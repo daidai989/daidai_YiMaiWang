@@ -24,6 +24,7 @@ public class NewsController {
         ResponseMessage responeseMsg = newsService.getNewsList();
         return responeseMsg;
     }
+
     @RequestMapping("getNewsListByPage")
     public Object getNewsListByPage(String title,String currentNo) {
         int _currentPageNo = 1;

@@ -1,5 +1,6 @@
 package com.kgc.easybuy.dao;
 
+import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.pojo.User;
 import org.springframework.stereotype.Repository;
 
@@ -11,4 +12,8 @@ public interface UserMapper {
 
     public User checkUserExist(User user);
     public int register(User user);
+
+    public int updateUser(User user);
+
+
 }

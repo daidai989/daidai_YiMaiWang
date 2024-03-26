@@ -30,23 +30,64 @@
     </update>
 
     <select id="checkUserExist" parameterType="com.kgc.easybuy.pojo.User" resultType="com.kgc.easybuy.pojo.User">
-        select  u.id,
-                loginName,
-                userName,
-                password,
-                sex,
-                identityCode,
-                email,
-                mobile,
-                phone,
-                roleId,
-                u.createTime,
-                a.address
-        from easybuy_user u,easybuy_user_address a
-        where loginName = #{loginName} and u.isDel = 0 and a.userId=u.id and a.isDefault=1
+        SELECT
+        u.id,
+        u.loginName,
+        u.userName,
+        u.password,
+        sex,
+        identityCode,
+        email,
+        mobile,
+        phone,
+        roleId,
+        u.createTime,
+        MAX(a.address) AS address,
+        SUM(o.cost) AS total_cost
+
+        FROM easybuy_user u
+        LEFT JOIN easybuy_user_address a ON u.id = a.userId
+        left join easybuy_order o on u.id=o.userId
+        WHERE u.loginName = #{loginName} AND u.isDel = 0
+        <if test="isDefault!=null">
+            AND a.isDefault=1
+        </if>
+        GROUP BY u.id, u.loginName, u.userName, password, sex, identityCode, email, mobile, phone, roleId, u.createTime
     </select>
     <insert id="register">
         insert into easybuy_user(loginName, password, email, mobile, createTime,isDel,roleId) value (#{loginName}, #{password}, #{email}, #{mobile},
                                                                                                      now(), 0,3);
     </insert>
+
+    <update id="updateUser" parameterType="User">
+        update easybuy_user
+        <set>
+            <if test="loginName != null and loginName != ''">
+                loginName = #{loginName},
+            </if>
+            <if test="userName != null and userName != ''">
+                userName = #{userName},
+            </if>
+            <if test="identityCode != null and identityCode != ''">
+                identityCode = #{identityCode},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="sex > 0">
+                sex = #{sex},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="mobile != null and mobile != ''">
+                mobile = #{mobile},
+            </if>
+            <if test="roleId > 0">
+                roleId = #{roleId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
 </mapper>

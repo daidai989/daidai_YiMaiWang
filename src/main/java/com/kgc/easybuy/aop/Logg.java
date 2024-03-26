@@ -16,6 +16,7 @@ import java.util.Arrays;
 @Aspect
 @Component
 
+
 public class Logg {
     private Logger log = LoggerFactory.getLogger(Logg.class);
     @Around(value = "execution(* com.kgc.easybuy.controller..*.*(..))||execution(* com.kgc.easybuy.service..*.*(..))")

@@ -2,6 +2,7 @@ package com.kgc.easybuy.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.kgc.easybuy.config.ProductEsRepository;
 import com.kgc.easybuy.dao.CatMapper;
 import com.kgc.easybuy.dao.OrderMapper;
 import com.kgc.easybuy.dao.Order_detailMapper;
@@ -10,6 +11,7 @@ import com.kgc.easybuy.pojo.*;
 import com.kgc.easybuy.service.OrderService;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,6 +33,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private CatMapper catMapper;
 
+    @Autowired
+    private ProductEsRepository per;
 
 
     @Override
@@ -61,6 +65,7 @@ public class OrderServiceImpl implements OrderService {
             Product productById = productMapper.getProductById(productId);
             productById.setStock(productById.getStock()+order_detail.getCount());
             boolean flag = productMapper.updateStock(productId, productById.getStock());
+            per.save(productById);
             if (!flag){
                 return ResponseMessage.error("修改库存失败");
             }
@@ -97,9 +102,10 @@ public class OrderServiceImpl implements OrderService {
         double sum=0;
         for (Order order : orders) {
             if (flag){
-                secondOrder.setId(order.getUserId());
+                secondOrder.setUserId(order.getUserId());
                 secondOrder.setLoginName(order.getLoginName());
                 secondOrder.setUserAddress(order.getUserAddress());
+                System.out.println(secondOrder);
                 flag=false;
             }
              sum+= order.getCost();
@@ -109,6 +115,7 @@ public class OrderServiceImpl implements OrderService {
             if (order.getStatus()==2){
                 return ResponseMessage.error(order.getSerialNumber()+"这个订单已经取消啦");
             }
+            orderMapper.delOrder(order.getId());
         }
         secondOrder.setCost(sum);
         String uuid = UUID.randomUUID().toString();
@@ -155,6 +162,7 @@ public class OrderServiceImpl implements OrderService {
                 return ResponseMessage.error(productById.getName()+"库存不足了哦");
             }
             productById.setStock(productById.getStock()-cat.getCount());
+            per.save(productById);
             boolean flag = productMapper.updateStock(productById.getId(), productById.getStock());
             order_detail.setProductId(cat.getProductId());
             order_detail.setCount(cat.getCount());

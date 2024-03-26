@@ -10,6 +10,7 @@ import java.util.List;
  * @author daidai
  */
 public interface OrderService {
+
     public ResponseMessage addNewOrder(List<Cat> cats,User user);
 
     public PageInfo<Order> getOrderListByPage(String title, Page page,Integer userId);

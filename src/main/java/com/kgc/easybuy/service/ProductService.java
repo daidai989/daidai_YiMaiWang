@@ -7,6 +7,7 @@ import com.kgc.easybuy.pojo.ResponseMessage;
 import java.util.List;
 
 public interface ProductService {
+
     public ResponseMessage getProducts();
     public Object getProductList(int currentPageNo,int pageSize);
 

@@ -17,4 +17,5 @@
         select d.orderId,d.productId,d.count,d.cost,o.status  from easybuy_order o,easybuy_order_detail d where o.id=d.orderId and o.isDel=0 and o.id=#{id}
     </select>
 
+
 </mapper>

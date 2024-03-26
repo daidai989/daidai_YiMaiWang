@@ -13,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cat {
+
    private  String name;
    private  Integer userId;
    private  Integer id;

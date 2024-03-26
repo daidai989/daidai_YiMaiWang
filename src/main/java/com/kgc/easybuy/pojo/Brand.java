@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Brand {
+
     private int id;
     private String name;
     private int isDelete;

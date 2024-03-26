@@ -16,6 +16,7 @@ import java.util.List;
 public interface ProductMapper {
     public List<Product> getProducts();
 
+
     public List<Product> getProductList();
 
     public List<Product> getProductByCategoryId(int parentId);

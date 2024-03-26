@@ -49,5 +49,4 @@
         WHERE createTime &lt;= DATE_SUB(NOW(), INTERVAL 2 MINUTE) and status=0
     </select>
 
-
 </mapper>

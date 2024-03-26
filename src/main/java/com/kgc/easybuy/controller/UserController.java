@@ -34,9 +34,12 @@ public class UserController {
     @ResponseBody
     public Object login(HttpServletResponse res, User user){
         ResponseMessage message = userService.login(user);
-//        Cookie cookie = new Cookie("token", (String) message.getData());
-//        cookie.setMaxAge(3600); // 设置cookie的有效期为1小时
-//        res.addCookie(cookie);
+        if (message.getCode()==200) {
+            String token = (String) message.getData();
+            Cookie cookie = new Cookie("token", token);
+            cookie.setMaxAge(3600); // 设置cookie的有效期为1小时
+            res.addCookie(cookie);
+        }
         return message;
     }
 
@@ -78,6 +81,12 @@ public class UserController {
     public ResponseMessage logout(String token) {
         ResponseMessage responeseMsg = userService.logOut(token);
         return responeseMsg;
+    }
+    @RequestMapping("updateUser")
+    @ResponseBody
+    public ResponseMessage updateUser(@RequestBody User user){
+        ResponseMessage updateUser = userService.updateUser(user);
+        return updateUser;
     }
 
 

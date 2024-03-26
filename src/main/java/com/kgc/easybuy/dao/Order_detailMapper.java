@@ -12,6 +12,7 @@ import java.util.List;
  */
 @Mapper
 public interface Order_detailMapper {
+
     public boolean addNewOrder_detail(Order_detail order_detail);
 
     public boolean updateOrderId(@Param("orderId") Integer orderId,@Param("ids") List<Integer> ids);

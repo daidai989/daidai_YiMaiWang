@@ -8,5 +8,6 @@ import org.springframework.stereotype.Component;
 /**
  * @author daidai
  */
+
 @Component
 public interface ProductEsRepository extends ElasticsearchRepository<Product, String> {}

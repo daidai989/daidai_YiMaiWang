@@ -8,6 +8,7 @@ import java.util.Map;
  */
 @SuppressWarnings("all")
 public class ThreadLocalUtil {
+
     //提供ThreadLocal对象,
     private static final ThreadLocal THREAD_LOCAL = new ThreadLocal();
 

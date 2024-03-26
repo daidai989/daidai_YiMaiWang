@@ -14,6 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class News {
+
     private Integer id;
     private String title;
     private String content;

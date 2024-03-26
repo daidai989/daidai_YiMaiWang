@@ -146,6 +146,7 @@ public class ProductController {
     @RequestMapping("getProductByLogin")
     @ResponseBody
 
+
     public ResponseMessage getProductByLogin(String name){
         ResponseMessage responseMessage = productService.getProductByLogin(name);
         return responseMessage;

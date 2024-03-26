@@ -36,6 +36,7 @@ public class CategoryController {
         ResponseMessage responeseMsg = categoryService.getSecondAllCategories();
         return responeseMsg;
     }
+
     @RequestMapping("getAllCategory")
     public ResponseMessage getAllCategory() {
         ResponseMessage responeseMsg = categoryService.getAllCategory();

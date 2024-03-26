@@ -10,4 +10,6 @@ public interface UserService {
     public ResponseMessage register(User user);
     public ResponseMessage getUser(String token);
     public ResponseMessage logOut(String token);
+
+    public ResponseMessage updateUser(User user);
 }

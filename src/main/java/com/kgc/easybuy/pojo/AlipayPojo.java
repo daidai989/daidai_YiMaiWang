@@ -9,6 +9,7 @@ import java.io.Serializable;
 @Component
 @ConfigurationProperties(prefix = "alipay")
 public class AlipayPojo implements Serializable {
+
     private String gateway;
     private String appId;
     private String publicKey;

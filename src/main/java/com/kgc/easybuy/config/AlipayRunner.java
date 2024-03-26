@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @Data
 
+
 public class AlipayRunner implements Runnable{
     @Autowired
     private AlipayServiceImpl alipayServiceImpl;
