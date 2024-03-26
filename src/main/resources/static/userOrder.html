@@ -2,24 +2,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link type="text/css" rel="stylesheet" href="../css/style.css" />
-    <link type="text/css" rel="stylesheet" href="../css/antd.css">
-    <link rel="stylesheet" href="../css/element.css">
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+    <link type="text/css" rel="stylesheet" href="css/antd.css">
+    <link rel="stylesheet" href="css/element.css">
     <!--[if IE 6]>
-    <script src="../js/iepng.js" type="text/javascript"></script>
+    <script src="js/iepng.js" type="text/javascript"></script>
     <script type="text/javascript">
         EvPNG.fix('div, ul, img, li, input, a');
     </script>
     <![endif]-->
 
-    <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="../js/menu.js"></script>
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
 
-    <script type="text/javascript" src="../js/select.js"></script>
-    <script src="../js/vue.js"></script>
-    <script src="../js/axios.js"></script>
-    <script src="../js/antd.js"></script>
-    <script src="../js/element.js"></script>
+    <script type="text/javascript" src="js/select.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/axios.js"></script>
+    <script src="js/antd.js"></script>
+    <script src="js/element.js"></script>
 
 
     <title>尤洪</title>
@@ -106,7 +106,7 @@
         </span>
             <!--End 所在收货地区 End-->
             <span class="fr">
-        	<span class="fl">你好，{{$data.user.username ?  $data.user.username : '请登录'}}&nbsp;<a v-if="!$data.user.username" href="../Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.user.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="../register.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
+        	<span class="fl">你好，{{$data.user.username ?  $data.user.username : '请登录'}}&nbsp;<a v-if="!$data.user.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.user.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="register.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
                     href="#">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
@@ -149,13 +149,13 @@
             </span>
             <span class="fl">|&nbsp;关注我们：</span>
             <span class="s_sh"><a href="#" class="sh1">新浪</a><a href="#" class="sh2">微信</a></span>
-            <span class="fr">|&nbsp;<a href="#">手机版&nbsp;<img src="../images/s_tel.png" align="absmiddle" /></a></span>
+            <span class="fr">|&nbsp;<a href="#">手机版&nbsp;<img src="images/s_tel.png" align="absmiddle" /></a></span>
         </span>
         </div>
     </div>
     <div class="m_top_bg">
         <div class="top">
-            <div class="m_logo"><a href="Index.html"><img src="../images/logo1.png" /></a></div>
+            <div class="m_logo"><a href="Index.html"><img src="images/logo1.png" /></a></div>
             <div class="i_car">
                 <div class="car_t">购物车 [ <span>{{productLength}}</span> ]</div>
                 <div class="car_bg">
@@ -170,7 +170,7 @@
                         <div class="price_a"><a href="BuyCar.html">去购物车结算</a></div>
                     </ul>
                     <div v-else class="un_login">
-                        还未登录！<a href="../Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！
+                        还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！
 
                     </div>
 
@@ -189,7 +189,7 @@
                     <div class="left_m_t t_bg1">订单中心</div>
 
                     <ul>
-                        <li><a href="user_order.html" class="now">我的订单</a></li>
+                        <li><a href="order.html" class="now">我的订单</a></li>
                         <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="">全部订单</a></li>
                     </ul>
                 </div>
@@ -205,14 +205,14 @@
                     <div class="left_m_t t_bg3">商品管理</div>
                     <ul>
                         <li><a href="">分类管理</a></li>
-                        <li><a href="../Member_Product.html">商品管理</a></li>
-                        <li><a href="../product_add.html">分类管理</a></li>
+                        <li><a href="Member_Product.html">商品管理</a></li>
+                        <li><a href="product_add.html">分类管理</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
                     <div class="left_m_t t_bg4">咨询管理</div>
                     <ul>
-                        <li><a href="../News/news.html">咨询列表</a></li>
+                        <li><a href="news.html">咨询列表</a></li>
 
                     </ul>
                 </div>
@@ -242,11 +242,11 @@
                         <span v-else-if="text === 2" style="color: orange">已取消</span>
                     </div>
                     <div slot="action" slot-scope="text, record">
-                        <span v-if="record.status === 1"><a @click="delOrder(record.id)">删除</a></span>
-                            <span v-else-if="record.status === 0">
+                        <span v-if="record.status === 1"><a @click="delOrder(record.id)">删除</a>
+                        <a @click="viewOrder_dtail(record.id)">查看</a></span>
+                        <span v-else-if="record.status === 0">
                                         <a @click="cancel(record.id)">取消</a>
                                         <a @click="alipay_use(record.serialNumber)">去支付</a>
-                                        <span>{{send}}</span>
                             </span>
                         <span v-else-if="record.status === 2"><a @click="delOrder(record.id)">删除</a></span>
                     </div>
@@ -278,94 +278,94 @@
                         </td>
                     </tr>
                 </table>
-        </div>
-        <!--End 用户中心 End-->
-        <!--Begin Footer Begin -->
-        <div class="b_btm_bg b_btm_c">
-            <div class="b_btm">
-                <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
-                    <tr>
-                        <td width="72"><img src="../images/b1.png" width="62" height="62" /></td>
-                        <td><h2>正品保障</h2>正品行货  放心购买</td>
-                    </tr>
-                </table>
-                <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
-                    <tr>
-                        <td width="72"><img src="../images/b2.png" width="62" height="62" /></td>
-                        <td><h2>满38包邮</h2>满38包邮 免运费</td>
-                    </tr>
-                </table>
-                <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
-                    <tr>
-                        <td width="72"><img src="../images/b3.png" width="62" height="62" /></td>
-                        <td><h2>天天低价</h2>天天低价 畅选无忧</td>
-                    </tr>
-                </table>
-                <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
-                    <tr>
-                        <td width="72"><img src="../images/b4.png" width="62" height="62" /></td>
-                        <td><h2>准时送达</h2>收货时间由你做主</td>
-                    </tr>
-                </table>
             </div>
-        </div>
-        <div class="b_nav">
-            <dl>
-                <dt><a href="#">新手上路</a></dt>
-                <dd><a href="#">售后流程</a></dd>
-                <dd><a href="#">购物流程</a></dd>
-                <dd><a href="#">订购方式</a></dd>
-                <dd><a href="#">隐私声明</a></dd>
-                <dd><a href="#">推荐分享说明</a></dd>
-            </dl>
-            <dl>
-                <dt><a href="#">配送与支付</a></dt>
-                <dd><a href="#">货到付款区域</a></dd>
-                <dd><a href="#">配送支付查询</a></dd>
-                <dd><a href="#">支付方式说明</a></dd>
-            </dl>
-            <dl>
-                <dt><a href="#">会员中心</a></dt>
-                <dd><a href="#">资金管理</a></dd>
-                <dd><a href="#">我的收藏</a></dd>
-                <dd><a href="#">我的订单</a></dd>
-            </dl>
-            <dl>
-                <dt><a href="#">服务保证</a></dt>
-                <dd><a href="#">退换货原则</a></dd>
-                <dd><a href="#">售后服务保证</a></dd>
-                <dd><a href="#">产品质量保证</a></dd>
-            </dl>
-            <dl>
-                <dt><a href="#">联系我们</a></dt>
-                <dd><a href="#">网站故障报告</a></dd>
-                <dd><a href="#">购物咨询</a></dd>
-                <dd><a href="#">投诉与建议</a></dd>
-            </dl>
-            <div class="b_tel_bg">
-                <a href="#" class="b_sh1">新浪微博</a>
-                <a href="#" class="b_sh2">腾讯微博</a>
-                <p>
-                    服务热线：<br />
-                    <span>400-123-4567</span>
-                </p>
+            <!--End 用户中心 End-->
+            <!--Begin Footer Begin -->
+            <div class="b_btm_bg b_btm_c">
+                <div class="b_btm">
+                    <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td width="72"><img src="images/b1.png" width="62" height="62" /></td>
+                            <td><h2>正品保障</h2>正品行货  放心购买</td>
+                        </tr>
+                    </table>
+                    <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td width="72"><img src="images/b2.png" width="62" height="62" /></td>
+                            <td><h2>满38包邮</h2>满38包邮 免运费</td>
+                        </tr>
+                    </table>
+                    <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td width="72"><img src="images/b3.png" width="62" height="62" /></td>
+                            <td><h2>天天低价</h2>天天低价 畅选无忧</td>
+                        </tr>
+                    </table>
+                    <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td width="72"><img src="images/b4.png" width="62" height="62" /></td>
+                            <td><h2>准时送达</h2>收货时间由你做主</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
-            <div class="b_er">
-                <div class="b_er_c"><img src="../images/er.gif" width="118" height="118" /></div>
-                <img src="../images/ss.png" />
+            <div class="b_nav">
+                <dl>
+                    <dt><a href="#">新手上路</a></dt>
+                    <dd><a href="#">售后流程</a></dd>
+                    <dd><a href="#">购物流程</a></dd>
+                    <dd><a href="#">订购方式</a></dd>
+                    <dd><a href="#">隐私声明</a></dd>
+                    <dd><a href="#">推荐分享说明</a></dd>
+                </dl>
+                <dl>
+                    <dt><a href="#">配送与支付</a></dt>
+                    <dd><a href="#">货到付款区域</a></dd>
+                    <dd><a href="#">配送支付查询</a></dd>
+                    <dd><a href="#">支付方式说明</a></dd>
+                </dl>
+                <dl>
+                    <dt><a href="#">会员中心</a></dt>
+                    <dd><a href="#">资金管理</a></dd>
+                    <dd><a href="#">我的收藏</a></dd>
+                    <dd><a href="#">我的订单</a></dd>
+                </dl>
+                <dl>
+                    <dt><a href="#">服务保证</a></dt>
+                    <dd><a href="#">退换货原则</a></dd>
+                    <dd><a href="#">售后服务保证</a></dd>
+                    <dd><a href="#">产品质量保证</a></dd>
+                </dl>
+                <dl>
+                    <dt><a href="#">联系我们</a></dt>
+                    <dd><a href="#">网站故障报告</a></dd>
+                    <dd><a href="#">购物咨询</a></dd>
+                    <dd><a href="#">投诉与建议</a></dd>
+                </dl>
+                <div class="b_tel_bg">
+                    <a href="#" class="b_sh1">新浪微博</a>
+                    <a href="#" class="b_sh2">腾讯微博</a>
+                    <p>
+                        服务热线：<br />
+                        <span>400-123-4567</span>
+                    </p>
+                </div>
+                <div class="b_er">
+                    <div class="b_er_c"><img src="images/er.gif" width="118" height="118" /></div>
+                    <img src="images/ss.png" />
+                </div>
             </div>
-        </div>
-        <div class="btmbg">
-            <div class="btm">
-                备案/许可证编号：蜀ICP备12009302号-1-www.dingguagua.com   Copyright © 2015-2018 尤洪商城网 All Rights Reserved. 复制必究 , Technical Support: Dgg Group <br />
-                <img src="../images/b_1.gif" width="98" height="33" /><img src="../images/b_2.gif" width="98" height="33" /><img src="../images/b_3.gif" width="98" height="33" /><img src="../images/b_4.gif" width="98" height="33" /><img src="../images/b_5.gif" width="98" height="33" /><img src="../images/b_6.gif" width="98" height="33" />
+            <div class="btmbg">
+                <div class="btm">
+                    备案/许可证编号：蜀ICP备12009302号-1-www.dingguagua.com   Copyright © 2015-2018 尤洪商城网 All Rights Reserved. 复制必究 , Technical Support: Dgg Group <br />
+                    <img src="images/b_1.gif" width="98" height="33" /><img src="images/b_2.gif" width="98" height="33" /><img src="images/b_3.gif" width="98" height="33" /><img src="images/b_4.gif" width="98" height="33" /><img src="images/b_5.gif" width="98" height="33" /><img src="images/b_6.gif" width="98" height="33" />
+                </div>
             </div>
         </div>
     </div>
 </div>
-</div>
 </body>
-
+<script type="text/javascript" src="js/request.js"></script>
 <script type="text/javascript">
     new Vue({
         el: '#app10',
@@ -415,10 +415,9 @@
                 let token=localStorage.getItem("token");
                 axios.get('http://localhost:8080/getUser', {params: {token: token}})
                     .then((resp) => {
-                        console.log(resp.data);
-                        this.user.username=resp.data.data.userName
-                        this.user.id=resp.data.data.id
-                        this.user.roleId=resp.data.data.roleId
+                        this.user.username=resp.data.userName
+                        this.user.id=resp.data.id
+                        this.user.roleId=resp.data.roleId
                         this.viewOrderList(1)
                         this.initOtherOrders(this.user.id)
                     });
@@ -428,8 +427,7 @@
                 let token=localStorage.getItem("token");
                 await axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
                     .then((resp) => {
-                        console.log(resp.data);
-                        this.products=resp.data.data
+                        this.products=resp.data
                         let sum = 0;
                         this.productLength=this.products.length
                         for (let i = 0; i < this.products.length; i++) {
@@ -443,15 +441,14 @@
                 console.log(this.user.id)
                 await axios.get('http://localhost:8080/getOrderListByPage',{params:{
                         currentNo:currentNo,
-                        serialNumber:this.serialNumber,
+                        serialNumber:this.orderNumber,
                         userId:this.user.id
                     }})
                     .then((resp) => {
-                        console.log(resp.data)
-                        this.AllOrders = resp.data.list;
-                        this.pagination.current = resp.data.pageNum;
-                        this.pagination.total = resp.data.total;
-                        this.pagination.pageSize = resp.data.pageSize;
+                        this.AllOrders = resp.list;
+                        this.pagination.current = resp.pageNum;
+                        this.pagination.total = resp.total;
+                        this.pagination.pageSize = resp.pageSize;
 
                     });
             },
@@ -459,8 +456,7 @@
                 console.log(this.user.id)
                 await axios.get('http://localhost:8080/getAllOrders', {params: {userId:id}})
                     .then((resp) => {
-                        console.log(resp.data);
-                        this.otherOrders = resp.data.data;
+                        this.otherOrders = resp.data;
                     });
             },
             delOrder(id) {
@@ -479,10 +475,10 @@
                 axios.get('http://localhost:8080/updateOrderStatusWithCancel', {params: {id: id}})
                     .then((resp) => {
                         console.log(resp.data);
-                        if (resp.data.code===200){
-                            let order = this.AllOrders.find(order => user_order.id === id);
-                            if (user_order) {
-                                user_order.status = 2;
+                        if (resp.code===200){
+                            let order = this.AllOrders.find(order => order.id === id);
+                            if (order) {
+                                order.status = 2;
                             }
                         }
                     });
@@ -505,12 +501,13 @@
                 }
             },
             handleOrderChange() {
-                const order1= this.otherOrders.find(order => user_order.serialNumber === this.selectedOrder1);
-                const order2 = this.otherOrders.find(order => user_order.serialNumber === this.selectedOrder2);
+                const order1= this.otherOrders.find(order => order.serialNumber === this.selectedOrder1);
+                const order2 = this.otherOrders.find(order => order.serialNumber === this.selectedOrder2);
                 this.selectedOrdersList= [order1];
                 if (order2) {
                     this.selectedOrdersList.push(order2);
                 }
+                console.log(this.selectedOrdersList)
             },
 
             combineOrders() {
@@ -518,21 +515,21 @@
                     this.$message.error("请选择完你的订单哦");
                     return;
                 }
-                let hasDuplicate = false;
+                let flag = false;
                 this.selectedOrdersList.forEach((order1, index1) => {
                     this.selectedOrdersList.forEach((order2, index2) => {
                         if (index1 !== index2 && order1.serialNumber === order2.serialNumber) {
                             this.$message.error("你选择的订单重复了哦");
-                            hasDuplicate = true;
+                            flag = true;
                         }
                     });
                 });
-                if (!hasDuplicate) {
+                if (!flag) {
                     axios.post('http://localhost:8080/combineOrder', this.selectedOrdersList)
                         .then((resp) => {
                             console.log(resp.data);
-                            if (resp.data.code === 400) {
-                                this.$message.error(resp.data.message);
+                            if (resp.code !== 200) {
+                                this.$message.error(resp.message);
                             } else {
                                 this.$message.success("订单合并成功啦");
                                 this.viewOrderList(1)
@@ -547,15 +544,24 @@
                 axios.get('http://localhost:8080/logout', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        window.location.href="../index.html"
+                        window.location.href="index.html"
                     });
             },
+            viewOrder_dtail(id){
+                window.location.href="order_detail.html?id=" + id
+            },
+            checkRoled() {
+                let token=localStorage.getItem("token");
+                axios.get('http://localhost:8080/checkRoled', {params: {token: token}})
+                    .then((resp) => {
 
-
+                    });
+            },
 
         },
 
         mounted() {
+            this.checkRoled()
             this.initLogin()
             this.initCat()
 

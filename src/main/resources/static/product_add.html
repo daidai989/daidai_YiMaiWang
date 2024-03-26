@@ -373,6 +373,7 @@
     </div>
 </div>
 </body>
+<script type="text/javascript" src="js/request.js"></script>
 <script type="text/javascript">
     new Vue({
         el: '#app15',
@@ -384,7 +385,7 @@
                     .then((resp) => {
                         if (!value) {
                             callback(new Error("请输入名字"));
-                        }else if (resp.data.code !== 200) {
+                        }else if (resp.code !== 200) {
                             callback(new Error("名字已经存在"));
                         }else {
                             callback()
@@ -441,14 +442,21 @@
 
         },
         methods: {
+            checkRoled() {
+                let token=localStorage.getItem("token");
+                axios.get('http://localhost:8080/checkRoled', {params: {token: token}})
+                    .then((resp) => {
+
+                    });
+            },
             initLogin() {
                 let token=localStorage.getItem("token");
                 axios.get('http://localhost:8080/getUser', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.user.username=resp.data.data.userName
-                        this.user.id=resp.data.data.id
-                        this.productsOptions.userId=resp.data.data.id
+                        this.user.username=resp.data.userName
+                        this.user.id=resp.data.id
+                        this.productsOptions.userId=resp.data.id
                     });
             },
             initCat() {
@@ -456,7 +464,7 @@
                 axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.products=resp.data.data
+                        this.products=resp.data
                         let sum = 0;
                         this.productLength=this.products.length
                         for (let i = 0; i < this.products.length; i++) {
@@ -470,7 +478,7 @@
                 axios.get('http://localhost:8080/getBrand')
                     .then((resp) => {
                         console.log(resp.data);
-                       this.brandOptions=resp.data.data
+                       this.brandOptions=resp.data
 
                     });
             },
@@ -483,7 +491,7 @@
                 axios.get('http://localhost:8080/getAllCategory')
                     .then((resp) => {
                         console.log(resp.data);
-                        this.theFirst = resp.data.data.map(item => ({
+                        this.theFirst = resp.data.map(item => ({
                             value: item.id,
                             label: item.name,
                             children:item.childCategory?item.childCategory.map(child=>({
@@ -518,9 +526,11 @@
                 this.$message.warning(`当前限制选择 1个文件`);
             },
             onUploadSuccess(response) {
+                console.log(response)
+
                 if (response.code === 200) {
                     this.$message.success('文件上传成功');
-                    console.log(response.data)
+                    console.log(response)
                     this.productsOptions.filePath=response.data
                 } else {
                     this.$message.error('文件上传失败');
@@ -532,7 +542,7 @@
                         axios
                             .post("/addProduct", this.productsOptions)
                             .then((resp) => {
-                                if (resp.data.code === 200) {
+                                if (resp.code=== 200) {
                                     window.location.href="Member_Product.html"
                                 }
                             })
@@ -550,6 +560,7 @@
 
         },
         mounted() {
+            this.checkRoled()
             this.initLogin()
             this.initCat()
             this.getAllCategory()

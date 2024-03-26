@@ -14,6 +14,7 @@
         EvPNG.fix('div, ul, img, li, input, a');
     </script>
     <![endif]-->
+
     <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
 
@@ -26,8 +27,7 @@
 </head>
 
 <body>
-<div id="app12">
-
+<div id="app9">
     <div class="soubg">
         <div class="sou">
             <!--Begin 所在收货地区 Begin-->
@@ -156,7 +156,7 @@
     </div>
     <div class="m_top_bg">
         <div class="top">
-            <div class="m_logo"><a href="Index.html"><img src="images/logo1.png" /></a></div>
+            <div class="m_logo"><a href="index.html"><img src="images/logo1.png" /></a></div>
 
             <div class="i_car">
                 <div class="car_t">购物车 [ <span>{{productLength}}</span> ]</div>
@@ -227,66 +227,32 @@
             </div>
             <div class="m_right">
                 <p></p>
-                <div class="mem_tit">商品管理</div>
+                <div class="mem_tit">新闻管理</div>
                 <a-row type="flex" justify="center">
                     <a-col :span="12">
                         <a-form-model
                                 ref="productsForm"
-                                :model="productsOptions"
+                                :model="news"
                                 :rules="rules"
                                 :label-col="labelCol"
                                 :wrapper-col="wrapperCol"
                         >
-                            <a-form-model-item has-feedback prop="name" label="产品名字:">
-                                <a-input v-model="productsOptions.name" @blur="onFieldBlur('name')"></a-input>
+                            <a-form-model-item has-feedback prop="title" label="标题:">
+                                <a-input v-model="news.title" @blur="onFieldBlur('title')"></a-input>
                             </a-form-model-item>
-                            <a-form-model-item label="商品描述" prop="description" >
-                                <a-input v-model="productsOptions.description" @blur="onFieldBlur('description')"></a-input>
+                            <a-form-model-item label="内容" prop="content" >
+                                <a-input v-model="news.content" @blur="onFieldBlur('content')"></a-input>
                             </a-form-model-item>
-
-                            <a-form-model-item prop="stock" label="库存:">
-                                <a-input v-model="productsOptions.stock" ></a-input>
-                            </a-form-model-item>
-                            <a-form-model-item prop="price" label="价格:">
-                                <a-input v-model="productsOptions.price" ></a-input>
-                            </a-form-model-item>
-                            <a-form-model-item label="品牌" prop="brandId">
-                                <el-select v-model.number="productsOptions.brandId" placeholder="请选择">
-                                    <el-option v-for="brand in brandOptions" :key="brand.id" :value="brand.id" :label="brand.name">{{ brand.name }}</el-option>
-                                </el-select>
+                            <a-form-model-item label="短言" prop="shortTitle" >
+                                <a-input v-model="news.shortTitle" @blur="onFieldBlur('shortTitle')"></a-input>
                             </a-form-model-item>
 
-
-                            <a-form-model-item prop="categoryLevelId" label="具体类别" >
-                                <el-cascader :options="theFirst" placeholder="Please select" v-model="productsOptions.categoryLevelId" @change="onChange($event)"></el-cascader>
-                            </a-form-model-item>
-
-                            <a-form-model-item prop="filePaths" label="图片上传">
-                                <el-upload
-                                        class="upload-demo"
-                                        action="/upload"
-                                        name="filePath"
-                                        :before-upload="beforeUpload"
-                                        :on-success="onUploadSuccess"
-                                        :on-remove="onRemoveFile"
-                                        :limit="1"
-                                        :on-exceed="handleExceed"
-                                >
-                                    <el-button size="small" type="primary">点击上传</el-button>
-                                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2mb</div>
-                                </el-upload>
-                                <el-image
-                                        style="width: 100px; height: 100px;"
-                                        :src="`/getImage?filePath=${productsOptions.filePath}`"
-                                        fit="contain"
-                                ></el-image>
-
-                            </a-form-model-item>
 
 
                             <a-form-model-item >
-                                <a-button type="primary" @click="onSubmit('productsForm')">添加</a-button>
+                                <a-button type="primary" @click="onSubmit('productsForm')">修改</a-button>
                                 <a-button style="margin-left: 10px" @click="resetForm('productsForm')">重置</a-button>
+                                <a href="javascript:history.back();"><a-button type="primary">返回</a-button></a>
                             </a-form-model-item>
                         </a-form-model>
                     </a-col>
@@ -383,91 +349,78 @@
 <script type="text/javascript" src="js/request.js"></script>
 <script type="text/javascript">
     new Vue({
-        el: '#app12',
+        el: '#app9',
 
         data() {
-            let checkProductName=async (rule, value, callback) =>{
+            let checkNewsTitle=(rule, value, callback) =>{
                 const urlParams = new URLSearchParams(window.location.search);
                 const id = urlParams.get('id')
-                console.log(id)
-
-                this.productsOptions.id=id
-                await axios
-                    .get("/getProductByLogin",{params:{name:value}})
+                this.news.id=id
+                axios
+                    .get("/getNewsByTitle",{params:{title:value}})
                     .then((resp) => {
+                        console.log(resp.data)
                         if (!value) {
-                            callback(new Error("请输入名字"));
-                        }else if (resp.code !== 200) {
-                            const id1 = parseInt(resp.data.id);
-                            const id2 = parseInt(this.productsOptions.id);
-                            if (id1 === id2) {
-                                callback();
-                            }
-                            callback(new Error("名字已经存在"));
+                            callback(new Error("请输入标题"));
+                        }else if (value.length<1||value.length>20){
+                            callback(new Error("标题长度错误"));
+                        } else if (resp.data.code !== 200) {
+                            // 将resp.data.data.id转换为整数类型
+
+                            callback(new Error("标题已经存在"));
                         }else {
                             callback()
                         }
                     })
                     .catch((error) => {
-                        console.error("添加失败", error);
+                        console.error("修改失败", error);
                     });
             }
             return{
                 products:[],
-                brandOptions:[],
                 productLength:"",
                 totalPrice:"",
                 user:{
                     username:"",
                     id:null,
                 },
-                productsOptions: {
+                news: {
                     id:null,
-                    name: "",
-                    description: "",
-                    stock: null,
-                    price: null,
-                    brandId: null,
-                    filePath: "",
-                    userId: null,
-                    categoryLevelId:null,
+                    title:"",
+                    content:"",
+                    shortTitle:"",
                 },
 
                 labelCol: { span: 4 },
                 wrapperCol: { span: 14 },
 
-                theFirst:[],
                 rules: {
-                    name: [
-                        { required: true, message: '请输入产品名称', trigger: 'blur' },
-                        { validator: checkProductName, trigger: 'blur' }
+                    title: [
+                        { validator: checkNewsTitle, trigger: 'blur' }
                     ],
-                    description: [
-                        { required: true, message: '请输入商品描述', trigger: 'blur' },
-                        { min: 1, max: 100, message: '商品描述长度在1到100之间', trigger: 'blur' }
+                    content: [
+                        { required: true, message: '请输入新闻信息', trigger: 'blur' },
+                        { min: 1, max: 100, message: '新闻信息长度在1到100之间', trigger: 'blur' }
                     ],
-                    stock: [
-                        { required: true, message: '请输入库存数量', trigger: 'blur' },
-                        { pattern: /^\d+$/, message: '库存数量必须为正整数', trigger: 'blur' }
+                    shortTitle: [
+                        { required: true, message: '请输入短言', trigger: 'blur' },
+                        { min: 1, max: 5, message: '短言长度在1到5之间', trigger: 'blur' }
                     ],
-                    price: [
-                        { required: true, message: '请输入价格', trigger: 'blur' },
-                        { pattern: /^\d+(\.\d+)?$/, message: '价格必须为正数', trigger: 'blur' }
-                    ]
                 }
             }
 
 
         },
         methods: {
+
             initLogin() {
                 let token=localStorage.getItem("token");
                 axios.get('http://localhost:8080/getUser', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.user.username=resp.data.userName
-                        this.user.id=resp.data.id
-                        this.productsOptions.userId=resp.data.id
+                        this.user.username=resp.data.data.userName
+                        this.user.id=resp.data.data.id
+                        this.productsOptions.userId=resp.data.data.id
                     });
             },
             initCat() {
@@ -475,7 +428,7 @@
                 axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.products=resp.data
+                        this.products=resp.data.data
                         let sum = 0;
                         this.productLength=this.products.length
                         for (let i = 0; i < this.products.length; i++) {
@@ -485,88 +438,32 @@
 
                     });
             },
-            initProduct() {
+            initNews() {
                 const urlParams = new URLSearchParams(window.location.search);
                 const id = urlParams.get('id');
-                axios.get('http://localhost:8080/getProductById', {params: {id: id}})
+                axios.get('http://localhost:8080/getNewsById', {params: {id: id}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.productsOptions.name=resp.data.name
-                        this.productsOptions.description=resp.data.description
-                        this.productsOptions.stock=resp.data.stock
-                        this.productsOptions.price=resp.data.price
-                        this.productsOptions.brandId=resp.data.brandId
-                        this.productsOptions.categoryLevelId=resp.data.categoryLevelId
-                    });
-            },
-            initBrand() {
-                axios.get('http://localhost:8080/getBrand')
-                    .then((resp) => {
-                        console.log(resp.data);
-                        this.brandOptions=resp.data
+                        this.news.title=resp.data.data.title
+                        this.news.content=resp.data.data.content
+                        this.news.shortTitle=resp.data.data.shortTitle
 
                     });
             },
 
-            onChange(value) {
-                console.log(value[2]);
-                this.categoryLevelId=value[2];
-            },
-            getAllCategory() {
-                axios.get('http://localhost:8080/getAllCategory')
-                    .then((resp) => {
-                        console.log(resp.data);
-                        this.theFirst = resp.data.map(item => ({
-                            value: item.id,
-                            label: item.name,
-                            children:item.childCategory?item.childCategory.map(child=>({
-                                value: child.id,
-                                label: child.name,
-                                children:child.childCategory?child.childCategory.map(grandchild=>({
-                                    value: grandchild.id,
-                                    label: grandchild.name,
-                                })):[]
-                            })):[]
-                        }));
-                    });
-            },
-            beforeUpload(file) {
-                const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
-                const isLt2M = file.size / 1024 / 1024 < 2;
 
-                if (!isJPG) {
-                    this.$message.error('上传图片只能是 JPG/PNG 格式!');
-                    return
-                }
-                if (!isLt2M) {
-                    this.$message.error('上传图片大小不能超过 2MB!');
-                    return
-                }
-                return isJPG && isLt2M;
-            },
-            onRemoveFile(file, fileList) {
-                this.productsOptions.filePath = ""
-            },
-            handleExceed(files, fileList) {
-                this.$message.warning(`当前限制选择 1个文件`);
-            },
-            onUploadSuccess(response) {
-                if (response.code === 200) {
-                    this.$message.success('文件上传成功');
-                    console.log(response.data)
-                    this.productsOptions.filePath=response.data
-                } else {
-                    this.$message.error('文件上传失败');
-                }
-            },
+
             onSubmit(formName) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const id = urlParams.get('id');
+                this.news.id = id;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         axios
-                            .post("/addProduct", this.productsOptions)
+                            .post("/updateNews", this.news)
                             .then((resp) => {
-                                if (resp.code === 200) {
-                                    window.location.href="Member_Product.html"
+                                if (resp.data.code === 200) {
+                                    window.location.href="news.html"
                                 }
                             })
                             .catch((error) => {
@@ -580,6 +477,9 @@
             onFieldBlur(field) {
                 this.$refs.productsForm.validateField(field);
             },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
             checkRoled() {
                 let token=localStorage.getItem("token");
                 axios.get('http://localhost:8080/checkRoled', {params: {token: token}})
@@ -591,11 +491,9 @@
         },
         mounted() {
             this.checkRoled()
-            this.initProduct()
             this.initLogin()
             this.initCat()
-            this.getAllCategory()
-            this.initBrand()
+            this.initNews()
         }
     })
 </script>

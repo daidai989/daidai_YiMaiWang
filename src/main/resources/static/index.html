@@ -130,7 +130,7 @@
 
 
                 <span class="fl">你好，{{$data.username ?  $data.username : '请登录'}}&nbsp;<a v-if="!$data.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
-                    href="Member_Product.html">我的订单</a>&nbsp;|</span>
+                        href="Member_Product.html">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
                 	<a href="#">收藏夹</a>
@@ -190,15 +190,20 @@
             <div class="car_t">购物车 [ <span>{{productLength}}</span> ]</div>
             <div class="car_bg">
                 <!--Begin 购物车未登录 Begin-->
-                    <ul v-if="$data.username" class="cars">
-                        <li v-for="(item, index) in products" :key="item.id" >
-                            <div class="img"><a href="#"><img height="58" :src="'http://localhost:8080/getImage?filePath=' + item.filePath" width="58"/></a></div>
+                <ul v-if="$data.username" class="cars">
+                    <div v-if="$data.productLength">
+                        <li v-for="(item, index) in products" :key="index" >
+                            <div class="img"><a href="#"><img height="58" :src="'/getImage?filePath=' + item.filePath" width="58"/></a></div>
                             <div class="name"><a href="#">{{item.name}}</a></div>
                             <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
                         </li>
                         <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
-                        <div class="price_a"><a href="BuyCar.html">去购物车结算</a></div>
-                    </ul>
+                        <div class="price_a"><a href="#">去购物车结算</a></div>
+                    </div>
+                    <div v-else class="un_login">
+                        购物车暂无东西
+                    </div>
+                </ul>
                 <div v-else class="un_login">
                     还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！
 
@@ -282,7 +287,7 @@
             <!--End Banner End-->
             <div class="inews">
                 <div class="news_t">
-                    <span class="fr"><a href="#">更多 ></a></span>新闻资讯
+                    <span class="fr"><a href="user_news.html">更多 ></a></span>新闻资讯
                 </div>
                 <ul>
                     <li v-for="(item, index) in newsList" :key="item.id" ><span>{{item.shortTitle}}</span><a href="#">{{item.title}}</a></li>
@@ -680,32 +685,6 @@
 </div>
 <script>
 
-    function getCookie(name) {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // 判断是否为指定名称的cookie
-            if (cookie.startsWith(name + '=')) {
-                return cookie.substring(name.length + 1);
-            }
-        }
-        return null;
-    }
-    // 请求拦截器，将cookie值放入请求头中
-    axios.interceptors.request.use(
-        config => {
-            const cookies = document.cookie.split(';');
-            const cookieString = cookies.map(cookie => cookie.trim()).join('; ');
-
-            if (cookieString) {
-                config.headers.Cookie = cookieString;
-            }
-            return config;
-        },
-        error => {
-            return Promise.reject(error);
-        }
-    );
     new Vue({
         el: '#app',
         data: {

@@ -177,17 +177,23 @@
             <div class="nav_t">全部商品分类</div>
             <div class="leftNav none">
                 <ul>
-                    <li v-for="(item, index) in theFirst" :key="index" @mouseenter="loadSecondAndThird(item.catId)">
+                    <li v-for="(item, index) in theFirst" :key="item.id" @mouseenter="loadSecondAndThird(item.id,index)" @mouseleave="hideSecondAndThird(index)">
                         <div class="fj">
-                            <span class="n_img"><span></span><img src="images/nav1.png" /></span>
+                            <span class="n_img"><span></span><img src="images/nav1.png"/></span>
                             <span class="fl">{{item.name}}</span>
                         </div>
-                        <div class="zj">
+                        <div class="zj" :class="[{ 'block1': activeIndex === index, 'none1': activeIndex !== index }]">
                             <div class="zj_l">
-                                <div class="zj_l_c"v-for="(subItem, index) in theSecond" :key="index">
-                                    <h2>{{subItem.name}}</h2>
-                                    <a v-for="(subItem, index) in theThird" :key="index">{{subItem.name}}|</a>
+                                <div class="zj_l_c" v-for="(subItem, index) in theSecond" :key="subItem.id">
+                                    <h2>
+                                        {{subItem.name}}
+                                    </h2>
+                                    <a v-for="(subItem, index) in theThird" :key="subItem.id">{{subItem.name}}|</a>|
                                 </div>
+                            </div>
+                            <div class="zj_r">
+                                <a href="#"><img height="200" src="images/n_img1.jpg" width="236"/></a>
+                                <a href="#"><img height="200" src="images/n_img2.jpg" width="236"/></a>
                             </div>
                         </div>
                     </li>
@@ -383,11 +389,12 @@
 </div>
 
 </body>
-
+<script type="text/javascript" src="js/request.js"></script>
 <script type="text/javascript">
     new Vue({
         el: '#app3',
         data:{
+            activeIndex: null,
             selectProducts:[],
             productNum:1,
             selectedIds: [],
@@ -448,17 +455,18 @@
                 axios.get('http://localhost:8080/getFirstCategory')
                     .then((resp) => {
                         console.log(resp.data);
-                        this.theFirst = resp.data.data;
+                        this.theFirst = resp.data;
                     });
             },
-            loadSecondAndThird(id) {
+            loadSecondAndThird(id,index) {
                 this.secondLoad(id);
+                this.activeIndex = index;
             },
             secondLoad(id) {
                 axios.get('http://localhost:8080/getSecondCategory', {params: {id: id}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.theSecond = resp.data.data;
+                        this.theSecond = resp.data;
                         if (this.theSecond.length > 0) {
                             this.thirdLoad(this.theSecond[0].id);
                         }
@@ -468,7 +476,7 @@
                 axios.get('http://localhost:8080/getThirdCategory', {params: {id: id}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.theThird = resp.data.data;
+                        this.theThird = resp.data;
                     });
             },
             initLogin() {
@@ -476,8 +484,8 @@
                 axios.get('http://localhost:8080/getUser', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.user.username=resp.data.data.userName
-                        this.user.id=resp.data.data.id
+                        this.user.username=resp.data.userName
+                        this.user.id=resp.data.id
                     });
             },
             initCat() {
@@ -485,7 +493,7 @@
                 axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.products=resp.data.data
+                        this.products=resp.data
                         this.productLength=this.products.length
                         for (let i = 0; i < this.products.length; i++) {
                             this.ids.push(this.products[i].catId)
@@ -529,21 +537,30 @@
                 axios.post('http://localhost:8080/updateProducts', {ids: this.selectProducts})
                     .then((resp) => {
                         console.log(resp.data);
-                        if (resp.data.code===200){
+                        if (resp.code===200){
                             const selectedIdsStr = this.selectedIds.join(',');
                             window.location.href = `BuyCar_Two.html?selectedIds=${selectedIdsStr}`;
                         }
                     });
 
 
-            }
+            },
+            hideSecondAndThird(index) {
+                this.activeIndex = null;
+            },
+            checkRoled() {
+                let token=localStorage.getItem("token");
+                axios.get('http://localhost:8080/checkRoled', {params: {token: token}})
+                    .then((resp) => {
+
+                    });
+            },
         },
         mounted() {
             this.firstLoad();
             this.initLogin()
             this.initCat()
-
-
+            this.checkRoled()
 
         },
     })

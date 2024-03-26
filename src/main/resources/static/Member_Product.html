@@ -370,21 +370,8 @@
 </div>
 
 </body>
-
+<script type="text/javascript" src="js/request.js"></script>
 <script type="text/javascript">
-    axios.interceptors.request.use(
-        function(config) {
-            const token = localStorage.getItem("token"); // 从localStorage中获取token值
-            if (token) {
-                config.headers.Authorization = token;
-                config.headers.Cookie = `$token=${token}`;
-            }
-            return config;
-        },
-        function(error) {
-            return Promise.reject(error);
-        }
-    );
     new Vue({
         el: '#app5',
         data:{
@@ -432,8 +419,8 @@
                 axios.get('http://localhost:8080/getUser', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.user.username=resp.data.data.userName
-                        this.user.id=resp.data.data.id
+                        this.user.username=resp.data.userName
+                        this.user.id=resp.data.id
                     });
             },
             initCat() {
@@ -441,7 +428,7 @@
                 axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.products=resp.data.data
+                        this.products=resp.data
                         let sum = 0;
                         this.productLength=this.products.length
                         for (let i = 0; i < this.products.length; i++) {
@@ -457,15 +444,15 @@
                         name:this.name,
                     }})
                     .then((resp) => {
-                        const pageSize = resp.data.data.pageSize;
+                        const pageSize = resp.data.pageSize;
                         const startIndex = (currentNo - 1) * pageSize + 1;
-                        resp.data.data.list.forEach((product, index) => {
+                        resp.data.list.forEach((product, index) => {
                             product.index = startIndex + index;
                         });
-                        this.AllProductsList = resp.data.data.list;
+                        this.AllProductsList = resp.data.list;
                         this.pagination.current = currentNo;
-                        this.pagination.pageSize = resp.data.data.pageSize;
-                        this.pagination.total=resp.data.data.total
+                        this.pagination.pageSize = resp.data.pageSize;
+                        this.pagination.total=resp.data.total
                     });
             },
             delProduct(id) {

@@ -360,7 +360,9 @@
 <!--[if IE 6]>
 <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
 <![endif]-->
+
 </html>
+<script src="js/request.js" type="text/javascript"></script>
 <script>
   new Vue({
     el:"#root7",
@@ -409,6 +411,7 @@
       }
     },
     mounted() {
+        this.checkRoled()
       var search = new URLSearchParams(window.location.search);
       var id = search.get("id");
       axios.get("getAddressByIdAndUserId",{
@@ -418,7 +421,7 @@
           }
         }).then((result) => {
           console.log(result.data);
-          const tempList = result.data.data.address.split('/');
+          const tempList = result.data.address.split('/');
           var addList = [];
           for (let i = 0; i < tempList.length; i++) {
             if(i < 3) {
@@ -428,10 +431,10 @@
             }
           }
           this.address.addressList = addList;
-          this.address.recipient = result.data.data.recipient;
-          this.address.phone = result.data.data.phone;
-          this.address.remark = result.data.data.remark;
-          if(result.data.data.isSure == 1 ){
+          this.address.recipient = result.data.recipient;
+          this.address.phone = result.data.phone;
+          this.address.remark = result.data.remark;
+          if(result.data.isSure === 1 ){
             this.address.isSure = true;
           }else{
             this.address.isSure = false;
@@ -439,6 +442,13 @@
         });
     },
     methods: {
+        checkRoled() {
+            let token=localStorage.getItem("token");
+            axios.get('http://localhost:8080/checkRoled', {params: {token: token}})
+                .then((resp) => {
+
+                });
+        },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           this.totalAddess = this.address.addressList.join('/')+'/'+ this.address.detailAddress;
@@ -455,7 +465,7 @@
               }
             }).then((result) => {
               console.log(result.data);
-              if(result.data.code == 200){
+              if(result.code===200){
                 alert("修改成功!")
                 window.location.href = "Member_Address.html"
               }

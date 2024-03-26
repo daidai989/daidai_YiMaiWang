@@ -407,7 +407,9 @@
 </div>
 
 </body>
+<script src="js/request.js" type="text/javascript"></script>
 <script type="text/javascript">
+
     new Vue({
         el: '#app4',
         data: {
@@ -444,7 +446,7 @@
             firstLoad() {
                 axios.get('http://localhost:8080/getFirstCategory')
                     .then((resp) => {
-                        this.theFirst = resp.data.data;
+                        this.theFirst = resp.data;
                     });
             },
             loadSecondAndThird(id) {
@@ -457,7 +459,7 @@
                     }
                 })
                     .then((resp) => {
-                        this.theSecond = resp.data.data;
+                        this.theSecond = resp.data;
                         if (this.theSecond.length > 0) {
                             this.thirdLoad(this.theSecond[0].id);
                         }
@@ -470,7 +472,7 @@
                     }
                 })
                     .then((resp) => {
-                        this.theThird = resp.data.data;
+                        this.theThird = resp.data;
                     });
             },
             initLogin() {
@@ -482,9 +484,10 @@
                 })
                     .then((resp) => {
                         console.log(resp.data)
-                        this.getUser=resp.data.data
-                        this.user.username = resp.data.data.userName
-                        this.user.id = resp.data.data.id
+
+                        this.getUser=resp.data
+                        this.user.username = resp.data.userName
+                        this.user.id = resp.data.id
                         this.initAddress(this.user.id)
 
                     });
@@ -493,7 +496,7 @@
                 axios.post('http://localhost:8080/getProductListByLst', { ids: this.proList })
                     .then((resp) => {
                         console.log(resp.data);
-                        this.products = resp.data.data
+                        this.products = resp.data
                         let sum = 0;
                         this.productLength = this.products.length
                         for (let i = 0; i < this.products.length; i++) {
@@ -511,11 +514,11 @@
                     }
                 })
                     .then((resp) => {
-                        this.address.username=resp.data.data.userName;
-                        this.address.email=resp.data.data.email;
-                        this.address.address=resp.data.data.address;
-                        this.address.mobile=resp.data.data.mobile;
-                        this.address.remark=resp.data.data.remark;
+                        this.address.username=resp.data.userName;
+                        this.address.email=resp.data.email;
+                        this.address.address=resp.data.address;
+                        this.address.mobile=resp.data.mobile;
+                        this.address.remark=resp.data.remark;
 
                     });
             },
@@ -538,10 +541,10 @@
 
                 try {
                     const resp = await axios.post('http://localhost:8080/OrderSubmit', data);
-                    if (resp.data.code !== 200) {
+                    if (resp.code !== 200) {
                         this.$message.success(resp.data.message);
                     }
-                    this.serialNumber = resp.data.data;
+                    this.serialNumber = resp.data;
                     window.location.href = "BuyCar_Three.html?serialNumber=" + this.serialNumber + "&totalPrice=" + this.totalPrice;
                 } catch (error) {
                     console.error(error);
@@ -552,7 +555,7 @@
                     .then((resp) => {
                         console.log(resp.data);
                         console.log(resp.data);
-                        this.products = resp.data.data
+                        this.products = resp.data
 
                         let sum = 0;
                         this.productLength = this.products.length
@@ -568,23 +571,21 @@
                         }
                     });
             },
-            initProductList1(ids,amount) {
-                axios.get("/getProductListByIdStr", {
-                    params: {
-                        idStr: ids,
-                        count:amount
-                    }
-                }).then((resp) => {
-                    console.log(resp)
-                    this.productList = resp.data.data;
-                })
+
+
+            checkRoled() {
+                let token=localStorage.getItem("token");
+                axios.get('http://localhost:8080/checkRoled', {params: {token: token}})
+                    .then((resp) => {
+
+                    });
             },
-
-
 
 
         },
         mounted() {
+            this.checkRoled()
+
             const urlParams = new URLSearchParams(window.location.search);
             const selectedIdsStr = urlParams.get('selectedIds');
             if (selectedIdsStr!==null&&selectedIdsStr.length>0){
@@ -606,11 +607,9 @@
             if (this.proList.length>0){
                 this.initCat()
             }
-            if (this.ids.length>0){
-                this.initProductList()
-
+            if (this.ids && this.ids.length > 0) {
+                this.initProductList();
             }
-
 
         }
     })

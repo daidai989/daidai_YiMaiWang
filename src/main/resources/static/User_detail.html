@@ -192,7 +192,7 @@
                 <div class="left_m_t t_bg1">订单中心</div>
 
                 <ul>
-                    <li><a href="order/user_order.html" class="now">我的订单</a></li>
+                    <li><a href="userOrder.html" class="now">我的订单</a></li>
                     <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="">全部订单</a></li>
                 </ul>
             </div>
@@ -215,7 +215,7 @@
             <div class="left_m">
                 <div class="left_m_t t_bg4">咨询管理</div>
                 <ul>
-                    <li><a href="News/news.html">咨询列表</a></li>
+                    <li><a href="news.html">咨询列表</a></li>
 
                 </ul>
             </div>
@@ -364,6 +364,7 @@
 </div>
 
 </body>
+<script type="text/javascript" src="js/request.js"></script>
 <script>
      new Vue({
         el:"#app17",
@@ -387,13 +388,20 @@
             products:[],
         },
         async mounted(){
+            this.checkRoled()
             this.initLogin()
             this.initCat()
 
 
         },
         methods:{
+            checkRoled() {
+                let token=localStorage.getItem("token");
+                axios.get('http://localhost:8080/checkRoled', {params: {token: token}})
+                    .then((resp) => {
 
+                    });
+            },
             initUserInfo() {
                 this.userInfo = [
                     { label: "userName", displayName:"用户名",value: this.user.userName , icon: 'el-icon-user', editable: true },
@@ -410,15 +418,15 @@
                 axios.get('http://localhost:8080/getUser', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.user.userName=resp.data.data.userName
-                        this.user.id=resp.data.data.id
-                        this.user.roleId=resp.data.data.roleId
-                        this.user.total_cost=resp.data.data.total_cost
-                        this.user.loginName=resp.data.data.loginName
-                        this.user.email=resp.data.data.email
-                        this.user.mobile=resp.data.data.mobile
-                        this.user.identityCode=resp.data.data.identityCode
-                        this.user.createTime=resp.data.data.createTime
+                        this.user.userName=resp.data.userName
+                        this.user.id=resp.data.id
+                        this.user.roleId=resp.data.roleId
+                        this.user.total_cost=resp.data.total_cost
+                        this.user.loginName=resp.data.loginName
+                        this.user.email=resp.data.email
+                        this.user.mobile=resp.data.mobile
+                        this.user.identityCode=resp.data.identityCode
+                        this.user.createTime=resp.data.createTime
                         this.initUserInfo();
 
                     });
@@ -428,7 +436,7 @@
                 axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.products=resp.data.data
+                        this.products=resp.data
                         let sum = 0;
                         let num=0;
                         this.productLength=this.products.length
