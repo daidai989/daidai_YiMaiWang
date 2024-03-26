@@ -20,4 +20,7 @@ public class Order_detail {
       private   Integer count;
       private   double cost;
       private   Date createTime;
+      private String name;
+      private  String  serialNumber;
+      private String filePath;
 }

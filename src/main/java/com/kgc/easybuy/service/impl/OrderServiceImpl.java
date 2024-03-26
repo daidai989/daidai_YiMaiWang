@@ -36,6 +36,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ProductEsRepository per;
 
+
     @Override
     public PageInfo<Order> getOrderListByPage(Page page,Order order) {
         PageHelper.startPage(page.getCurrentPageNo(),page.getPageSize());
@@ -45,8 +46,24 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public PageInfo<Order_detail> getOrder_tailListByPage(String name, Page page,Integer orderId) {
+
+        PageHelper.startPage(page.getCurrentPageNo(),page.getPageSize());
+        List<Order_detail> orderList = order_detailMapper.getOrder_tailListByPage(name,orderId);
+        PageInfo<Order_detail> pageInfo = new PageInfo<>(orderList);
+        return pageInfo;
+    }
+
+    @Override
     public ResponseMessage delOrder(Integer id) {
         boolean b = orderMapper.delOrder(id);
+        List<Order_detail> order_tailList = order_detailMapper.getOrder_tailList(id);
+        for (Order_detail order :order_tailList){
+            order_detailMapper.delOrder_tailId(order.getId());
+            if (!b){
+                return ResponseMessage.error("删除失败");
+            }
+        }
         if (b) {
             return ResponseMessage.success(b);
         }
@@ -203,5 +220,13 @@ public class OrderServiceImpl implements OrderService {
             return ResponseMessage.success(order.getSerialNumber());
         }
         return ResponseMessage.error("添加失败");
+    }
+    @Override
+    public ResponseMessage delOrder_tailId(Integer id){
+        boolean flag1 = order_detailMapper.delOrder_tailId(id);
+        if (flag1) {
+            return ResponseMessage.success(flag1);
+        }
+        return ResponseMessage.error("删除失败");
     }
 }

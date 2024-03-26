@@ -50,6 +50,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             }
             Map<String, Object> claims = JwtUtil.parseToken(token);
 
+
             //把业务数据存储到ThreadLocal中
             ThreadLocalUtil.set(claims);
             //放行

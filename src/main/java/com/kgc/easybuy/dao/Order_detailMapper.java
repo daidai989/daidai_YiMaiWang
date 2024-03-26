@@ -18,4 +18,8 @@ public interface Order_detailMapper {
     public boolean updateOrderId(@Param("orderId") Integer orderId,@Param("ids") List<Integer> ids);
 
     public List<Order_detail> getOrder_tailList(Integer id);
+    public List<Order_detail> getOrder_tailListByPage(@Param("name") String name,@Param("orderId") Integer orderId);
+
+    public boolean delOrder_tailId(Integer id);
+
 }

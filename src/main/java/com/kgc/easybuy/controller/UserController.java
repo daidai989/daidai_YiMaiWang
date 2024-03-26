@@ -5,7 +5,6 @@ import com.kgc.easybuy.pojo.Page;
 import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.pojo.User;
 import com.kgc.easybuy.service.UserService;
-import com.kgc.easybuy.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
@@ -63,6 +61,13 @@ public class UserController {
         return user;
     }
 
+    @RequestMapping("checkRoled")
+    @ResponseBody
+    public ResponseMessage checkRoled(String token){
+        ResponseMessage user = userService.getUser(token);
+        return user;
+    }
+
     @RequestMapping("sendEmailCode")
     @ResponseBody
     public Object sendEmailCode(String userName){
@@ -94,7 +99,6 @@ public class UserController {
         ResponseMessage userList = userService.getUserList(user,page);
         return userList;
     }
-
 
     @RequestMapping("deleteUser")
     @ResponseBody
