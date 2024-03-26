@@ -8,6 +8,8 @@ import com.kgc.easybuy.dao.CategoryMapper;
 import com.kgc.easybuy.dao.FileMapper;
 import com.kgc.easybuy.dao.ProductMapper;
 import com.kgc.easybuy.pojo.*;
+import com.kgc.easybuy.service.CatService;
+import com.kgc.easybuy.service.CollectService;
 import com.kgc.easybuy.service.ProductService;
 import com.kgc.easybuy.util.EncodingUtil;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -222,6 +224,32 @@ public class  ProductServiceImpl implements ProductService {
         if (esSelect.getBrandId() > 0) {
             boolQueryBuilder.must(QueryBuilders.matchQuery("brandId", esSelect.getBrandId()));
         }
+        if (esSelect.getBrandId() > 0) {
+            boolQueryBuilder.must(QueryBuilders.matchQuery("brandId", esSelect.getBrandId()));
+        }
+        if (esSelect.getCategoryLevelId() > 0){
+            List<Integer> idList = new ArrayList<>();
+            List<Category> list = new ArrayList();
+            if (esSelect.getType() == 1){
+                    List<Category> secondCategories = categoryMapper.getSecondCategories(esSelect.getCategoryLevelId());
+                    for (Category category :secondCategories) {
+                        List<Category> secondCategories1 = categoryMapper.getThirdCategories(category.getId());
+                        for (Category category1 :secondCategories1) {
+                            idList.add(category1.getId());
+                        }
+                    }
+            }else if(esSelect.getType() == 2){
+                list = categoryMapper.getThirdCategories(esSelect.getCategoryLevelId());
+                for (Category category : list) {
+                    idList.add(category.getId());
+                }
+            }
+            if (idList.isEmpty()){
+                boolQueryBuilder.must(QueryBuilders.matchQuery("categoryLevelId", esSelect.getCategoryLevelId()));
+            }else {
+                boolQueryBuilder.must(QueryBuilders.termsQuery("categoryLevelId", idList));
+            }
+        }
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
         nativeSearchQueryBuilder.withQuery(boolQueryBuilder);
         if (esSelect.isSortPrice()) {
@@ -284,8 +312,8 @@ public class  ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponseMessage getRecommendProduct(int parentId, int id) {
-        List<Product> recommendProduct = productMapper.getRecommendProduct(parentId, id);
+    public ResponseMessage getRecommendProduct(Product products) {
+        List<Product> recommendProduct = productMapper.getRecommendProduct(products);
         List<Product> productList = EncodingUtil.encoding(recommendProduct);
         return ResponseMessage.success(productList);
     }

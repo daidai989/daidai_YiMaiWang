@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link type="text/css" rel="stylesheet" href="../css/style.css" />
+	<link type="text/css" rel="stylesheet" href="css/style.css" />
     <!--[if IE 6]>
     <script src="js/iepng.js" type="text/javascript"></script>
         <script type="text/javascript">
@@ -10,19 +10,19 @@
         </script>
     <![endif]-->
         
-    <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="../js/menu.js"></script>
-	<script type="text/javascript" src="../js/select.js"></script>
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
+	<script type="text/javascript" src="js/select.js"></script>
 
-    <script type="text/javascript" src="../js/vue.js"></script>
-    <script type="text/javascript" src="../js/axios.js"></script>
-    <link type="text/css" rel="stylesheet" href="../css/element.css"/>
-    <script type="text/javascript" src="../js/element.js"></script>
+    <script type="text/javascript" src="js/vue.js"></script>
+    <script type="text/javascript" src="js/axios.js"></script>
+    <link type="text/css" rel="stylesheet" href="css/element.css"/>
+    <script type="text/javascript" src="js/element.js"></script>
     
-<title>分类管理-修改</title>
+<title>分类管理-添加</title>
 </head>
 <body>  
-<div id="root6">
+<div id="root5">
     <!--Begin Header Begin-->
     <div class="soubg">
         <div class="sou">
@@ -103,7 +103,7 @@
         </span>
             <!--End 所在收货地区 End-->
             <span class="fr">
-        	<span class="fl">你好，请<a href="Login.html">登录</a>&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a href="#">我的订单</a>&nbsp;|</span>
+        	<span class="fl">你好，请<a href="Login.html">登录</a>&nbsp; <a href="../Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a href="#">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
                 	<a href="#">收藏夹</a>
@@ -145,13 +145,13 @@
             </span>
             <span class="fl">|&nbsp;关注我们：</span>
             <span class="s_sh"><a href="#" class="sh1">新浪</a><a href="#" class="sh2">微信</a></span>
-            <span class="fr">|&nbsp;<a href="#">手机版&nbsp;<img src="../images/s_tel.png" align="absmiddle" /></a></span>
+            <span class="fr">|&nbsp;<a href="#">手机版&nbsp;<img src="images/s_tel.png" align="absmiddle" /></a></span>
         </span>
         </div>
     </div>
     <div class="m_top_bg">
         <div class="top">
-            <div class="m_logo"><a href="../Index.html"><img src="../images/logo1.png" /></a></div>
+            <div class="m_logo"><a href="../Index.html"><img src="images/logo1.png" /></a></div>
             <div class="m_search">
                 <form>
                     <input type="text" value="" class="m_ipt" />
@@ -233,7 +233,7 @@
                 </div>
             </div>
             <div class="m_right" style="text-align: center">
-                <h2><p>分类管理-修改分类</p></h2>
+                <h2><p>分类管理-添加分类</p></h2>
                 <el-form :model="category" :rules="rules" ref="category" label-width="100px" class="demo-ruleForm">
                     <el-form-item style="width: 300px;" label="分类名称：" prop="name">
                       <el-input v-model="category.name"></el-input>
@@ -255,7 +255,7 @@
                           </el-tree>
                     </el-form-item>
                     <el-form-item>
-                      <el-button type="primary" @click="submitForm('category')">修改</el-button>
+                      <el-button type="primary" @click="submitForm('category')">添加</el-button>
                       <el-button @click="resetForm('category')">重置</el-button>
                       <el-button type="primary" @click="back()">返回</el-button>
                     </el-form-item>
@@ -272,6 +272,8 @@
                     <tr>
                         <td width="72"><img src="images/b1.png" width="62" height="62" /></td>
                         <td><h2>正品保障</h2>正品行货  放心购买</td>
+
+
                     </tr>
                 </table>
                 <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
@@ -354,26 +356,21 @@
 </html>
 <script>
     new Vue({
-        el:"#root6",
+        el:"#root5",
         data(){
             var checkName = (rule, value, callback) => {
-                if (value != this.curName){
-                    axios.get('http://localhost:8080/checkCategoryName',{
-                        params:{
-                            name:value
-                        }
-                    }).then((result) => {
-                        console.log(result.data)
-                        if(result.data.code != 200){
-                            callback(new Error('分类名重复'));
-                        }else{
-                            callback();
-                        }
-                    })
-                }else {
-                    callback()
-                }
-
+                axios.get('http://localhost:8080/checkCategoryName',{
+                    params:{
+                        name:value
+                    }
+                }).then((result) => {
+                    console.log(result.data)
+                    if(result.data.code != 200){
+                         callback(new Error('分类名重复'));
+                    }else{
+                         callback();
+                    }
+                })
             }
             var checkType = (rule, value, callback) =>{
                 if(this.category.type == 0){
@@ -391,17 +388,16 @@
                     label: 'name'
                 },
                 category:{
-                    id:0,
                     name:'',
                     type:0,
                     parentId:-1
                 },
                 typeName:'',
                 parentName:'',
-                curName:'',
                 rules:{
                 name:[
                     { required: true, message: '请输入分类名！', trigger: 'blur'},
+                    { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' },
                     { validator:checkName,trigger:'blur'}
                 ],
                  typeName:[
@@ -411,45 +407,18 @@
             }
         },
         mounted(){
-            const search =  new URLSearchParams(window.location.search);
-            const id = search.get("id");
-            this.category.id = id;
             this.getCategory()
-            this.initCategory(id)
         },
         methods:{
-            initCategory(id){
-                axios.get('http://localhost:8080/getCategory',{
-                    params:{
-                        id:id
-                    }
-                }).then((result) =>{
-                    console.log(result.data);
-                    if( result.data.data.type == 1 ){
-                        this.typeName = "一级分类"
-                        this.parentName = "无"
-                    }else if(result.data.data.type == 2){
-                        this.typeName = "二级分类"
-                        this.parentName = result.data.data.parentName
-                    }else if(result.data.data.type == 3){
-                        this.typeName = "三级分类"
-                        this.parentName = result.data.data.parentName
-                    }
-                    this.category.name = result.data.data.name
-                    this.category.type = result.data.data.type
-                    this.category.parentId = result.data.data.parentId
-                    this.curName = result.data.data.name
-                })
-            },
             back(){
               window.location.href='Category.html'
             },
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    axios.post('http://localhost:8080/updateCategory',this.category).then((result) => {
+                    axios.post('http://localhost:8080/addCategory',this.category).then((result) => {
                         if(result.data.code == 200){
-                            alert("修改成功！")
+                            alert("添加成功！")
                             window.location.href = "Category.html"
                         }
                     });

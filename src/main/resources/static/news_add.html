@@ -4,8 +4,8 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link type="text/css" rel="stylesheet" href="../css/style.css" />
-    <link type="text/css" rel="stylesheet" href="../css/antd.css">
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+    <link type="text/css" rel="stylesheet" href="css/antd.css">
     <link rel="stylesheet" href="css/element.css">
     <!-- 引入组件库 -->
     <!--[if IE 6]>
@@ -15,14 +15,14 @@
     </script>
     <![endif]-->
 
-    <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="../js/menu.js"></script>
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
 
-    <script type="text/javascript" src="../js/select.js"></script>
-    <script src="../js/vue.js"></script>
-    <script src="../js/axios.js"></script>
-    <script src="../js/antd.js"></script>
-    <script src="../js/element.js"></script>
+    <script type="text/javascript" src="js/select.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/axios.js"></script>
+    <script src="js/antd.js"></script>
+    <script src="js/element.js"></script>
     <title>尤洪</title>
 </head>
 
@@ -150,13 +150,13 @@
             </span>
             <span class="fl">|&nbsp;关注我们：</span>
             <span class="s_sh"><a href="#" class="sh1">新浪</a><a href="#" class="sh2">微信</a></span>
-            <span class="fr">|&nbsp;<a href="#">手机版&nbsp;<img src="../images/s_tel.png" align="absmiddle" /></a></span>
+            <span class="fr">|&nbsp;<a href="#">手机版&nbsp;<img src="images/s_tel.png" align="absmiddle" /></a></span>
         </span>
         </div>
     </div>
     <div class="m_top_bg">
         <div class="top">
-            <div class="m_logo"><a href="../index.html"><img src="../images/logo1.png" /></a></div>
+            <div class="m_logo"><a href="index.html"><img src="images/logo1.png" /></a></div>
 
             <div class="i_car">
                 <div class="car_t">购物车 [ <span>{{productLength}}</span> ]</div>
@@ -191,37 +191,30 @@
                     <div class="left_m_t t_bg1">订单中心</div>
 
                     <ul>
-                        <li><a href="Member_Product.html" class="now">我的订单</a></li>
-                        <li><a href="Member_Address.html">收货地址</a></li>
-                        <li><a href="#">缺货登记</a></li>
-                        <li><a href="#">跟踪订单</a></li>
-                    </ul>
-                </div>
-                <div class="left_m">
-                    <div class="left_m_t t_bg2">会员中心</div>
-                    <ul>
-                        <li><a href="Member_User.html">用户信息</a></li>
+                        <li><a href="order.html">我的订单</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="order.html">全部订单</a></li>
+                        <li><a href="member/Member_Address.html">地址管理</a></li>
                         <li><a href="Member_Collect.html">我的收藏</a></li>
-                        <li><a href="Member_Msg.html">我的留言</a></li>
-                        <li><a href="Member_Links.html">推广链接</a></li>
-                        <li><a href="#">我的评论</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg3">账户中心</div>
+                    <div class="left_m_t t_bg2">用户中心</div>
                     <ul>
-                        <li><a href="Member_Safe.html">账户安全</a></li>
-                        <li><a href="Member_Packet.html">我的红包</a></li>
-                        <li><a href="Member_Money.html">资金管理</a></li>
+                        <li><a href="User_detail.html">用户信息</a></li>
+                        <li><a href="Member_Member.html">用户列表</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg4">分销中心</div>
+                    <div class="left_m_t t_bg3">商品管理</div>
                     <ul>
-                        <li><a href="Member_Member.html">我的会员</a></li>
-                        <li><a href="Member_Results.html">我的业绩</a></li>
-                        <li><a href="Member_Commission.html">我的佣金</a></li>
-                        <li><a href="Member_Cash.html">申请提现</a></li>
+                        <li><a href="category/Category.html">分类管理</a></li>
+                        <li><a href="Member_Product.html">商品管理</a></li>
+                    </ul>
+                </div>
+                <div class="left_m">
+                    <div class="left_m_t t_bg4" >咨询管理</div>
+                    <ul>
+                        <li><a href="news.html" class="now">咨询列表</a></li>
                     </ul>
                 </div>
             </div>
@@ -267,25 +260,25 @@
             <div class="b_btm">
                 <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="72"><img src="../images/b1.png" width="62" height="62" /></td>
+                        <td width="72"><img src="images/b1.png" width="62" height="62" /></td>
                         <td><h2>正品保障</h2>正品行货  放心购买</td>
                     </tr>
                 </table>
                 <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="72"><img src="../images/b2.png" width="62" height="62" /></td>
+                        <td width="72"><img src="images/b2.png" width="62" height="62" /></td>
                         <td><h2>满38包邮</h2>满38包邮 免运费</td>
                     </tr>
                 </table>
                 <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="72"><img src="../images/b3.png" width="62" height="62" /></td>
+                        <td width="72"><img src="images/b3.png" width="62" height="62" /></td>
                         <td><h2>天天低价</h2>天天低价 畅选无忧</td>
                     </tr>
                 </table>
                 <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="72"><img src="../images/b4.png" width="62" height="62" /></td>
+                        <td width="72"><img src="images/b4.png" width="62" height="62" /></td>
                         <td><h2>准时送达</h2>收货时间由你做主</td>
                     </tr>
                 </table>
@@ -333,14 +326,14 @@
                 </p>
             </div>
             <div class="b_er">
-                <div class="b_er_c"><img src="../images/er.gif" width="118" height="118" /></div>
-                <img src="../images/ss.png" />
+                <div class="b_er_c"><img src="images/er.gif" width="118" height="118" /></div>
+                <img src="images/ss.png" />
             </div>
         </div>
         <div class="btmbg">
             <div class="btm">
                 备案/许可证编号：蜀ICP备12009302号-1-www.dingguagua.com   Copyright © 2015-2018 尤洪商城网 All Rights Reserved. 复制必究 , Technical Support: Dgg Group <br />
-                <img src="../images/b_1.gif" width="98" height="33" /><img src="../images/b_2.gif" width="98" height="33" /><img src="../images/b_3.gif" width="98" height="33" /><img src="../images/b_4.gif" width="98" height="33" /><img src="../images/b_5.gif" width="98" height="33" /><img src="../images/b_6.gif" width="98" height="33" />
+                <img src="images/b_1.gif" width="98" height="33" /><img src="images/b_2.gif" width="98" height="33" /><img src="images/b_3.gif" width="98" height="33" /><img src="images/b_4.gif" width="98" height="33" /><img src="images/b_5.gif" width="98" height="33" /><img src="images/b_6.gif" width="98" height="33" />
             </div>
         </div>
     </div>

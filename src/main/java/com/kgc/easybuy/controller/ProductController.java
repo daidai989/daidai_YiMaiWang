@@ -172,7 +172,7 @@ public class ProductController {
     @RequestMapping("getRecommendProduct")
     @ResponseBody
     public ResponseMessage getRecommendProduct(Product product){
-        ResponseMessage responseMessage = productService.getRecommendProduct(product.getParentId(),product.getId());
+        ResponseMessage responseMessage = productService.getRecommendProduct(product);
         return  responseMessage;
     }
 

@@ -35,4 +35,10 @@ public class CollectionController {
         ResponseMessage responseMessage = collectionService.deleteCollection(collect);
         return responseMessage;
     }
+
+    @RequestMapping("getCollectionByproductIdAndUserId")
+    public ResponseMessage getCollectionByproductIdAndUserId(Collect collect) {
+        ResponseMessage responseMessage = collectionService.getCollectionByproductIdAndUserId(collect);
+        return responseMessage;
+    }
 }

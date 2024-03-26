@@ -14,7 +14,7 @@
         FROM easybuy_user u
                  JOIN easybuy_shopping_cat c ON u.id = c.userId
                  JOIN easybuy_product p ON c.productId = p.id
-                 JOIN easybuy_file f ON p.fileId = f.id
+                 JOIN easybuy_file f ON p.id = f.productId
         WHERE u.id = #{userId} and c.isDel=0
 
     </select>

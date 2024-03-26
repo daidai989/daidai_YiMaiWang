@@ -1,13 +1,9 @@
-<!DOCTYPE html
-        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link type="text/css" rel="stylesheet" href="../css/style.css" />
-    <link type="text/css" rel="stylesheet" href="../css/antd.css">
-    <link rel="stylesheet" href="css/element.css">
-    <!-- 引入组件库 -->
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+    <link type="text/css" rel="stylesheet" href="css/element.css"/>
     <!--[if IE 6]>
     <script src="js/iepng.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -15,19 +11,20 @@
     </script>
     <![endif]-->
 
-    <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="../js/menu.js"></script>
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
 
-    <script type="text/javascript" src="../js/select.js"></script>
-    <script src="../js/vue.js"></script>
-    <script src="../js/axios.js"></script>
-    <script src="../js/antd.js"></script>
-    <script src="../js/element.js"></script>
+    <script type="text/javascript" src="js/select.js"></script>
+    <script type="text/javascript" src="js/vue.js"></script>
+    <script type="text/javascript" src="js/axios.js"></script>
+    <script type="text/javascript" src="js/element.js"></script>
+    <script type="text/javascript" src="js/element-china-area-data.iife.js"></script>
+
     <title>尤洪</title>
 </head>
-
 <body>
-<div id="app9">
+<div id="root11">
+    <!--Begin Header Begin-->
     <div class="soubg">
         <div class="sou">
             <!--Begin 所在收货地区 Begin-->
@@ -150,32 +147,36 @@
             </span>
             <span class="fl">|&nbsp;关注我们：</span>
             <span class="s_sh"><a href="#" class="sh1">新浪</a><a href="#" class="sh2">微信</a></span>
-            <span class="fr">|&nbsp;<a href="#">手机版&nbsp;<img src="../images/s_tel.png" align="absmiddle" /></a></span>
+            <span class="fr">|&nbsp;<a href="#">手机版&nbsp;<img src="images/s_tel.png" align="absmiddle" /></a></span>
         </span>
         </div>
     </div>
     <div class="m_top_bg">
         <div class="top">
-            <div class="m_logo"><a href="../index.html"><img src="../images/logo1.png" /></a></div>
-
+            <div class="m_logo"><a href="Index.html"><img src="images/logo1.png" /></a></div>
+            <div class="m_search">
+                <form>
+                    <input type="text" value="" class="m_ipt" />
+                    <input type="submit" value="搜索" class="m_btn" />
+                </form>
+                <span class="fl"><a href="#">咖啡</a><a href="#">iphone 6S</a><a href="#">新鲜美食</a><a href="#">蛋糕</a><a href="#">日用品</a><a href="#">连衣裙</a></span>
+            </div>
             <div class="i_car">
                 <div class="car_t">购物车 [ <span>{{productLength}}</span> ]</div>
                 <div class="car_bg">
                     <!--Begin 购物车未登录 Begin-->
-                    <ul v-if="$data.user.username" class="cars">
-                        <li v-for="(item, index) in products" :key="index" >
-                            <div class="img"><a href="#"><img height="58" :src="'http://localhost:8080/getImage?filePath=' + item.filePath" width="58"/></a></div>
-                            <div class="name"><a href="#">{{item.name}}</a></div>
-                            <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
-                        </li>
-                        <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
-                        <div class="price_a"><a href="#">去购物车结算</a></div>
-                    </ul>
+                        <ul v-if="$data.user.username" class="cars">
+                            <li v-for="(item, index) in products" :key="item.id" >
+                                <div class="img"><a href="#"><img height="58" :src="'http://localhost:8080/getImage?filePath=' + item.filePath" width="58"/></a></div>
+                                <div class="name"><a href="#">{{item.name}}</a></div>
+                                <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
+                            </li>
+                            <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
+                            <div class="price_a"><a href="BuyCar.html">去购物车结算</a></div>
+                        </ul>
                     <div v-else class="un_login">
                         还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！
-
                     </div>
-
                     <!--End 购物车已登录 End-->
                 </div>
             </div>
@@ -191,74 +192,89 @@
                     <div class="left_m_t t_bg1">订单中心</div>
 
                     <ul>
-                        <li><a href="Member_Product.html" class="now">我的订单</a></li>
-                        <li><a href="Member_Address.html">收货地址</a></li>
-                        <li><a href="#">缺货登记</a></li>
-                        <li><a href="#">跟踪订单</a></li>
-                    </ul>
-                </div>
-                <div class="left_m">
-                    <div class="left_m_t t_bg2">会员中心</div>
-                    <ul>
-                        <li><a href="Member_User.html">用户信息</a></li>
+                        <li><a href="user_order.html">我的订单</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2" class="now"><a href="order.html">全部订单</a></li>
+                        <li><a href="Member_Address.html">地址管理</a></li>
                         <li><a href="Member_Collect.html">我的收藏</a></li>
-                        <li><a href="Member_Msg.html">我的留言</a></li>
-                        <li><a href="Member_Links.html">推广链接</a></li>
-                        <li><a href="#">我的评论</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg3">账户中心</div>
+                    <div class="left_m_t t_bg2">用户中心</div>
                     <ul>
-                        <li><a href="Member_Safe.html">账户安全</a></li>
-                        <li><a href="Member_Packet.html">我的红包</a></li>
-                        <li><a href="Member_Money.html">资金管理</a></li>
+                        <li><a href="User_detail.html">用户信息</a></li>
+                        <li><a href="Member_Member.html">用户列表</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg4">分销中心</div>
+                    <div class="left_m_t t_bg3">商品管理</div>
                     <ul>
-                        <li><a href="Member_Member.html">我的会员</a></li>
-                        <li><a href="Member_Results.html">我的业绩</a></li>
-                        <li><a href="Member_Commission.html">我的佣金</a></li>
-                        <li><a href="Member_Cash.html">申请提现</a></li>
+                        <li><a href="category/Category.html">分类管理</a></li>
+                        <li><a href="Member_Product.html">商品管理</a></li>
+                    </ul>
+                </div>
+                <div class="left_m">
+                    <div class="left_m_t t_bg4" >咨询管理</div>
+                    <ul>
+                        <li><a href="news.html">咨询列表</a></li>
                     </ul>
                 </div>
             </div>
             <div class="m_right">
                 <p></p>
-                <div class="mem_tit">新闻管理</div>
-                <a-row type="flex" justify="center">
-                    <a-col :span="12">
-                        <a-form-model
-                                ref="productsForm"
-                                :model="news"
-                                :rules="rules"
-                                :label-col="labelCol"
-                                :wrapper-col="wrapperCol"
-                        >
-                            <a-form-model-item has-feedback prop="title" label="标题:">
-                                <a-input v-model="news.title" @blur="onFieldBlur('title')"></a-input>
-                            </a-form-model-item>
-                            <a-form-model-item label="内容" prop="content" >
-                                <a-input v-model="news.content" @blur="onFieldBlur('content')"></a-input>
-                            </a-form-model-item>
-                            <a-form-model-item label="短言" prop="shortTitle" >
-                                <a-input v-model="news.shortTitle" @blur="onFieldBlur('shortTitle')"></a-input>
-                            </a-form-model-item>
-
-
-
-                            <a-form-model-item >
-                                <a-button type="primary" @click="onSubmit('productsForm')">修改</a-button>
-                                <a-button style="margin-left: 10px" @click="resetForm('productsForm')">重置</a-button>
-                                <a href="javascript:history.back();"><a-button type="primary">返回</a-button></a>
-                            </a-form-model-item>
-                        </a-form-model>
-                    </a-col>
-                </a-row>
-
-
+                <div class="mem_tit">全部订单</div>
+                <div style="text-align: center;">
+                    订单号: <el-input label="订单号" style="width: 200px;"  v-model="serialNumber"></el-input>
+                    <el-button @click="getAllOrder(1)" type="primary" size="small">查询</el-button>
+                    <el-table
+                            :data="page.list"
+                            stripe
+                            style="width: 100%;text-align: center;">
+                        <el-table-column
+                                width="155"
+                                prop="serialNumber"
+                                label="订单号" width:="50">
+                        </el-table-column>
+                        <el-table-column
+                                width="155"
+                                prop="userAddress"
+                                label="订单地址">
+                        </el-table-column>
+                        <el-table-column
+                                width="155"
+                                prop="cost"
+                                label="订单总金额">
+                        </el-table-column>
+                        <el-table-column
+                                width="155"
+                                prop="status"
+                                label="订单状态">
+                            <template slot-scope="scope">
+                                <div v-if="scope.row.status == 0">未付款</div>
+                                <div v-if="scope.row.status == 1">已付款</div>
+                                <div v-if="scope.row.status == 2">已取消</div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                width="155"
+                                prop="createTime"
+                                label="下单时间" width="100">
+                        </el-table-column>
+                        <el-table-column
+                                fixed="right"
+                                label="操作">
+                            <template slot-scope="scope">
+                                <el-button @click="update(scope.row)" type="primary" size="small">修改</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <el-pagination
+                            @current-change="handleCurrentChange"
+                            :current-page="page.pageNum"
+                            :page-size="page.pageSize"
+                            layout="total, prev,pager, next, jumper"
+                            :total="page.total">
+                    </el-pagination>
+                </div>
             </div>
         </div>
         <!--End 用户中心 End-->
@@ -267,25 +283,25 @@
             <div class="b_btm">
                 <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="72"><img src="../images/b1.png" width="62" height="62" /></td>
+                        <td width="72"><img src="images/b1.png" width="62" height="62" /></td>
                         <td><h2>正品保障</h2>正品行货  放心购买</td>
                     </tr>
                 </table>
                 <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="72"><img src="../images/b2.png" width="62" height="62" /></td>
+                        <td width="72"><img src="images/b2.png" width="62" height="62" /></td>
                         <td><h2>满38包邮</h2>满38包邮 免运费</td>
                     </tr>
                 </table>
                 <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="72"><img src="../images/b3.png" width="62" height="62" /></td>
+                        <td width="72"><img src="images/b3.png" width="62" height="62" /></td>
                         <td><h2>天天低价</h2>天天低价 畅选无忧</td>
                     </tr>
                 </table>
                 <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="72"><img src="../images/b4.png" width="62" height="62" /></td>
+                        <td width="72"><img src="images/b4.png" width="62" height="62" /></td>
                         <td><h2>准时送达</h2>收货时间由你做主</td>
                     </tr>
                 </table>
@@ -333,160 +349,104 @@
                 </p>
             </div>
             <div class="b_er">
-                <div class="b_er_c"><img src="../images/er.gif" width="118" height="118" /></div>
-                <img src="../images/ss.png" />
+                <div class="b_er_c"><img src="images/er.gif" width="118" height="118" /></div>
+                <img src="images/ss.png" />
             </div>
         </div>
         <div class="btmbg">
             <div class="btm">
                 备案/许可证编号：蜀ICP备12009302号-1-www.dingguagua.com   Copyright © 2015-2018 尤洪商城网 All Rights Reserved. 复制必究 , Technical Support: Dgg Group <br />
-                <img src="../images/b_1.gif" width="98" height="33" /><img src="../images/b_2.gif" width="98" height="33" /><img src="../images/b_3.gif" width="98" height="33" /><img src="../images/b_4.gif" width="98" height="33" /><img src="../images/b_5.gif" width="98" height="33" /><img src="../images/b_6.gif" width="98" height="33" />
+                <img src="images/b_1.gif" width="98" height="33" /><img src="images/b_2.gif" width="98" height="33" /><img src="images/b_3.gif" width="98" height="33" /><img src="images/b_4.gif" width="98" height="33" /><img src="images/b_5.gif" width="98" height="33" /><img src="images/b_6.gif" width="98" height="33" />
             </div>
         </div>
     </div>
 </div>
+
 </body>
-<script type="text/javascript">
+
+
+<!--[if IE 6]>
+<script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+</html>
+<script>
     new Vue({
-        el: '#app9',
-
+        el:"#root11",
         data() {
-            let checkNewsTitle=(rule, value, callback) =>{
-                const urlParams = new URLSearchParams(window.location.search);
-                const id = urlParams.get('id')
-                this.news.id=id
-                axios
-                    .get("/getNewsByTitle",{params:{title:value}})
-                    .then((resp) => {
-                        console.log(resp.data)
-                        if (!value) {
-                            callback(new Error("请输入标题"));
-                        }else if (value.length<1||value.length>20){
-                            callback(new Error("标题长度错误"));
-                        } else if (resp.data.code !== 200) {
-                            // 将resp.data.data.id转换为整数类型
-
-                            callback(new Error("标题已经存在"));
-                        }else {
-                            callback()
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("修改失败", error);
-                    });
-            }
-            return{
-                products:[],
-                productLength:"",
-                totalPrice:"",
+            return {
+                page:{},
                 user:{
                     username:"",
                     id:null,
+                    roleId:null
                 },
-                news: {
-                    id:null,
-                    title:"",
-                    content:"",
-                    shortTitle:"",
-                },
-
-                labelCol: { span: 4 },
-                wrapperCol: { span: 14 },
-
-                rules: {
-                    title: [
-                        { validator: checkNewsTitle, trigger: 'blur' }
-                    ],
-                    content: [
-                        { required: true, message: '请输入新闻信息', trigger: 'blur' },
-                        { min: 1, max: 100, message: '新闻信息长度在1到100之间', trigger: 'blur' }
-                    ],
-                    shortTitle: [
-                        { required: true, message: '请输入短言', trigger: 'blur' },
-                        { min: 1, max: 5, message: '短言长度在1到5之间', trigger: 'blur' }
-                    ],
-                }
+                serialNumber:'',
             }
-
-
+        },
+        async mounted() {
+            await this.initLogin()
+            this.initCat()
+            this.getAllOrder(1);
         },
         methods: {
-
-            initLogin() {
-                let token=localStorage.getItem("token");
-                axios.get('http://localhost:8080/getUser', {params: {token: token}})
-                    .then((resp) => {
-                        console.log(resp.data);
-                        this.user.username=resp.data.data.userName
-                        this.user.id=resp.data.data.id
-                        this.productsOptions.userId=resp.data.data.id
-                    });
-            },
-            initCat() {
-                let token=localStorage.getItem("token");
-                axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
-                    .then((resp) => {
-                        console.log(resp.data);
-                        this.products=resp.data.data
-                        let sum = 0;
-                        this.productLength=this.products.length
-                        for (let i = 0; i < this.products.length; i++) {
-                            sum += this.products[i].price*this.products[i].count;
-                            this.totalPrice=sum;
-                        }
-
-                    });
-            },
-            initNews() {
-                const urlParams = new URLSearchParams(window.location.search);
-                const id = urlParams.get('id');
-                axios.get('http://localhost:8080/getNewsById', {params: {id: id}})
-                    .then((resp) => {
-                        console.log(resp.data);
-                        this.news.title=resp.data.data.title
-                        this.news.content=resp.data.data.content
-                        this.news.shortTitle=resp.data.data.shortTitle
-
-                    });
-            },
-
-
-
-            onSubmit(formName) {
-                const urlParams = new URLSearchParams(window.location.search);
-                const id = urlParams.get('id');
-                this.news.id = id;
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        axios
-                            .post("/updateNews", this.news)
-                            .then((resp) => {
-                                if (resp.data.code === 200) {
-                                    window.location.href="news.html"
-                                }
-                            })
-                            .catch((error) => {
-                                console.error("添加失败", error);
-                            });
-                    } else {
-                        console.log("表单验证失败");
+            async getUser(token){
+                await axios.get('http://localhost:8080/getUser',{
+                    params:{
+                        token:token
                     }
+                }).then((result) => {
+                    console.log(result.data.data);
+                    this.user = result.data.data
                 });
             },
-            onFieldBlur(field) {
-                this.$refs.productsForm.validateField(field);
+            getAllOrder(currentNo){
+                axios.get('http://localhost:8080/getOrderList',{
+                    params:{
+                        currentPageNo:currentNo,
+                        pageSize:5,
+                        serialNumber:this.serialNumber,
+                        userId:this.user.id
+                    }
+                }).then((result) => {
+                    console.log(result.data);
+                    this.page = result.data.data
+                });
             },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
+            handleCurrentChange(pageNum) {
+                this.page.pageNum = pageNum
+                this.getAddressList(pageNum,this.page.pageSize)
             },
+            update(row){
+                window.location.href = "order_update.html?id=" + row.id
+            },
+            async initLogin() {
+                 let token=localStorage.getItem("token");
+                await axios.get('http://localhost:8080/getUser', {params: {token: token}})
+                     .then((resp) => {
+                         console.log(resp.data);
+                         this.user.username=resp.data.data.userName
+                         this.user.id=resp.data.data.id
+                         this.user.roleId = resp.data.data.roleId
+                     });
+             },
+             initCat() {
+                 let token=localStorage.getItem("token");
+                 axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
+                     .then((resp) => {
+                         console.log(resp.data);
+                         this.products=resp.data.data
+                         let sum = 0;
+                         let num=0;
+                         this.productLength=this.products.length
+                         for (let i = 0; i < this.products.length; i++) {
+                             sum += this.products[i].price*this.products[i].count;
+                             num+=this.products[i].count
+                             this.totalPrice=sum;
+                             this.totalCount=num;
+                         }
 
+                     });
+             },
         },
-        mounted() {
-            this.initLogin()
-            this.initCat()
-            this.initNews()
-        }
     })
 </script>
-
-</html>

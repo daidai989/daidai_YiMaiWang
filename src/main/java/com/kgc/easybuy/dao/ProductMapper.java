@@ -27,7 +27,7 @@ public interface ProductMapper {
     public Product getProductByLogin(String loginName);
     public List<Product> setProductTes();
     public List<Product> getCollectProduct(Collect collect);
-    public List<Product> getRecommendProduct(int parentId, int id);
+    public List<Product> getRecommendProduct(Product product);
     public List<Product> getHistoryProduct(int userId);
     public boolean updateStock(@Param("id") Integer id, @Param("stock") Integer stock);
     public List<Product> getProductListByproductList(@Param("ids")List ids);

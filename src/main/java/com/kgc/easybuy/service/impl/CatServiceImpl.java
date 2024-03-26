@@ -6,6 +6,7 @@ import com.kgc.easybuy.pojo.Collect;
 import com.kgc.easybuy.pojo.Product;
 import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.service.CatService;
+import com.kgc.easybuy.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -123,7 +123,7 @@
         <!--End 所在收货地区 End-->
         <span class="fr">
         	 <span class="fl">你好，{{$data.user.username ?  $data.user.username : '请登录'}}&nbsp;<a v-if="!$data.user.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.user.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
-                     href="#">我的订单</a>&nbsp;|</span>
+                     href="user_order.html">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
                 	<a href="#">收藏夹</a>
@@ -182,7 +182,7 @@
         <div class="car_t">购物车 [ <span>{{productLength}}</span> ]</div>
         <div class="car_bg">
             <!--Begin 购物车未登录 Begin-->
-            <ul v-if="$data.user.username" class="cars">
+            <ul v-if="user.username != ''" class="cars">
                 <li v-for="(item, index) in products" :key="index" >
                     <div class="img"><a href="#"><img height="58" :src="'/getImage?filePath=' + item.filePath" width="58"/></a></div>
                     <div class="name"><a href="#">{{item.name}}</a></div>
@@ -297,15 +297,17 @@
                             <a href="#"><img src="images/sh_5.gif" /></a>
                         </div>
                     </div>
-                    <div class="d_care"><a onclick="ShowDiv('MyDiv','fade')">关注商品</a></div>
+                    <div class="d_care">
+                        <a onclick="ShowDiv('MyDiv','fade')">关注商品</a>
+                    </div>
                 </div>
                 <div class="des_join">
                     <div class="j_nums">
-                         <input type="text" v-model="productNum" @change="checkNum" class="n_ipt" />
+                         <input type="text" v-model="cat.count" @change="checkNum" class="n_ipt" />
                         <input type="button" value="" @click="add" class="n_btn_1" />
                         <input type="button" value="" @click="reduce" class="n_btn_2" />
                      </div>
-                        <span class="fl"><a onclick="ShowDiv_1('MyDiv1','fade1')"><img src="images/j_car.png" /></a></span>
+                        <span class="fl"><a @click="addCat" onclick="ShowDiv_1('MyDiv1','fade1')"><img src="images/j_car.png" /></a></span>
                 </div>
             </div>
 
@@ -558,7 +560,7 @@
                   </tr>
                   <tr height="50" valign="bottom">
                   	<td>&nbsp;</td>
-                    <td><a href="#" class="b_sure">确定</a></td>
+                    <td><a onclick="CloseDiv('MyDiv','fade')" class="b_sure">确定</a></td>
                   </tr>
                 </table>
 
@@ -587,7 +589,7 @@
                   </tr>
                   <tr height="50" valign="bottom">
                   	<td>&nbsp;</td>
-                    <td><a href="#" class="b_sure">去购物车结算</a><a href="Product.html" class="b_buy">继续购物</a></td>
+                    <td><a href="BuyCar.html" class="b_sure">去购物车结算</a><a href="CategoryList.html" class="b_buy">继续购物</a></td>
                   </tr>
                 </table>
 
@@ -705,8 +707,6 @@
                categoryName:'',
                parentId:'',
            },
-           productNum:1,
-           // allPrice:0.0,
             recommendList:[],
             recommendPrice:0.0,
             recommendNum:1,
@@ -716,15 +716,15 @@
             totalPrice:"",
             totalCount:"",
             user:{
-
                 username:"",
                 id:null,
             },
-            // cat:{
-            //     userId:this.user.id,
-            //     productId:null,
-            //     count:null,
-            // },
+            cat:{
+                userId:0,
+                productId:0,
+                count:1,
+                price:0.0
+            },
             ids:[],
             isTrue:1,
             products:[],
@@ -876,15 +876,16 @@
                      });
              },
              addCat() {
-                 let urlParams = new URLSearchParams(window.location.search);
-                 this.product.productId=urlParams.get('productId')
+                this.cat.productId = this.product.id
+                this.cat.userId = this.user.id
+                this.cat.price = this.cat.count * this.product.price;
                  axios.post('http://localhost:8080/addCats',this.cat )
                      .then((resp) => {
                          console.log(resp.data);
                          if (resp.data.code===200){
                              this.isBounce=true;
                          }
-                     });
+                    });
              },
 
              isSubmit(){

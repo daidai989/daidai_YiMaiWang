@@ -115,7 +115,8 @@
         </span>
             <!--End 所在收货地区 End-->
             <span class="fr">
-        	<span class="fl">你好，请<a href="Login.html">登录</a>&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a href="#">我的订单</a>&nbsp;|</span>
+        	 <span class="fl">你好，{{$data.username ?  $data.username : '请登录'}}&nbsp;<a v-if="!$data.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="register.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
+                     href="user_order.html">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
                 	<a href="#">收藏夹</a>
@@ -165,37 +166,27 @@
         <div class="logo"><a href="Index.html"><img src="images/logo.png" /></a></div>
         <div class="search">
             <form>
-                <input class="s_ipt" type="text" v-model="searchValue"/>
-                <input class="s_btn" type="submit" @click="jumpSearch" value="搜索"/>
+                <input type="text" value="" class="s_ipt" />
+                <input type="submit" value="搜索" class="s_btn" />
             </form>
             <span class="fl"><a href="#">咖啡</a><a href="#">iphone 6S</a><a href="#">新鲜美食</a><a href="#">蛋糕</a><a href="#">日用品</a><a href="#">连衣裙</a></span>
         </div>
         <div class="i_car">
-            <div class="car_t">购物车 [ <span>3</span> ]</div>
+            <div class="car_t">购物车 [ <span>{{productLength}}</span> ]</div>
             <div class="car_bg">
                 <!--Begin 购物车未登录 Begin-->
-                <div class="un_login">还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！</div>
-                <!--End 购物车未登录 End-->
-                <!--Begin 购物车已登录 Begin-->
-                <ul class="cars">
-                    <li>
-                        <div class="img"><a href="#"><img src="images/car1.jpg" width="58" height="58" /></a></div>
-                        <div class="name"><a href="#">法颂浪漫梦境50ML 香水女士持久清新淡香 送2ML小样3只</a></div>
-                        <div class="price"><font color="#ff4e00">￥399</font> X1</div>
+                <ul v-if="currentUser.username != ''" class="cars">
+                    <li v-for="(item, index) in products" :key="index" >
+                        <div class="img"><a href="#"><img height="58" :src="'/getImage?filePath=' + item.filePath" width="58"/></a></div>
+                        <div class="name"><a href="#">{{item.name}}</a></div>
+                        <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
                     </li>
-                    <li>
-                        <div class="img"><a href="#"><img src="images/car2.jpg" width="58" height="58" /></a></div>
-                        <div class="name"><a href="#">香奈儿（Chanel）邂逅活力淡香水50ml</a></div>
-                        <div class="price"><font color="#ff4e00">￥399</font> X1</div>
-                    </li>
-                    <li>
-                        <div class="img"><a href="#"><img src="images/car2.jpg" width="58" height="58" /></a></div>
-                        <div class="name"><a href="#">香奈儿（Chanel）邂逅活力淡香水50ml</a></div>
-                        <div class="price"><font color="#ff4e00">￥399</font> X1</div>
-                    </li>
+                    <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
+                    <div class="price_a"><a href="#">去购物车结算</a></div>
                 </ul>
-                <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>1058</span></div>
-                <div class="price_a"><a href="#">去购物车结算</a></div>
+                <div v-else class="un_login">
+                    还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！
+                </div>
                 <!--End 购物车已登录 End-->
             </div>
         </div>
@@ -668,24 +659,36 @@
                 pageSize:20,
                 brandId:0,
                 sortPrice:false,
-                userId:0
+                userId:0,
+                type:0,
+                categoryLevelId:0,
             },
             searchValue:'',
             page:[],
             currentUser:{},
-            historyProduct:[]
+            historyProduct:[],
+            username:'',
+            userId:null,
+            productLength:null,
+            products:[],
+            totalPrice:"",
+            totalCount:"",
         }
     },
     async mounted() {
+        const search = new URLSearchParams(window.location.search);
+        this.esSelect.type = search.get('type');
+        this.esSelect.categoryLevelId = search.get('categoryLevelId');
         axios.get("getBrand").then((result) => {
             console.log(result.data);
           this.brandList = result.data.data
         });
+        this.initLogin()
+        this.initCat()
         var token = localStorage.getItem("token");
         if(token != null && token != ''){
             await this.getToken(token);
         }
-        const search = new URLSearchParams(window.location.search);
         const name = search.get("name");
         this.esSelect.name = name
         this.getBrandProduct(1);
@@ -794,7 +797,55 @@
         },
         showImage(filePath){
             return 'http://localhost:8080/getImage?filePath='+ filePath
-        }
+        },
+        initLogin() {
+                 let token=localStorage.getItem("token");
+                 axios.get('http://localhost:8080/getUser', {params: {token: token}})
+                     .then((resp) => {
+                         console.log(resp.data);
+                         this.username=resp.data.data.userName
+                         this.id=resp.data.data.id
+                     });
+             },
+             initCat() {
+                 let token=localStorage.getItem("token");
+                 axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
+                     .then((resp) => {
+                         console.log(resp.data);
+                         this.products=resp.data.data
+                         let sum = 0;
+                         let num=0;
+                         this.productLength=this.products.length
+                         for (let i = 0; i < this.products.length; i++) {
+                             sum += this.products[i].price*this.products[i].count;
+                             num+=this.products[i].count
+                             this.totalPrice=sum;
+                             this.totalCount=num;
+                         }
+
+                     });
+             },
+             addCat() {
+                this.cat.productId = this.product.id
+                this.cat.userId = this.user.id
+                this.cat.price = this.cat.count * this.product.price;
+                 axios.post('http://localhost:8080/addCats',this.cat )
+                     .then((resp) => {
+                         console.log(resp.data);
+                         if (resp.data.code===200){
+                             this.isBounce=true;
+                         }
+                    });
+             },
+        logout() {
+            let token=localStorage.getItem("token");
+            localStorage.removeItem("token");
+            axios.get('http://localhost:8080/logout', {params: {token: token}})
+                .then((resp) => {
+                    console.log(resp.data);
+                    window.location.href="index.html"
+                });
+        },
     },
   })
 </script>

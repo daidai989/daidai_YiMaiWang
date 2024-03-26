@@ -129,8 +129,8 @@
             <span class="fr">
 
 
-                <span class="fl">你好，{{$data.username ?  $data.username : '请登录'}}&nbsp;<a v-if="!$data.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
-                    href="Member_Product.html">我的订单</a>&nbsp;|</span>
+                <span class="fl">你好，{{$data.username ?  $data.username : '请登录'}}&nbsp;<a v-if="!$data.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="register.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
+                    href="user_order.html">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
                 	<a href="#">收藏夹</a>
@@ -217,17 +217,17 @@
                 <div class="leftNav">
                     <ul>
                         <li v-for="(item, index) in theFirst" :key="item.id" @mouseenter="loadSecondAndThird(item.id,index)" @mouseleave="hideSecondAndThird(index)">
-                            <div class="fj">
+                            <div class="fj" @click="goGategoryList(item.type,item.id)">
                                 <span class="n_img"><span></span><img src="images/nav1.png"/></span>
                                 <span class="fl">{{item.name}}</span>
                             </div>
                             <div class="zj" :class="[{ 'block1': activeIndex === index, 'none1': activeIndex !== index }]">
                                 <div class="zj_l">
-                                    <div class="zj_l_c" v-for="(subItem, index) in theSecond" :key="subItem.id">
+                                    <div @click="goGategoryList(subItem1.type,subItem1.id)" class="zj_l_c" v-for="(subItem1, index) in theSecond" :key="subItem1.id">
                                         <h2>
-                                            {{subItem.name}}
+                                            {{subItem1.name}}
                                         </h2>
-                                        <a v-for="(subItem, index) in theThird" :key="subItem.id">{{subItem.name}}|</a>|
+                                        <a @click="goGategoryList(subItem.type,subItem.id)" v-for="(subItem, index) in theThird" :key="subItem.id">{{subItem.name}}|</a>|
                                     </div>
                                 </div>
                                 <div class="zj_r">
@@ -679,32 +679,32 @@
 
 </div>
 <script>
-    function getCookie(name) {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // 判断是否为指定名称的cookie
-            if (cookie.startsWith(name + '=')) {
-                return cookie.substring(name.length + 1);
-            }
-        }
-        return null;
-    }
-    // 请求拦截器，将cookie值放入请求头中
-    axios.interceptors.request.use(
-        config => {
-            const cookies = document.cookie.split(';');
-            const cookieString = cookies.map(cookie => cookie.trim()).join('; ');
-
-            if (cookieString) {
-                config.headers.Cookie = cookieString;
-            }
-            return config;
-        },
-        error => {
-            return Promise.reject(error);
-        }
-    );
+    // function getCookie(name) {
+    //     const cookies = document.cookie.split(';');
+    //     for (let i = 0; i < cookies.length; i++) {
+    //         const cookie = cookies[i].trim();
+    //         // 判断是否为指定名称的cookie
+    //         if (cookie.startsWith(name + '=')) {
+    //             return cookie.substring(name.length + 1);
+    //         }
+    //     }
+    //     return null;
+    // }
+    // // 请求拦截器，将cookie值放入请求头中
+    // axios.interceptors.request.use(
+    //     config => {
+    //         const cookies = document.cookie.split(';');
+    //         const cookieString = cookies.map(cookie => cookie.trim()).join('; ');
+    //
+    //         if (cookieString) {
+    //             config.headers.Cookie = cookieString;
+    //         }
+    //         return config;
+    //     },
+    //     error => {
+    //         return Promise.reject(error);
+    //     }
+    // );
 
     new Vue({
         el: '#app',
@@ -899,6 +899,9 @@
                     console.log(result.data)
                 });
             },
+            goGategoryList(type,categoryLevelId){
+                window.location.href="CategoryList.html?type=" + type + "&categoryLevelId=" + categoryLevelId
+            }
         }
     })
 </script>

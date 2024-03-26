@@ -7,11 +7,14 @@
     <link type="text/css" rel="stylesheet" href="css/style.css" />
     <link type="text/css" rel="stylesheet" href="css/antd.css">
     <link rel="stylesheet" href="css/element.css">
+    <!-- 引入组件库 -->
+    <!--[if IE 6]>
     <script src="js/iepng.js" type="text/javascript"></script>
     <script type="text/javascript">
         EvPNG.fix('div, ul, img, li, input, a');
     </script>
     <![endif]-->
+
     <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
 
@@ -21,12 +24,10 @@
     <script src="js/antd.js"></script>
     <script src="js/element.js"></script>
     <title>尤洪</title>
-
 </head>
 
 <body>
-<div id="app15">
-
+<div id="app9">
     <div class="soubg">
         <div class="sou">
             <!--Begin 所在收货地区 Begin-->
@@ -155,7 +156,7 @@
     </div>
     <div class="m_top_bg">
         <div class="top">
-            <div class="m_logo"><a href="Index.html"><img src="images/logo1.png" /></a></div>
+            <div class="m_logo"><a href="index.html"><img src="images/logo1.png" /></a></div>
 
             <div class="i_car">
                 <div class="car_t">购物车 [ <span>{{productLength}}</span> ]</div>
@@ -192,7 +193,7 @@
                     <ul>
                         <li><a href="order.html">我的订单</a></li>
                         <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="order.html">全部订单</a></li>
-                        <li><a href="Member_Address.html">地址管理</a></li>
+                        <li><a href="member/Member_Address.html">地址管理</a></li>
                         <li><a href="Member_Collect.html">我的收藏</a></li>
                     </ul>
                 </div>
@@ -206,73 +207,45 @@
                 <div class="left_m">
                     <div class="left_m_t t_bg3">商品管理</div>
                     <ul>
-                        <li><a href="Category.html">分类管理</a></li>
-                        <li><a href="Member_Product.html" class="now">商品管理</a></li>
+                        <li><a href="category/Category.html">分类管理</a></li>
+                        <li><a href="Member_Product.html">商品管理</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
                     <div class="left_m_t t_bg4" >咨询管理</div>
                     <ul>
-                        <li><a href="news.html">咨询列表</a></li>
+                        <li><a href="news.html" class="now">咨询列表</a></li>
                     </ul>
                 </div>
             </div>
             <div class="m_right">
                 <p></p>
-                <div class="mem_tit">商品管理</div>
+                <div class="mem_tit">新闻管理</div>
                 <a-row type="flex" justify="center">
                     <a-col :span="12">
                         <a-form-model
                                 ref="productsForm"
-                                :model="productsOptions"
+                                :model="news"
                                 :rules="rules"
                                 :label-col="labelCol"
                                 :wrapper-col="wrapperCol"
                         >
-                            <a-form-model-item has-feedback prop="name" label="产品名字:">
-                                 <a-input v-model="productsOptions.name" @blur="onFieldBlur('name')"></a-input>
+                            <a-form-model-item has-feedback prop="title" label="标题:">
+                                <a-input v-model="news.title" @blur="onFieldBlur('title')"></a-input>
                             </a-form-model-item>
-                            <a-form-model-item label="商品描述" prop="description" >
-                                <a-input v-model="productsOptions.description" @blur="onFieldBlur('description')"></a-input>
+                            <a-form-model-item label="内容" prop="content" >
+                                <a-input v-model="news.content" @blur="onFieldBlur('content')"></a-input>
                             </a-form-model-item>
-
-                            <a-form-model-item prop="stock" label="库存:">
-                                 <a-input v-model="productsOptions.stock" ></a-input>
+                            <a-form-model-item label="短言" prop="shortTitle" >
+                                <a-input v-model="news.shortTitle" @blur="onFieldBlur('shortTitle')"></a-input>
                             </a-form-model-item>
-                            <a-form-model-item prop="price" label="价格:">
-                                 <a-input v-model="productsOptions.price" ></a-input>
-                            </a-form-model-item>
-                            <a-form-model-item label="品牌" prop="brandId">
-                                <el-select v-model.number="productsOptions.brandId" placeholder="请选择">
-                                    <el-option v-for="brand in brandOptions" :key="brand.id" :value="brand.id" :label="brand.name">{{ brand.name }}</el-option>
-                                </el-select>
-                            </a-form-model-item>
-
-
-                            <a-form-model-item prop="categoryLevelId" label="具体类别" v-model="productsOptions.categoryLevelId">
-                                    <el-cascader :options="theFirst" placeholder="Please select" @change="onChange($event)" ></el-cascader>
-                            </a-form-model-item>
-                            <a-form-model-item prop="filePaths" label="图片上传">
-                                <el-upload
-                                        action="/upload"
-                                        name="filePath"
-                                        :before-upload="beforeUpload"
-                                        :on-success="onUploadSuccess"
-                                        :on-remove="onRemoveFile"
-                                        :limit="1"
-                                        :on-exceed="handleExceed"
-                                >
-                                    <el-button size="small" type="primary">点击上传</el-button>
-                                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2mb</div>
-                                </el-upload>
-                            </a-form-model-item>
-
 
 
 
                             <a-form-model-item >
-                                <a-button type="primary" @click="onSubmit('productsForm')">添加</a-button>
+                                <a-button type="primary" @click="onSubmit('productsForm')">修改</a-button>
                                 <a-button style="margin-left: 10px" @click="resetForm('productsForm')">重置</a-button>
+                                <a href="javascript:history.back();"><a-button type="primary">返回</a-button></a>
                             </a-form-model-item>
                         </a-form-model>
                     </a-col>
@@ -368,72 +341,70 @@
 </body>
 <script type="text/javascript">
     new Vue({
-        el: '#app15',
+        el: '#app9',
 
         data() {
-            let checkProductName=(rule, value, callback) =>{
+            let checkNewsTitle=(rule, value, callback) =>{
+                const urlParams = new URLSearchParams(window.location.search);
+                const id = urlParams.get('id')
+                this.news.id=id
                 axios
-                    .get("/getProductByLogin",{params:{name:value}})
+                    .get("/getNewsByTitle",{params:{title:value}})
                     .then((resp) => {
+                        console.log(resp.data)
                         if (!value) {
-                            callback(new Error("请输入名字"));
-                        }else if (resp.data.code !== 200) {
-                            callback(new Error("名字已经存在"));
+                            callback(new Error("请输入标题"));
+                        }else if (value.length<1||value.length>20){
+                            callback(new Error("标题长度错误"));
+                        } else if (resp.data.code !== 200) {
+                            // 将resp.data.data.id转换为整数类型
+
+                            callback(new Error("标题已经存在"));
                         }else {
                             callback()
                         }
                     })
                     .catch((error) => {
-                        console.error("添加失败", error);
+                        console.error("修改失败", error);
                     });
             }
             return{
                 products:[],
-                brandOptions:[],
                 productLength:"",
                 totalPrice:"",
                 user:{
                     username:"",
                     id:null,
                 },
-                productsOptions: {
-                    name: "",
-                    description: "",
-                    stock: null,
-                    price: null,
-                    brandId: null,
-                    filePath: "",
-                    userId: null,
-                    categoryLevelId:null,
+                news: {
+                    id:null,
+                    title:"",
+                    content:"",
+                    shortTitle:"",
                 },
 
                 labelCol: { span: 4 },
                 wrapperCol: { span: 14 },
 
-                theFirst:[],
                 rules: {
-                    name: [
-                        { required: true, message: '请输入产品名称', trigger: 'blur' },
-                        { validator: checkProductName, trigger: 'blur' }
+                    title: [
+                        { validator: checkNewsTitle, trigger: 'blur' }
                     ],
-                    description: [
-                        { required: true, message: '请输入商品描述', trigger: 'blur' },
-                        { min: 1, max: 100, message: '商品描述长度在1到100之间', trigger: 'blur' }
+                    content: [
+                        { required: true, message: '请输入新闻信息', trigger: 'blur' },
+                        { min: 1, max: 100, message: '新闻信息长度在1到100之间', trigger: 'blur' }
                     ],
-                    stock: [
-                        { required: true, message: '请输入库存数量', trigger: 'blur' },
-                        { pattern: /^\d+$/, message: '库存数量必须为正整数', trigger: 'blur' }
+                    shortTitle: [
+                        { required: true, message: '请输入短言', trigger: 'blur' },
+                        { min: 1, max: 5, message: '短言长度在1到5之间', trigger: 'blur' }
                     ],
-                    price: [
-                        { required: true, message: '请输入价格', trigger: 'blur' },
-                        { pattern: /^\d+(\.\d+)?$/, message: '价格必须为正数', trigger: 'blur' }
-                    ]
                 }
             }
 
 
         },
         methods: {
+
             initLogin() {
                 let token=localStorage.getItem("token");
                 axios.get('http://localhost:8080/getUser', {params: {token: token}})
@@ -459,74 +430,32 @@
 
                     });
             },
-            initBrand() {
-                axios.get('http://localhost:8080/getBrand')
+            initNews() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const id = urlParams.get('id');
+                axios.get('http://localhost:8080/getNewsById', {params: {id: id}})
                     .then((resp) => {
                         console.log(resp.data);
-                       this.brandOptions=resp.data.data
+                        this.news.title=resp.data.data.title
+                        this.news.content=resp.data.data.content
+                        this.news.shortTitle=resp.data.data.shortTitle
 
                     });
             },
 
-            onChange(value) {
-                console.log(value[0]);
-                this.categoryLevelId=value[0];
-            },
-            getAllCategory() {
-                axios.get('http://localhost:8080/getAllCategory')
-                    .then((resp) => {
-                        console.log(resp.data);
-                        this.theFirst = resp.data.data.map(item => ({
-                            value: item.id,
-                            label: item.name,
-                            children:item.childCategory?item.childCategory.map(child=>({
-                                value: child.id,
-                                label: child.name,
-                                children:child.childCategory?child.childCategory.map(grandchild=>({
-                                    value: grandchild.id,
-                                    label: grandchild.name,
-                                })):[]
-                            })):[]
-                        }));
-                    });
-            },
-            beforeUpload(file) {
-                const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
-                const isLt2M = file.size / 1024 / 1024 < 2;
 
-                if (!isJPG) {
-                    this.$message.error('上传图片只能是 JPG/PNG 格式!');
-                    return
-                }
-                if (!isLt2M) {
-                    this.$message.error('上传图片大小不能超过 2MB!');
-                    return
-                }
-                return isJPG && isLt2M;
-            },
-            onRemoveFile(file, fileList) {
-                this.productsOptions.filePath = ""
-            },
-            handleExceed(files, fileList) {
-                this.$message.warning(`当前限制选择 1个文件`);
-            },
-            onUploadSuccess(response) {
-                if (response.code === 200) {
-                    this.$message.success('文件上传成功');
-                    console.log(response.data)
-                    this.productsOptions.filePath=response.data
-                } else {
-                    this.$message.error('文件上传失败');
-                }
-            },
+
             onSubmit(formName) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const id = urlParams.get('id');
+                this.news.id = id;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         axios
-                            .post("/addProduct", this.productsOptions)
+                            .post("/updateNews", this.news)
                             .then((resp) => {
                                 if (resp.data.code === 200) {
-                                    window.location.href="Member_Product.html"
+                                    window.location.href="news.html"
                                 }
                             })
                             .catch((error) => {
@@ -540,13 +469,15 @@
             onFieldBlur(field) {
                 this.$refs.productsForm.validateField(field);
             },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
 
         },
         mounted() {
             this.initLogin()
             this.initCat()
-            this.getAllCategory()
-            this.initBrand()
+            this.initNews()
         }
     })
 </script>

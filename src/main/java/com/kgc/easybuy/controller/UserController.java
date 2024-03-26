@@ -94,12 +94,7 @@ public class UserController {
         ResponseMessage userList = userService.getUserList(user,page);
         return userList;
     }
-    @RequestMapping("updateUser")
-    @ResponseBody
-    public ResponseMessage updateUser(@RequestBody User user){
-        ResponseMessage updateUser = userService.updateUser(user);
-        return updateUser;
-    }
+
 
     @RequestMapping("deleteUser")
     @ResponseBody

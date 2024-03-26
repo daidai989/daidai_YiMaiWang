@@ -2,27 +2,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link type="text/css" rel="stylesheet" href="../css/style.css" />
-    <link type="text/css" rel="stylesheet" href="../css/antd.css">
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
     <!--[if IE 6]>
-    <script src="../js/iepng.js" type="text/javascript"></script>
+    <script src="js/iepng.js" type="text/javascript"></script>
     <script type="text/javascript">
         EvPNG.fix('div, ul, img, li, input, a');
     </script>
     <![endif]-->
 
-    <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="../js/menu.js"></script>
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
+    <script type="text/javascript" src="js/select.js"></script>
 
-    <script type="text/javascript" src="../js/select.js"></script>
-    <script src="../js/vue.js"></script>
-    <script src="../js/axios.js"></script>
-    <script src="../js/antd.js"></script>
+    <script type="text/javascript" src="js/vue.js"></script>
+    <script type="text/javascript" src="js/axios.js"></script>
+    <link type="text/css" rel="stylesheet" href="css/element.css"/>
+    <script type="text/javascript" src="js/element.js"></script>
 
-    <title>尤洪</title>
+    <title>分类管理-首页</title>
 </head>
 <body>
-<div id="app7">
+<div id="root4">
     <!--Begin Header Begin-->
     <div class="soubg">
         <div class="sou">
@@ -103,8 +103,7 @@
         </span>
             <!--End 所在收货地区 End-->
             <span class="fr">
-        	<span class="fl">你好，{{$data.user.username ?  $data.user.username : '请登录'}}&nbsp;<a v-if="!$data.user.username" href="../Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.user.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
-                    href="#">我的订单</a>&nbsp;|</span>
+        	<span class="fl">你好，请<a href="Login.html">登录</a>&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a href="#">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
                 	<a href="#">收藏夹</a>
@@ -146,31 +145,46 @@
             </span>
             <span class="fl">|&nbsp;关注我们：</span>
             <span class="s_sh"><a href="#" class="sh1">新浪</a><a href="#" class="sh2">微信</a></span>
-            <span class="fr">|&nbsp;<a href="#">手机版&nbsp;<img src="../images/s_tel.png" align="absmiddle" /></a></span>
+            <span class="fr">|&nbsp;<a href="#">手机版&nbsp;<img src="images/s_tel.png" align="absmiddle" /></a></span>
         </span>
         </div>
     </div>
     <div class="m_top_bg">
         <div class="top">
-            <div class="m_logo"><a href="Index.html"><img src="../images/logo1.png" /></a></div>
+            <div class="m_logo"><a href="Index.html"><img src="images/logo1.png" /></a></div>
+            <div class="m_search">
+                <form>
+                    <input type="text" value="" class="m_ipt" />
+                    <input type="submit" value="搜索" class="m_btn" />
+                </form>
+                <span class="fl"><a href="#">咖啡</a><a href="#">iphone 6S</a><a href="#">新鲜美食</a><a href="#">蛋糕</a><a href="#">日用品</a><a href="#">连衣裙</a></span>
+            </div>
             <div class="i_car">
-                <div class="car_t">购物车 [ <span>{{productLength}}</span> ]</div>
+                <div class="car_t">购物车 [ <span>3</span> ]</div>
                 <div class="car_bg">
                     <!--Begin 购物车未登录 Begin-->
-                    <ul v-if="$data.user.username" class="cars">
-                        <li v-for="(item, index) in products" :key="index" >
-                            <div class="img"><a href="#"><img height="58" :src="'http://localhost:8080/getImage?filePath=' + item.filePath" width="58"/></a></div>
-                            <div class="name"><a href="#">{{item.name}}</a></div>
-                            <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
+                    <div class="un_login">还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！</div>
+                    <!--End 购物车未登录 End-->
+                    <!--Begin 购物车已登录 Begin-->
+                    <ul class="cars">
+                        <li>
+                            <div class="img"><a href="#"><img src="images/car1.jpg" width="58" height="58" /></a></div>
+                            <div class="name"><a href="#">法颂浪漫梦境50ML 香水女士持久清新淡香 送2ML小样3只</a></div>
+                            <div class="price"><font color="#ff4e00">￥399</font> X1</div>
                         </li>
-                        <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
-                        <div class="price_a"><a href="#">去购物车结算</a></div>
+                        <li>
+                            <div class="img"><a href="#"><img src="images/car2.jpg" width="58" height="58" /></a></div>
+                            <div class="name"><a href="#">香奈儿（Chanel）邂逅活力淡香水50ml</a></div>
+                            <div class="price"><font color="#ff4e00">￥399</font> X1</div>
+                        </li>
+                        <li>
+                            <div class="img"><a href="#"><img src="images/car2.jpg" width="58" height="58" /></a></div>
+                            <div class="name"><a href="#">香奈儿（Chanel）邂逅活力淡香水50ml</a></div>
+                            <div class="price"><font color="#ff4e00">￥399</font> X1</div>
+                        </li>
                     </ul>
-                    <div v-else class="un_login">
-                        还未登录！<a href="../Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！
-
-                    </div>
-
+                    <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>1058</span></div>
+                    <div class="price_a"><a href="#">去购物车结算</a></div>
                     <!--End 购物车已登录 End-->
                 </div>
             </div>
@@ -184,9 +198,8 @@
                 <div class="left_n">管理中心</div>
                 <div class="left_m">
                     <div class="left_m_t t_bg1">订单中心</div>
-
                     <ul>
-                        <li><a href="../Member_Product.html" class="now">我的订单</a></li>
+                        <li><a href="Member_Order.html">我的订单</a></li>
                         <li><a href="Member_Address.html">收货地址</a></li>
                         <li><a href="#">缺货登记</a></li>
                         <li><a href="#">跟踪订单</a></li>
@@ -203,6 +216,14 @@
                     </ul>
                 </div>
                 <div class="left_m">
+                    <div class="left_m_t t_bg4">商品管理</div>
+                    <ul>
+                        <li><a href="Member_Category.html" class="now">分类管理</a></li>
+                        <li><a href="Member_Results.html">商品管理</a></li>
+                        <li><a href="Member_Cash.html">商品上架</a></li>
+                    </ul>
+                </div>
+                <div class="left_m">
                     <div class="left_m_t t_bg3">账户中心</div>
                     <ul>
                         <li><a href="Member_Safe.html">账户安全</a></li>
@@ -210,41 +231,68 @@
                         <li><a href="Member_Money.html">资金管理</a></li>
                     </ul>
                 </div>
-                <div class="left_m">
-                    <div class="left_m_t t_bg4">分销中心</div>
-                    <ul>
-                        <li><a href="Member_Member.html">我的会员</a></li>
-                        <li><a href="Member_Results.html">我的业绩</a></li>
-                        <li><a href="Member_Commission.html">我的佣金</a></li>
-                        <li><a href="Member_Cash.html">申请提现</a></li>
-                    </ul>
-                </div>
             </div>
-            <div class="m_right">
-                <p></p>
-                <div class="mem_tit">商品管理</div>
-                <div class="m_search" style="margin-left: 20px;margin-top: -6px;">
-                    <div style="display: flex; justify-content: center;">
-                        <a-input type="text" v-model="title" placeholder="新闻名"></a-input>
-                        <a-button type="primary" @click="viewNewsList(1)">查询</a-button>
-                        <a href="news_add.html"><a-button type="primary">添加新闻</a-button></a>
-
-                    </div>
-
-
-                </div>
-                <a-table
-                        :columns="columns"
-                        :data-source="AllNews"
-                        row-key="id"
-                        :pagination="pagination"
-                        @change="handleTableChange"
-                >
-                    <div slot="action" slot-scope="text, record">
-                        <span><a :href="'news_update.html?id=' + record.id">修改</a></span>
-                        <span><a @click="delNews(record.id)">删除</a></span>
-                    </div>
-                </a-table>
+            <div class="m_right" style="text-align: center">
+                <h2><p>分类管理</p></h2>
+                分类名: <el-input style="width: 200px;"  v-model="categoryName"></el-input>
+                分类级别： <el-select v-model="categoryType" placeholder="请选择">
+                <el-option value="0" label="全部"></el-option>
+                <el-option value="1" label="一级分类"></el-option>
+                <el-option value="2" label="二级分类"></el-option>
+                <el-option value="3" label="三级分类"></el-option>
+            </el-select>
+                <el-button @click="select" type="primary" size="small">查询</el-button>
+                <el-button @click="add" type="primary" size="small">添加分类</el-button>
+                <el-table
+                        :data="page.list"
+                        stripe
+                        style="width: 100%">
+                    <el-table-column
+                            prop="createTime"
+                            label="日期"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="name"
+                            label="分类名"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="type"
+                            label="分类级别">
+                        <template slot-scope="scope">
+                            <div v-if="scope.row.type == 1">一级分类</div>
+                            <div v-else-if="scope.row.type == 2">二级分类</div>
+                            <div v-else-if="scope.row.type == 3">三级分类</div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="parentName"
+                            label="父类">
+                        <template slot-scope="scope">
+                            <div v-if="scope.row.parentName == null || scope.row.parentName == ''">无</div>
+                            <div v-else>{{scope.row.parentName }}</div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            fixed="right"
+                            label="操作">
+                        <template slot-scope="scope">
+                            <el-button @click="update(scope.row)" type="primary" size="small">修改</el-button>
+                            <el-button type="danger" @click="isDelete(scope.row)" size="small">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="page.pageNum"
+                        :page-sizes="[5, 10, 15, 20]"
+                        :page-size="page.pageSize"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="page.total">
+                </el-pagination>
+            </div>
         </div>
         <!--End 用户中心 End-->
         <!--Begin Footer Begin -->
@@ -252,25 +300,25 @@
             <div class="b_btm">
                 <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="72"><img src="../images/b1.png" width="62" height="62" /></td>
+                        <td width="72"><img src="images/b1.png" width="62" height="62" /></td>
                         <td><h2>正品保障</h2>正品行货  放心购买</td>
                     </tr>
                 </table>
                 <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="72"><img src="../images/b2.png" width="62" height="62" /></td>
+                        <td width="72"><img src="images/b2.png" width="62" height="62" /></td>
                         <td><h2>满38包邮</h2>满38包邮 免运费</td>
                     </tr>
                 </table>
                 <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="72"><img src="../images/b3.png" width="62" height="62" /></td>
+                        <td width="72"><img src="images/b3.png" width="62" height="62" /></td>
                         <td><h2>天天低价</h2>天天低价 畅选无忧</td>
                     </tr>
                 </table>
                 <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="72"><img src="../images/b4.png" width="62" height="62" /></td>
+                        <td width="72"><img src="images/b4.png" width="62" height="62" /></td>
                         <td><h2>准时送达</h2>收货时间由你做主</td>
                     </tr>
                 </table>
@@ -299,6 +347,7 @@
             </dl>
             <dl>
                 <dt><a href="#">服务保证</a></dt>
+
                 <dd><a href="#">退换货原则</a></dd>
                 <dd><a href="#">售后服务保证</a></dd>
                 <dd><a href="#">产品质量保证</a></dd>
@@ -318,121 +367,95 @@
                 </p>
             </div>
             <div class="b_er">
-                <div class="b_er_c"><img src="../images/er.gif" width="118" height="118" /></div>
-                <img src="../images/ss.png" />
+                <div class="b_er_c"><img src="images/er.gif" width="118" height="118" /></div>
+                <img src="images/ss.png" />
             </div>
         </div>
         <div class="btmbg">
             <div class="btm">
                 备案/许可证编号：蜀ICP备12009302号-1-www.dingguagua.com   Copyright © 2015-2018 尤洪商城网 All Rights Reserved. 复制必究 , Technical Support: Dgg Group <br />
-                <img src="../images/b_1.gif" width="98" height="33" /><img src="../images/b_2.gif" width="98" height="33" /><img src="../images/b_3.gif" width="98" height="33" /><img src="../images/b_4.gif" width="98" height="33" /><img src="../images/b_5.gif" width="98" height="33" /><img src="../images/b_6.gif" width="98" height="33" />
+                <img src="images/b_1.gif" width="98" height="33" /><img src="images/b_2.gif" width="98" height="33" /><img src="images/b_3.gif" width="98" height="33" /><img src="images/b_4.gif" width="98" height="33" /><img src="images/b_5.gif" width="98" height="33" /><img src="images/b_6.gif" width="98" height="33" />
             </div>
         </div>
+        <!--End Footer End -->
     </div>
 </div>
-
 </body>
-
-<script type="text/javascript">
+<!--[if IE 6]>
+<script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+</html>
+<script>
     new Vue({
-        el: '#app7',
+        el:"#root4",
         data:{
-            title:"",
-            columns: [
-                { title: "序号", dataIndex: "index", key: "index" },
-                { title: "标题", dataIndex: "title", key: "title" },
-                { title: "内容", dataIndex: "content", key: "content" },
-                { title: "简言", dataIndex: "shortTitle", key: "shortTitle" },
-                { title: "上架时间", dataIndex: "createTime", key: "createTime" },
-                {
-                    title: "操作",
-                    key: "action",
-                    scopedSlots: { customRender: "action" },
-                },
-            ],
-            AllNews: [],
-            pagination: {
-                showQuickJumper: true,
-                showTotal: (total, range) => {
-                    return range[0] + "-" + range[1] + " 共" + total + "条";
-                },
-                current: 1, // 当前页数
-                total: 0, // 总条数
-            },
-            productLength:"",
-            totalPrice:"",
-            user:{
-                username:"",
-                id:null,
-            },
-            products:[],
-
+            page:[],
+            pageSize:5,
+            categoryName:'',
+            categoryType:'0'
         },
-        methods: {
-            handleTableChange(pagination, filters, sorter) {
-                this.pagination = pagination;
-                this.viewNewsList(pagination.current)
+        mounted(){
+            this.getCategoryList(1,5)
+        },
+        methods:{
+            add(){
+                window.location.href="Category_Add.html"
             },
-            initLogin() {
-                let token=localStorage.getItem("token");
-                axios.get('http://localhost:8080/getUser', {params: {token: token}})
-                    .then((resp) => {
-                        console.log(resp.data);
-                        this.user.username=resp.data.data.userName
-                        this.user.id=resp.data.data.id
-                    });
+            handleSizeChange(pageSize) {
+                this.page.pageSize = pageSize
+                this.getCategoryList(1,this.page.pageSize)
             },
-            initCat() {
-                let token=localStorage.getItem("token");
-                axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
-                    .then((resp) => {
-                        console.log(resp.data);
-                        this.products=resp.data.data
-                        let sum = 0;
-                        this.productLength=this.products.length
-                        for (let i = 0; i < this.products.length; i++) {
-                            sum += this.products[i].price*this.products[i].count;
-                            this.totalPrice=sum;
+            handleCurrentChange(pageNum) {
+                this.page.pageNum = pageNum
+                this.getCategoryList(pageNum,this.page.pageSize)
+            },
+            getCategoryList(pageNum,pageSize){
+                axios.get('http://localhost:8080/getAllCategories',{
+                    params:{
+                        name:this.categoryName,
+                        type:this.categoryType,
+                        currentPageNo:pageNum,
+                        pageSize:pageSize
+                    }
+                }).then((result) => {
+                    console.log(result.data);
+                    this.page = result.data.data
+                })
+            },
+            select(){
+                this.getCategoryList(1,5)
+            },
+            update(row){
+                window.location.href='Category_Update.html?id=' + row.id
+            },
+            isDelete(row){
+                console.log(row);
+                axios.get("http://localhost:8080/checkProductExitsByCategoryId",{
+                    params:{
+                        type:row.type,
+                        id:row.id
+                    }
+                }).then((result) =>{
+                    console.log(result.data);
+                    if (result.data.code == 200){
+                        this.deleteCategory(row.id)
+                    }else {
+                        alert(result.data.message);
+                    }
+                })
+            },
+            deleteCategory(id){
+                if (confirm("你确定要删除吗？")){
+                    axios.get('http://localhost:8080/deleteCategory',{
+                        params:{
+                            id:id
                         }
-
-                    });
-            },
-            viewNewsList(currentNo) {
-                axios.get('http://localhost:8080/getNewsListByPage',{params:{
-                        currentNo:currentNo,
-                        title:this.title,
-                    }})
-                    .then((resp) => {
-                        console.log(resp.data)
-                        const pageSize = resp.data.pageSize;
-                        const startIndex = (currentNo - 1) * pageSize + 1;
-                        resp.data.list.forEach((news, index) => {
-                            news.index = startIndex + index;
-                        });
-                        this.AllNews = resp.data.list;
-                        this.pagination.current = resp.data.pageNum;
-                        this.pagination.total = resp.data.total;
-                        this.pagination.pageSize = resp.data.pageSize;
-                    });
-            },
-            delNews(id) {
-                if (!confirm("是否删除这个新闻")){
-                    return
+                    }).then((result) => {
+                        console.log(result.data);
+                        this.getCategoryList(1,5);
+                    })
                 }
-                axios.get('http://localhost:8080/delNews', {params: {id: id}})
-                    .then((resp) => {
-                        console.log(resp.data);
-                        this.viewNewsList(1)
-
-                    });
-            },
-        },
-        mounted() {
-            this.initLogin()
-            this.initCat()
-            this.viewNewsList(1)
+            }
         }
     })
 </script>
-
-</html>

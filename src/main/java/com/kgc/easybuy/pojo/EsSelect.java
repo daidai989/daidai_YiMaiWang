@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EsSelect {
-
     private String name;
     private double begin;
     private double end;
@@ -17,4 +16,6 @@ public class EsSelect {
     private int pageSize;
     private boolean sortPrice;
     private int userId;
+    private int categoryLevelId;
+    private int type;
 }

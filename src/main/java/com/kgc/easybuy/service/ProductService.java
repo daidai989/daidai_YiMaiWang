@@ -11,7 +11,7 @@ public interface ProductService {
     public Object getProductList(int currentPageNo,int pageSize);
     public ResponseMessage getHotProduct();
     public ResponseMessage getProductByCategoryId();
-    public Product getProductById(int id);
+    public ResponseMessage getProductById(int id);
     public ResponseMessage viewProductsList(String currentPageNo,String name);
     public ResponseMessage delProById( Integer id);
     public ResponseMessage addProduct(Product product);
@@ -20,7 +20,7 @@ public interface ProductService {
     public ResponseMessage setProductTes();
     public ResponseMessage getProFromEs(EsSelect esSelect);
     public ResponseMessage getCollectProduct(Collect collect,Page page);
-    public ResponseMessage getRecommendProduct(int parentId,int id);
+    public ResponseMessage getRecommendProduct(Product product);
     public ResponseMessage getHistoryProduct(int userId);
     public ResponseMessage getProductListByproductList(List ids);
     public ResponseMessage checkProductExitsByCategoryId(Category category);
