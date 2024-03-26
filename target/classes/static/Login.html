@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link type="text/css" rel="stylesheet" href="css/style.css" />
     <!--[if IE 6]>
@@ -51,7 +52,7 @@
         <!--Begin Login Begin-->
         <div class="log_bg">
             <div class="top">
-                <div class="logo"><a href="Index.html"><img src="images/logo.png" /></a></div>
+                <div class="logo"><a href="index.html"><img src="images/logo.png" /></a></div>
             </div>
             <div class="login">
                 <div class="log_img"><img src="images/l_img.png" width="611" height="425" /></div>
@@ -147,7 +148,7 @@
                     console.log(result.data)
                     if(result.data.code === 200){
                         localStorage.setItem("token",result.data.data)
-                        window.location.href="Index.html"
+                        window.location.href="index.html"
                     }else{
                         this.isScuuess = true
                         this.error = "用户名或密码不正确"

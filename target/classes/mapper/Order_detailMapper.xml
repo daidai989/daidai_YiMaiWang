@@ -2,8 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kgc.easybuy.dao.Order_detailMapper">
 
-    <insert id="addNews" >
-        insert into easy_buy.easybuy_news (title, content, createTime, shortTitle) values(#{title}, #{content},now(),#{shortTitle})
+    <insert id="addNewOrder_detail"  keyProperty="id" useGeneratedKeys="true">
+        insert into easybuy_order_detail (productId,count,cost,createTime) values(#{productId},#{count},#{cost},now())
     </insert>
+
+    <update id="updateOrderId"  >
+        update easybuy_order_detail set  orderId = #{orderId} where id  IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="delOrder_tailId"  >
+        update easybuy_order_detail set isDel = 1 where id  =#{id}
+
+    </update>
+
+    <select id="getOrder_tailList" resultType="Order_detail">
+        select d.id,d.orderId,d.productId,o.serialNumber, f.filePath,p.name,d.count,d.cost,o.createTime,o.status from easybuy_order o,easybuy_order_detail d,easybuy_file f,easybuy_product p
+        where o.id=d.orderId and p.id=d.productId and f.productId=p.id and o.id=#{id} and o.isDel=0
+    </select>
+
+    <select id="getOrder_tailListByPage" resultType="Order_detail">
+        select d.id,d.orderId,d.productId,o.serialNumber, f.filePath,p.name,d.count,d.cost,o.createTime,o.status from easybuy_order o,easybuy_order_detail d,easybuy_file f,easybuy_product p
+        where o.id=d.orderId and p.id=d.productId and f.productId=p.id and o.id=#{orderId} and d.isDel=0
+        <if test="name!=null and name!=''">
+            and p.name like Concat('%',#{name},'%')
+        </if>
+    </select>
+
 
 </mapper>

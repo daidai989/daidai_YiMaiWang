@@ -10,7 +10,6 @@
             and title like Concat('%',#{title},'%')
         </if>
         order by createTime Desc
-
     </select>
     <update id="delNews">
         update easy_buy.easybuy_news set isDel=1 where id=#{id}
@@ -31,4 +30,5 @@
     <update id="updateNews" >
         update easy_buy.easybuy_news set title=#{title},content=#{content},shortTitle=#{shortTitle} where id=#{id}
     </update>
+
 </mapper>

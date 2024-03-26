@@ -32,6 +32,15 @@
     <script src="js/axios.js"></script>
     <script src="js/element.js"></script>
     <title>尤洪</title>
+    <style>
+        .leftNav .zj.block1 {
+            display: block;
+        }
+
+        .leftNav .zj.none1 {
+            display: none;
+        }
+    </style>
 
 </head>
 <body>
@@ -120,8 +129,8 @@
             <span class="fr">
 
 
-                <span class="fl">你好，{{$data.username ?  $data.username : '请登录'}}&nbsp;<a v-if="!$data.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
-                    href="Member_Product.html">我的订单</a>&nbsp;|</span>
+                <span class="fl">你好，{{$data.username ?  $data.username : '请登录'}}&nbsp;<a v-if="!$data.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="register.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
+                    href="userOrder.html">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
                 	<a href="#">收藏夹</a>
@@ -181,15 +190,20 @@
             <div class="car_t">购物车 [ <span>{{productLength}}</span> ]</div>
             <div class="car_bg">
                 <!--Begin 购物车未登录 Begin-->
-                    <ul v-if="$data.username" class="cars">
+                <ul v-if="$data.username" class="cars">
+                    <div v-if="$data.productLength">
                         <li v-for="(item, index) in products" :key="index" >
-                            <div class="img"><a href="#"><img height="58" :src="'http://localhost:8080/getImage?filePath=' + item.filePath" width="58"/></a></div>
+                            <div class="img"><a href="#"><img height="58" :src="'/getImage?filePath=' + item.filePath" width="58"/></a></div>
                             <div class="name"><a href="#">{{item.name}}</a></div>
                             <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
                         </li>
                         <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
                         <div class="price_a"><a href="BuyCar.html">去购物车结算</a></div>
-                    </ul>
+                    </div>
+                    <div v-else class="un_login">
+                        购物车暂无东西
+                    </div>
+                </ul>
                 <div v-else class="un_login">
                     还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！
 
@@ -207,18 +221,18 @@
                 <div class="nav_t">全部商品分类</div>
                 <div class="leftNav">
                     <ul>
-                        <li v-for="(item, index) in theFirst" :key="index" @mouseenter="loadSecondAndThird(item.id)">
-                            <div class="fj">
+                        <li v-for="(item, index) in theFirst" :key="item.id" @mouseenter="loadSecondAndThird(item.id,index)" @mouseleave="hideSecondAndThird(index)">
+                            <div class="fj" @click="goGategoryList(item.type,item.id)">
                                 <span class="n_img"><span></span><img src="images/nav1.png"/></span>
                                 <span class="fl">{{item.name}}</span>
                             </div>
-                            <div class="zj" >
+                            <div class="zj" :class="[{ 'block1': activeIndex === index, 'none1': activeIndex !== index }]">
                                 <div class="zj_l">
-                                    <div class="zj_l_c" v-for="(subItem, index) in theSecond" :key="index">
+                                    <div @click="goGategoryList(subItem1.type,subItem1.id)" class="zj_l_c" v-for="(subItem1, index) in theSecond" :key="subItem1.id">
                                         <h2>
-                                            {{subItem.name}}
+                                            {{subItem1.name}}
                                         </h2>
-                                        <a v-for="(subItem, index) in theThird" :key="index">{{subItem.name}}|</a>|
+                                        <a @click="goGategoryList(subItem.type,subItem.id)" v-for="(subItem, index) in theThird" :key="subItem.id">{{subItem.name}}|</a>|
                                     </div>
                                 </div>
                                 <div class="zj_r">
@@ -273,10 +287,10 @@
             <!--End Banner End-->
             <div class="inews">
                 <div class="news_t">
-                    <span class="fr"><a href="#">更多 ></a></span>新闻资讯
+                    <span class="fr"><a href="user_news.html">更多 ></a></span>新闻资讯
                 </div>
                 <ul>
-                    <li v-for="(item, index) in newsList" :key="index" ><span>{{item.shortTitle}}</span><a href="#">{{item.title}}</a></li>
+                    <li v-for="(item, index) in newsList" :key="item.id" ><span>{{item.shortTitle}}</span><a href="#">{{item.title}}</a></li>
 
                 </ul>
                 <div class="charge_t" v-model="shopName">
@@ -428,11 +442,11 @@
             <img height="110" src="images/mban_1.jpg" width="1200"/>
         </div>
         <!--Begin 进口 生鲜 Begin-->
-        <div v-for="(first, index) in theFirst" :key="index">
+        <div v-for="(first, index) in theFirst" :key="first.id">
             <div class="i_t mar_10">
                 <span class="floor_num">{{index+1}}F</span>
                 <span class="fl">{{theFirst[index].name}}</span>
-                <span class="i_mores fr"><a href="#" v-for="secondCategory in allTheSecond[index]" :key="index">{{secondCategory.name}}</a>&nbsp; &nbsp; &nbsp;</span>
+                <span class="i_mores fr"><a href="#" v-for="secondCategory in allTheSecond[index]" :key="secondCategory.id">{{secondCategory.name}}</a>&nbsp; &nbsp; &nbsp;</span>
             </div>
             <div class="content">
                 <div class="fresh_left">
@@ -670,9 +684,11 @@
 
 </div>
 <script>
+
     new Vue({
         el: '#app',
         data: {
+            activeIndex: null,
             productLength:null,
             totalPrice:"",
             username:"",
@@ -705,18 +721,16 @@
             this.showNews();
         },
         methods: {
-            firstLoad() {
-                axios.get('http://localhost:8080/getFirstCategory')
+            async firstLoad() {
+                await axios.get('http://localhost:8080/getFirstCategory')
                     .then((resp) => {
                         console.log(resp.data);
                         this.theFirst = resp.data.data;
                     });
             },
-            loadSecondAndThird(id) {
-                this.secondLoad(id);
-            },
-            secondLoad(id) {
-                axios.get('http://localhost:8080/getSecondCategory', {params: {id: id}})
+
+            async secondLoad(id) {
+                await axios.get('http://localhost:8080/getSecondCategory', {params: {id: id}})
                     .then((resp) => {
                         console.log(resp.data);
                         this.theSecond = resp.data.data;
@@ -725,14 +739,24 @@
                         }
                     });
             },
-            thirdLoad(id) {
-                axios.get('http://localhost:8080/getThirdCategory', {params: {id: id}})
+            async thirdLoad(id) {
+                await axios.get('http://localhost:8080/getThirdCategory', {params: {id: id}})
                     .then((resp) => {
                         console.log(resp.data);
                         this.theThird = resp.data.data;
                     });
             },
+            loadSecondAndThird(id,index) {
+                this.secondLoad(id);
+                this.activeIndex = index;
+            },
+            hideSecondAndThird(index) {
+                this.activeIndex = null;
+            },
             getProductDetail(id){
+                if (this.userId != '' && this.userId != null){
+                    this.addHistoryProduct(id)
+                }
                 window.location.href="Product.html?id=" + id;
             },
             showImages(filePath){
@@ -818,6 +842,7 @@
                     .then((resp) => {
                         console.log(resp.data);
                         this.username=resp.data.data.userName
+                        this.userId = resp.data.data.id
                     });
             },
             initCat() {
@@ -841,9 +866,21 @@
                     .then((resp) => {
                         console.log(resp.data);
                         window.location.href="index.html"
-                    });
+                });
             },
-
+            addHistoryProduct(val){
+                axios.get('addProductHistory',{
+                    params:{
+                        userId:this.userId,
+                        productId:val
+                    }
+                }).then((result) => {
+                    console.log(result.data)
+                });
+            },
+            goGategoryList(type,categoryLevelId){
+                window.location.href="CategoryList.html?type=" + type + "&categoryLevelId=" + categoryLevelId
+            }
         }
     })
 </script>

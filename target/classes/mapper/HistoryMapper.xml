@@ -6,4 +6,8 @@
         insert into easybuy_history(userId,productId,createTime)
         values (#{userId},#{productId},now())
     </insert>
+
+    <update id="cleanHistory">
+        update easybuy_history set isDel = 1 where userId = #{userId}
+    </update>
 </mapper>

@@ -5,7 +5,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link type="text/css" rel="stylesheet" href="css/style.css" />
-    <link type="text/css" rel="stylesheet" href="./css/antd.css">
+    <link type="text/css" rel="stylesheet" href="css/antd.css">
     <link rel="stylesheet" href="css/element.css">
     <!-- 引入组件库 -->
     <!--[if IE 6]>
@@ -14,7 +14,6 @@
         EvPNG.fix('div, ul, img, li, input, a');
     </script>
     <![endif]-->
-
     <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
 
@@ -27,7 +26,7 @@
 </head>
 
 <body>
-<div id="app6">
+<div id="app12">
 
     <div class="soubg">
         <div class="sou">
@@ -190,39 +189,32 @@
                 <div class="left_n">管理中心</div>
                 <div class="left_m">
                     <div class="left_m_t t_bg1">订单中心</div>
-
                     <ul>
-                        <li><a href="Member_Product.html" class="now">我的订单</a></li>
-                        <li><a href="Member_Address.html">收货地址</a></li>
-                        <li><a href="#">缺货登记</a></li>
-                        <li><a href="#">跟踪订单</a></li>
-                    </ul>
-                </div>
-                <div class="left_m">
-                    <div class="left_m_t t_bg2">会员中心</div>
-                    <ul>
-                        <li><a href="Member_User.html">用户信息</a></li>
+                        <li><a href="userOrder.html">我的订单</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="order.html">全部订单</a></li>
+                        <li><a href="Member_Address.html">地址管理</a></li>
                         <li><a href="Member_Collect.html">我的收藏</a></li>
-                        <li><a href="Member_Msg.html">我的留言</a></li>
-                        <li><a href="Member_Links.html">推广链接</a></li>
-                        <li><a href="#">我的评论</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg3">账户中心</div>
+                    <div class="left_m_t t_bg2">用户中心</div>
                     <ul>
-                        <li><a href="Member_Safe.html">账户安全</a></li>
-                        <li><a href="Member_Packet.html">我的红包</a></li>
-                        <li><a href="Member_Money.html">资金管理</a></li>
+                        <li><a href="User_detail.html">用户信息</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="Member_Member.html">用户列表</a></li>
+                    </ul>
+                </div>
+                <div class="left_m"  v-if="$data.user.roleId===1||$data.user.roleId===2">
+                    <div class="left_m_t t_bg3">商品管理</div>
+                    <ul>
+                        <li><a href="Category.html"分类管理</a></li>
+                        <li><a href="Member_Product.html" class="now">>商品管理</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg4">分销中心</div>
+                    <div class="left_m_t t_bg4">咨询管理</div>
                     <ul>
-                        <li><a href="Member_Member.html">我的会员</a></li>
-                        <li><a href="Member_Results.html">我的业绩</a></li>
-                        <li><a href="Member_Commission.html">我的佣金</a></li>
-                        <li><a href="Member_Cash.html">申请提现</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="news.html">咨询列表</a></li>
+                        <li><a href="user_news.html">所有咨询</a></li>
                     </ul>
                 </div>
             </div>
@@ -239,17 +231,17 @@
                                 :wrapper-col="wrapperCol"
                         >
                             <a-form-model-item has-feedback prop="name" label="产品名字:">
-                                 <a-input v-model="productsOptions.name"></a-input>
+                                <a-input v-model="productsOptions.name" @blur="onFieldBlur('name')"></a-input>
                             </a-form-model-item>
                             <a-form-model-item label="商品描述" prop="description" >
                                 <a-input v-model="productsOptions.description" @blur="onFieldBlur('description')"></a-input>
                             </a-form-model-item>
 
                             <a-form-model-item prop="stock" label="库存:">
-                                 <a-input v-model="productsOptions.stock" ></a-input>
+                                <a-input v-model="productsOptions.stock" ></a-input>
                             </a-form-model-item>
                             <a-form-model-item prop="price" label="价格:">
-                                 <a-input v-model="productsOptions.price" ></a-input>
+                                <a-input v-model="productsOptions.price" ></a-input>
                             </a-form-model-item>
                             <a-form-model-item label="品牌" prop="brandId">
                                 <el-select v-model.number="productsOptions.brandId" placeholder="请选择">
@@ -258,9 +250,10 @@
                             </a-form-model-item>
 
 
-                            <a-form-model-item prop="categoryLevelId" label="具体类别" v-model="categoryLevelId">
-                                    <el-cascader :options="theFirst" placeholder="Please select" @change="onChange($event)" ></el-cascader>
+                            <a-form-model-item prop="categoryLevelId" label="具体类别" >
+                                <el-cascader :options="theFirst" placeholder="Please select" v-model="productsOptions.categoryLevelId" @change="onChange($event)"></el-cascader>
                             </a-form-model-item>
+
                             <a-form-model-item prop="filePaths" label="图片上传">
                                 <el-upload
                                         class="upload-demo"
@@ -272,8 +265,15 @@
                                         :limit="1"
                                         :on-exceed="handleExceed"
                                 >
+                                    <el-button size="small" type="primary">点击上传</el-button>
                                     <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2mb</div>
                                 </el-upload>
+                                <el-image
+                                        style="width: 100px; height: 100px;"
+                                        :src="showImage(productsOptions.filePath)"
+                                        fit="contain"
+                                ></el-image>
+
                             </a-form-model-item>
 
 
@@ -373,76 +373,97 @@
     </div>
 </div>
 </body>
+<script type="text/javascript" src="js/request.js"></script>
 <script type="text/javascript">
     new Vue({
-        el: '#app6',
-        data: {
-            products:[],
-            brandOptions:[],
-            productLength:"",
-            totalPrice:"",
-            user:{
-                username:"",
-                id:null,
-            },
-            productsOptions: {
-                name: "",
-                description: "",
-                stock: null,
-                price: null,
-                brandId: null,
-                filePath: "",
-                userId: null,
-                categoryLevelId:null,
-            },
+        el: '#app12',
 
-            labelCol: { span: 4 },
-            wrapperCol: { span: 14 },
+        data() {
+            let checkProductName=async (rule, value, callback) =>{
+                const urlParams = new URLSearchParams(window.location.search);
+                const id = urlParams.get('id')
+                console.log(id)
 
-            pagination: {
-                showQuickJumper: true,
-                showTotal: (total, range) => {
-                    return range[0] + "-" + range[1] + " 共" + total + "条";
-                },
-                current: 1,
-                total: 0,
-                pageSize: 0,
-            },
-            theFirst:[],
-            rules: {
-                name: [
-                    { required: true, message: '请输入产品名称', trigger: 'blur' },
-                    { validator: this.checkProductName, trigger: 'blur' }
-                ],
-                description: [
-                    { required: true, message: '请输入商品描述', trigger: 'blur' },
-                    { min: 1, max: 100, message: '商品描述长度在1到100之间', trigger: 'blur' }
-                ],
-                stock: [
-                    { required: true, message: '请输入库存数量', trigger: 'blur' },
-                    { pattern: /^\d+$/, message: '库存数量必须为正整数', trigger: 'blur' }
-                ],
-                price: [
-                    { required: true, message: '请输入价格', trigger: 'blur' },
-                    { pattern: /^\d+(\.\d+)?$/, message: '价格必须为正数', trigger: 'blur' }
-                ]
+                this.productsOptions.id=id
+                await axios
+                    .get("/getProductByLogin",{params:{name:value}})
+                    .then((resp) => {
+                        if (!value) {
+                            callback(new Error("请输入名字"));
+                        }else if (resp.code !== 200) {
+                            const id1 = parseInt(resp.data.id);
+                            const id2 = parseInt(this.productsOptions.id);
+                            if (id1 === id2) {
+                                callback();
+                            }
+                            callback(new Error("名字已经存在"));
+                        }else {
+                            callback()
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("添加失败", error);
+                    });
             }
+            return{
+                products:[],
+                brandOptions:[],
+                productLength:"",
+                totalPrice:"",
+                user:{
+                    username:"",
+                    id:null,
+                },
+                productsOptions: {
+                    id:null,
+                    name: "",
+                    description: "",
+                    stock: null,
+                    price: null,
+                    brandId: null,
+                    filePath: "",
+                    userId: null,
+                    categoryLevelId:null,
+                },
+
+                labelCol: { span: 4 },
+                wrapperCol: { span: 14 },
+
+                theFirst:[],
+                rules: {
+                    name: [
+                        { required: true, message: '请输入产品名称', trigger: 'blur' },
+                        { validator: checkProductName, trigger: 'blur' }
+                    ],
+                    description: [
+                        { required: true, message: '请输入商品描述', trigger: 'blur' },
+                        { min: 1, max: 100, message: '商品描述长度在1到100之间', trigger: 'blur' }
+                    ],
+                    stock: [
+                        { required: true, message: '请输入库存数量', trigger: 'blur' },
+                        { pattern: /^\d+$/, message: '库存数量必须为正整数', trigger: 'blur' }
+                    ],
+                    price: [
+                        { required: true, message: '请输入价格', trigger: 'blur' },
+                        { pattern: /^\d+(\.\d+)?$/, message: '价格必须为正数', trigger: 'blur' }
+                    ]
+                }
+            }
+
 
         },
         methods: {
-
-            handleTableChange(pagination, filters, sorter) {
-                this.pagination.current = pagination.current;
-                this.viewProductsList(pagination.current)
+            showImage(filePath){
+                return 'http://localhost:8080/getImage' + filePath
             },
             initLogin() {
                 let token=localStorage.getItem("token");
                 axios.get('http://localhost:8080/getUser', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.user.username=resp.data.data.userName
-                        this.user.id=resp.data.data.id
-                        this.productsOptions.userId=resp.data.data.id
+                        this.user.username=resp.data.userName
+                        this.user.id=resp.data.id
+                        this.productsOptions.userId=resp.data.id
                     });
             },
             initCat() {
@@ -450,7 +471,7 @@
                 axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.products=resp.data.data
+                        this.products=resp.data
                         let sum = 0;
                         this.productLength=this.products.length
                         for (let i = 0; i < this.products.length; i++) {
@@ -460,43 +481,38 @@
 
                     });
             },
+            initProduct() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const id = urlParams.get('id');
+                axios.get('http://localhost:8080/getProductById', {params: {id: id}})
+                    .then((resp) => {
+                        console.log(resp.data);
+                        this.productsOptions.name=resp.data.name
+                        this.productsOptions.description=resp.data.description
+                        this.productsOptions.stock=resp.data.stock
+                        this.productsOptions.price=resp.data.price
+                        this.productsOptions.brandId=resp.data.brandId
+                        this.productsOptions.categoryLevelId=resp.data.categoryLevelId
+                    });
+            },
             initBrand() {
                 axios.get('http://localhost:8080/getBrand')
                     .then((resp) => {
                         console.log(resp.data);
-                       this.brandOptions=resp.data.data
+                        this.brandOptions=resp.data
 
                     });
             },
 
-            viewProductsList(currentNo) {
-                axios.get('http://localhost:8080/viewProductsList', {
-                    params: {
-                        currentNo: currentNo,
-                        name: this.name,
-                    }
-                })
-                    .then((resp) => {
-                        resp.data.data.list.forEach((product, index) => {
-                            product.index = index + 1;
-                        });
-                        console.log(resp.data);
-                        console.log(resp.data.data.list)
-                        this.AllProductsList = resp.data.data.list;
-                        this.pagination.current = currentNo;
-                        this.pagination.pageSize = resp.data.data.pageSize;
-                        this.pagination.total = resp.data.data.total
-                    });
-            },
             onChange(value) {
-                console.log(value[0]);
-                this.categoryLevelId=value[0];
+                console.log(value[2]);
+                this.categoryLevelId=value[2];
             },
             getAllCategory() {
                 axios.get('http://localhost:8080/getAllCategory')
                     .then((resp) => {
                         console.log(resp.data);
-                        this.theFirst = resp.data.data.map(item => ({
+                        this.theFirst = resp.data.map(item => ({
                             value: item.id,
                             label: item.name,
                             children:item.childCategory?item.childCategory.map(child=>({
@@ -545,7 +561,7 @@
                         axios
                             .post("/addProduct", this.productsOptions)
                             .then((resp) => {
-                                if (resp.data.code === 200) {
+                                if (resp.code === 200) {
                                     window.location.href="Member_Product.html"
                                 }
                             })
@@ -560,23 +576,20 @@
             onFieldBlur(field) {
                 this.$refs.productsForm.validateField(field);
             },
-            async checkProductName(rule, value, callback) {
-                try {
-                    const response = await axios.post('/checkProductName', { name: value });
-                    if (response.data.exists) {
-                        callback(new Error('产品名称已存在'));
-                    } else {
-                        callback();
-                    }
-                } catch (error) {
-                    callback(new Error('验证失败'));
-                }
-            }
+            checkRoled() {
+                let token=localStorage.getItem("token");
+                axios.get('http://localhost:8080/checkRoled', {params: {token: token}})
+                    .then((resp) => {
+
+                    });
+            },
+
         },
         mounted() {
+            this.checkRoled()
+            this.initProduct()
             this.initLogin()
             this.initCat()
-            this.viewProductsList(1)
             this.getAllCategory()
             this.initBrand()
         }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>忘记密码</title>
@@ -7,6 +8,8 @@
     <script src="js/vue.js"></script>
     <script src="js/element.js"></script>
     <script src="js/axios.js"></script>
+
+
     <style>
         .el-header {
             background-color: #b3c0d1;
@@ -14,55 +17,72 @@
             text-align: center;
             line-height: 20px;
         }
-        #form{
-            /*width: 500px;*/
+
+        #box {
+            width: 400px;
             margin: 0px auto;
+        }
+        .code{
+            width: 110px;
+            float: left;
+            margin-right: 10px;
+        }
+        .send{
+            line-height: 20px;
+        }
+        .check el-form-item{
+            float: left;
         }
     </style>
 </head>
+
 <body>
-<div id="root">
+    <div id="root">
         <el-container>
-            <el-header><h2>忘记密码</h2></el-header>
+            <el-header>
+                <h2>忘记密码</h2>
+            </el-header>
             <el-main>
-                <div>
+                <div id="box">
                     <el-form ref="form" :rules="rules" :model="user" label-width="80px">
-                        <el-row :gutter="24">
+                        <el-form-item style="width: 300px;" label="用户名" prop="loginName">
+                            <el-input v-model="user.loginName"></el-input>
+                        </el-form-item>
+                        <el-form-item style="width: 300px;" label="新密码" prop="password">
+                            <el-input type="password" v-model="user.password"></el-input>
+                        </el-form-item>
+                        <el-form-item style="width: 300px;" label="确认密码" prop="repassword">
+                            <el-input type="password" v-model="user.repassword"></el-input>
+                        </el-form-item>
+                        <el-form-item style="width: 300px;" label="邮箱" prop="email">
+                            <el-input v-model="user.email"></el-input>
+                        </el-form-item>
+                        <el-row :gutter="80">
+                            <el-col :span="6"><div class="grid-content bg-purple">
+                                <el-form-item style="width: 300px;" style="margin-bottom: 10px" label="验证码" prop="checkCode">
+                                    <el-input class="code" v-model="user.checkCode"></el-input>
+                                </el-form-item>
+                            </div></el-col>
                             <el-col :span="6">
-                                <el-form-item label="用户名" prop="loginName">
-                                    <el-input v-model="user.loginName"></el-input>
+                                <div class="grid-content bg-purple">
+                                    <el-form-item>
+                                        <el-button :disabled="isSend" class="send" :disabled="isSend" type="primary" size="small" @click="getCode">{{codeName}}</el-button>
+                                    </el-form-item>
+                                </div>
+                            </el-col>
+                            <el-col :span="6">
+                                <el-form-item >
+                                    <div class="grid-content bg-purple" style="color: red;width: 100px;">
+                                        {{errorInfo}}
+                                    </div>
                                 </el-form-item>
                             </el-col>
-                        </el-row>
-                        <el-row :gutter="24">
-                            <el-col :span="6">
-                                <el-form-item label="新密码" prop="password">
-                                    <el-input type="password" v-model="user.password"></el-input>
-                                </el-form-item>
-                            </el-col>
-                        </el-row>
-                        <el-row :gutter="24">
-                            <el-col :span="6">
-                                <el-form-item label="确认密码" prop="repassword">
-                                    <el-input type="password" v-model="user.repassword"></el-input></el-form-item>
-                            </el-col>
-                        </el-row>
-                        <el-row :gutter="24">
-                            <el-col :span="6">
-                                <el-form-item label="邮箱" prop="email">
-                                    <el-input v-model="user.email"></el-input> </el-form-item>
-                            </el-col>
-                        </el-row>
-                        <el-row :gutter="24">
-                            <el-col :span="6">
-                                <el-form-item style="margin-bottom: 10px" label="验证码" prop="checkCode">
-                                    <el-input v-model="user.checkCode"></el-input>
-                                </el-form-item>
-                                <el-button style="margin-left: 190px" :disabled="isSend" type="primary" size="small" @click="getCode">{{codeName}}</el-button>
-                            </el-col>
-                        </el-row>
-                        <el-button type="primary" @click="submit('form')">提交</el-button>
-                        <el-button @click="resetForm('form')">重置</el-button>
+                          </el-row>
+                        <el-form-item>
+                            <el-button type="primary" @click="submit('form')">提交</el-button>
+                            <el-button @click="resetForm('form')">重置</el-button>
+                            <el-button @click="back">返回</el-button>
+                        </el-form-item>
                     </el-form>
                 </div>
             </el-main>
@@ -72,35 +92,28 @@
 </html>
 <script>
     new Vue({
-        el:"#root",
+        el: "#root",
         data() {
-            const checkloginName = (rule,value,callback) => {
-            axios.get('checkUserExist',{
-                params:{
-                    loginName:value
-                }
-            }).then((result) => {
-                if(result.data.code != "200"){
-                    callback(new Error("该账号不存在！"))
-                }else{
-                    callback()
-                }
-            });
-        }
-         const checkPassword = (rule,value,callback) => {
-                if(value != this.user.password){
+            const checkloginName = (rule, value, callback) => {
+                axios.get('checkUserExist', {
+                    params: {
+                        loginName: value
+                    }
+                }).then((result) => {
+                    if (result.data.code != "200") {
+                        callback(new Error("该账号不存在！"))
+                    } else {
+                        callback()
+                    }
+                });
+            }
+            const checkPassword = (rule, value, callback) => {
+                if (value != this.user.password) {
                     callback(new Error("两次输入的密码不一致！"))
-                }else{
+                } else {
                     callback()
                 }
-        }
-         const checkEmail = (rule,value,callback) => {
-             if(this.user.email == '' || this.user.email == null){
-                 callback(new Error("请先输入正确的邮箱！"))
-             }else{
-                 callback()
-             }
-         }
+            }
             return {
                 user: {
                     loginName: "",
@@ -109,93 +122,101 @@
                     email: "",
                     checkCode: "",
                 },
-                resultCode:"",
+                errorInfo:'',
+                resultCode: "",
                 isSend: false,
                 codeName: "发送验证码",
                 totalTime: 10,
-                timer:'',
-                rules:{
-                loginName:[
-                    { required: true, message: '请输入用户名', trigger: 'blur' },
-                    { min:2,max:20, message: '用户名应该在2至20位之间', trigger: 'blur'},
-                    { validator:checkloginName, trigger:"blur"}
-                ],
-                password:[
-                    { required: true, message: '请输入密码', trigger: 'blur' },
-                    { min:4,max:10, message: '密码应该在4-10位之间', trigger: 'blur' }
-                ],
-                repassword:[
-                    { required: true, message: '请输入确认密码', trigger: 'blur' },
-                    { min:4,max:10, message: '确认密码应该在4-10位之间', trigger: 'blur' },
-                    { validator:checkPassword, trigger:"blur" }
-                ],
-                email:[
-                    { required: true, message: '请输入邮箱', trigger: 'blur' },
-                    { "pattern": /\w+@qq.com/, message: '请输入——@qq.com的邮箱格式', trigger: 'blur'},
-                ],
-                 checkCode:[
-                    { required: true, message: '请输入验证码', trigger: 'blur' },
-                    { validator:checkEmail, trigger:"blur" },
-                ]
-            }
+                timer: '',
+                isUse:true,
+                rules: {
+                    loginName: [
+                        { required: true, message: '请输入用户名', trigger: 'blur' },
+                        { min: 2, max: 20, message: '用户名应该在2至20位之间', trigger: 'blur' },
+                        { validator: checkloginName, trigger: "blur" }
+                    ],
+                    password: [
+                        { required: true, message: '请输入密码', trigger: 'blur' },
+                        { min: 4, max: 10, message: '密码应该在4-10位之间', trigger: 'blur' }
+                    ],
+                    repassword: [
+                        { required: true, message: '请输入确认密码', trigger: 'blur' },
+                        { min: 4, max: 10, message: '确认密码应该在4-10位之间', trigger: 'blur' },
+                        { validator: checkPassword, trigger: "blur" }
+                    ],
+                    email: [
+                        { required: true, message: '请输入邮箱', trigger: 'blur' },
+                        { "pattern": /\w+@qq.com/, message: '请输入——@qq.com的邮箱格式', trigger: 'blur' },
+                    ],
+                    checkCode: [
+                        { required: true, message: '请输入验证码', trigger: 'blur' },
+                    ]
+                }
             };
         },
         methods: {
-        resetForm(formName) {
-            this.$refs[formName].resetFields();
-        },
-        submit(form){
-            this.$refs[form].validate((valid) => {
-                if (valid) {
-                    if (this.resultCode != this.user.checkCode){
-                            alert("验证码错误！");
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+                this.errorInfo = ''
+            },
+            submit(form) {
+                this.$refs[form].validate((valid) => {
+                    if (valid) {
+                        if (this.resultCode != this.user.checkCode) {
+                            this.errorInfo = "验证码错误"
                             return;
-                    }
-                    axios.get("updatePwd",{
-                        params:{
-                            loginName:this.user.loginName,
-                            password:this.user.password
                         }
-                }).then((result) => {
-                    if (result.data.code == "200") {
-                        alert("修改成功！")
-                        window.location.href="Login.html"
+                        if(this.isUse == false){
+                            this.errorInfo = "验证码已过期！"
+                            return;
+                        }
+                        axios.get("updatePwd", {
+                            params: {
+                                loginName: this.user.loginName,
+                                password: this.user.password
+                            }
+                        }).then((result) => {
+                            if (result.data.code == "200") {
+                                alert("修改成功！")
+                                window.location.href = "Login.html"
+                            }
+                        })
+                    } else {
+                        return false;
                     }
                 })
-                } else {
-                    return false;
-                }
-        })
-        },
-        getCode(){
-            if (this.user.email == ""){
-                alert("请先输入邮箱！");
+            },
+            getCode() {
+                if (this.user.email == "") {
+                   this.errorInfo = "请先输入邮箱！"
                     return;
-            }
-             if (this.isSend){
-                 return;
-             }
-           axios.get('http://localhost:8080/sendEmailCode',{
-                 params:{
-                     userName:this.user.email
-                 }
+                }
+                axios.get('http://localhost:8080/sendEmailCode', {
+                    params: {
+                        userName: this.user.email
+                    }
                 }).then((result) => {
                     console.log(result.data);
                     this.resultCode = result.data;
-             })
-             this.isSend = true
-             this.codeName = this.totalTime + 's后重新发送'
-             this.timer = setInterval(() => {
-                 this.totalTime--
-                 this.codeName = this.totalTime + 's后重新发送'
-                 if (this.totalTime < 0) {
-                     clearInterval(this.timer)
-                     this.codeName = '重新发送验证码'
-                     this.totalTime = 10
-                     this.isSend = false
-                 }
-             }, 1000)
-         }
-    }
+                })
+                this.isSend = true
+                this.errorInfo=''
+                this.codeName = this.totalTime + 's后重新发送'
+                this.timer = setInterval(() => {
+                    this.totalTime--
+                    this.codeName = this.totalTime + 's后重新发送'
+                    if (this.totalTime < 0) {
+                        clearInterval(this.timer)
+                        this.codeName = '重新发送验证码'
+                        this.totalTime = 10
+                        this.isSend = false
+                        this.isUse = false
+                    }
+                }, 1000)
+            },
+            back(){
+                window.location.href = "Login.html"
+            }
+        }
     })
 </script>

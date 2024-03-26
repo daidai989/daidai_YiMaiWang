@@ -9,22 +9,33 @@
            EvPNG.fix('div, ul, img, li, input, a'); 
         </script>
     <![endif]-->
+    
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
+	<script type="text/javascript" src="js/lrscroll_1.js"></script>
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
+    <script type="text/javascript" src="js/lrscroll_1.js"></script>
+    <script type="text/javascript" src="js/n_nav.js"></script>
+	<script type="text/javascript" src="js/n_nav.js"></script>
     <script type="text/javascript" src="js/vue.js"></script>
     <script type="text/javascript" src="js/axios.js"></script>
     <link type="text/css" rel="stylesheet" href="css/element.css"/>
     <script type="text/javascript" src="js/element.js"></script>
-    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="js/menu.js"></script>    
-	<script type="text/javascript" src="js/lrscroll_1.js"></script>
-	<script type="text/javascript" src="js/n_nav.js"></script>
     <title>商品搜索</title>
     <style>
         a.ss.yes{
-            color: #888888; 
+            color: #888888;
             background-color: transparent;
             background-image: url('images/heart_h.png') !important;
             background-repeat: no-repeat;
             background-position: 10px center;
+        }
+        .highlight1 {
+            color: red !important;
+        }
+        .highlight2 {
+            color: red !important;
         }
     </style>
 </head>
@@ -110,7 +121,8 @@
         </span>
             <!--End 所在收货地区 End-->
             <span class="fr">
-        	<span class="fl">你好，请<a href="Login.html">登录</a>&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a href="#">我的订单</a>&nbsp;|</span>
+        	 <span class="fl">你好，{{$data.username ?  $data.username : '请登录'}}&nbsp;<a v-if="!$data.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="register.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
+                     href="userOrder.html">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
                 	<a href="#">收藏夹</a>
@@ -159,36 +171,26 @@
     <div class="top">
         <div class="logo"><a href="Index.html"><img src="images/logo.png" /></a></div>
         <div class="search">
-                <input class="s_ipt" type="text" v-model="searchValue"/>
-                <input class="s_btn" type="submit" @click="jumpSearch" value="搜索"/>
+                <input type="text" v-model="esSelect.name" class="s_ipt" />
+                <input type="submit" @click="getBrandProduct(1)" value="搜索" class="s_btn" />
             <span class="fl"><a href="#">咖啡</a><a href="#">iphone 6S</a><a href="#">新鲜美食</a><a href="#">蛋糕</a><a href="#">日用品</a><a href="#">连衣裙</a></span>
         </div>
         <div class="i_car">
-            <div class="car_t">购物车 [ <span>3</span> ]</div>
+            <div class="car_t">购物车 [ <span>{{productLength}}</span> ]</div>
             <div class="car_bg">
                 <!--Begin 购物车未登录 Begin-->
-                <div class="un_login">还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！</div>
-                <!--End 购物车未登录 End-->
-                <!--Begin 购物车已登录 Begin-->
-                <ul class="cars">
-                    <li>
-                        <div class="img"><a href="#"><img src="images/car1.jpg" width="58" height="58" /></a></div>
-                        <div class="name"><a href="#">法颂浪漫梦境50ML 香水女士持久清新淡香 送2ML小样3只</a></div>
-                        <div class="price"><font color="#ff4e00">￥399</font> X1</div>
+                <ul v-if="currentUser.username != ''" class="cars">
+                    <li v-for="(item, index) in products" :key="index" >
+                        <div class="img"><a href="#"><img height="58" :src="'/getImage?filePath=' + item.filePath" width="58"/></a></div>
+                        <div class="name"><a href="#">{{item.name}}</a></div>
+                        <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
                     </li>
-                    <li>
-                        <div class="img"><a href="#"><img src="images/car2.jpg" width="58" height="58" /></a></div>
-                        <div class="name"><a href="#">香奈儿（Chanel）邂逅活力淡香水50ml</a></div>
-                        <div class="price"><font color="#ff4e00">￥399</font> X1</div>
-                    </li>
-                    <li>
-                        <div class="img"><a href="#"><img src="images/car2.jpg" width="58" height="58" /></a></div>
-                        <div class="name"><a href="#">香奈儿（Chanel）邂逅活力淡香水50ml</a></div>
-                        <div class="price"><font color="#ff4e00">￥399</font> X1</div>
-                    </li>
+                    <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
+                    <div class="price_a"><a href="BuyCar.html">去购物车结算</a></div>
                 </ul>
-                <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>1058</span></div>
-                <div class="price_a"><a href="#">去购物车结算</a></div>
+                <div v-else class="un_login">
+                    还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！
+                </div>
                 <!--End 购物车已登录 End-->
             </div>
         </div>
@@ -469,19 +471,22 @@
             <table border="0" class="choice" style="width:100%; font-family:'宋体'; margin:0 auto;" cellspacing="0" cellpadding="0">
                 <tr valign="top">
                     <td width="70">&nbsp; 品牌：</td>
-                    <td class="td_a"><a @click="getBrand(0)">全部</a><a @click="getBrand(brand.id)" v-for="brand in brandList" :key="brand.id">{{brand.name}}</a></td>
+                    <td class="td_a">
+                        <a :class="{ 'highlight2': selectedBrand === 0 }" @click="getBrand(0)">全部</a>
+                        <a :class="{ 'highlight2': selectedBrand === brand.id }" @click="getBrand(brand.id)" v-for="brand in brandList" :key="brand.id">{{brand.name}}</a>
+                    </td>
                 </tr>
                 <tr valign="top">
                     <td>&nbsp; 价格：</td>
                     <td class="td_a">
-                        <a  @click="getPriceRange(0,0)">全部</a>
-                        <a  @click="getPriceRange(0,199)">0-199</a>
-                        <a  @click="getPriceRange(200,399)">200-399</a>
-                        <a  @click="getPriceRange(400,599)">400-599</a>
-                        <a  @click="getPriceRange(600,899)">600-899</a>
-                        <a  @click="getPriceRange(900,1299)">900-1299</a>
-                        <a  @click="getPriceRange(1300,1399)">1300-1399</a>
-                        <a  @click="getPriceRange(1400,-1)">1400以上</a>
+                        <a :class="{ 'highlight1': priceRange === 0 }" @click="getPriceRange(0,0)">全部</a>
+                        <a :class="{ 'highlight1': priceRange === 1 }" @click="getPriceRange(0,199)">0-199</a>
+                        <a :class="{ 'highlight1': priceRange === 2 }" @click="getPriceRange(200,399)">200-399</a>
+                        <a :class="{ 'highlight1': priceRange === 3 }" @click="getPriceRange(400,599)">400-599</a>
+                        <a :class="{ 'highlight1': priceRange === 4 }" @click="getPriceRange(600,899)">600-899</a>
+                        <a :class="{ 'highlight1': priceRange === 5 }" @click="getPriceRange(900,1299)">900-1299</a>
+                        <a :class="{ 'highlight1': priceRange === 6 }" @click="getPriceRange(1300,1399)">1300-1399</a>
+                        <a :class="{ 'highlight1': priceRange === 7 }" @click="getPriceRange(1400,-1)">1400以上</a>
                     </td>
                 </tr>
                 <tr>
@@ -500,14 +505,16 @@
             <div class="l_history">
                 <div class="his_t">
                     <span class="fl">浏览历史</span>
-                    <span class="fr"><a href="#">清空</a></span>
+                    <span class="fr"><a @click="cleanHistory">清空</a></span>
                 </div>
                 <ul>
-                    <li>
-                        <div class="img"><a href="#"><img src="images/his_1.jpg" width="185" height="162" /></a></div>
-                        <div class="name"><a href="#">Dior/迪奥香水2件套装</a></div>
+                    <li v-if="currentUser == null">请<a href="Login.html">登录</a>，查看更多</li>
+                    <li v-if="historyProduct == null">你还没有浏览过商品哦！</li>
+                    <li v-if="historyProduct != null" @click="addHistoryProduct(product.id)" v-for="(product, index) in historyProduct" :key="product.id">
+                        <div class="img"><a><img :src="showImage(product.filePath)" width="185" height="162" /></a></div>
+                        <div class="name"><a href="#">{{product.name}}</a></div>
                         <div class="price">
-                            <font>￥<span>368.00</span></font> &nbsp; 18R
+                            <font>￥<span>{{product.price}}</span></font> &nbsp; 18R
                         </div>
                     </li>
                 </ul>
@@ -515,7 +522,7 @@
             <div class="l_list">
                 <div class="list_t">
             	<span class="fl list_or">
-                	<a href="#" class="now">默认</a>
+                	<a href="#" class="now" @click="">默认</a>
                     <a href="#">
                     	<span class="fl">销量</span>
                         <span class="i_up">销量从低到高显示</span>
@@ -531,23 +538,24 @@
                     <span class="fr">共发现120件</span>
                 </div>
                 <div class="list_c">
-                    <ul class="cate_list">
+                    <ul v-if="!isShow">当前查询下没有商品哦</ul>
+                    <ul v-if="isShow" class="cate_list" v-if="productList != null">
                         <li  v-for="(product,index) in productList" :key="product.id">
                             <div @click="productDetail(product.id)">
-                                <div class="img"><a href="#"><img src="images/per_1.jpg" width="210" height="185" /></a></div>
+                                <div class="img"><a ><img :src="showImage(product.filePath)" width="210" height="185" /></a></div>
                                 <div class="price">
                                     <font>￥<span>{{product.price}}</span></font> &nbsp; {{product.description}}
                                 </div>
-                                <div class="name"><a href="#" v-html="product.name"></a></div>
+                                <div class="name"><a  v-html="product.name"></a></div>
                             </div>
                             <div class="carbg">
                                 <a class="ss" :class="product.collection ? {'yes':true} : ''" @click="switchClass(index)">收藏</a>
-                                <a class="j_car">加入购物车</a>
+                                <a class="j_car" @click="addCat(product.id,product.price)">加入购物车</a>
                             </div>
                         </li>
                     </ul>
             </div>
-            <el-pagination 
+            <el-pagination
                         style="float: right;"
                         layout="prev, pager, next"
                         :current-page="page.currentPageNo"
@@ -555,7 +563,7 @@
                         :total="page.totalPage"
                         @current-change="handleCurrentChange"/>
         </div>
-                
+
         <!--Begin Footer Begin -->
         <div class="b_btm_bg bg_color">
             <div class="b_btm">
@@ -646,6 +654,7 @@
 <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
 <![endif]-->
 </html>
+<script type="text/javascript" src="js/request.js"></script>
 <script >
   new Vue({
     el:"#root3",
@@ -661,28 +670,51 @@
                 pageSize:20,
                 brandId:0,
                 sortPrice:false,
-                userId:0
+                userId:0,
+                type:0,
+                categoryLevelId:0,
             },
+            isShow:false,
             searchValue:'',
             page:[],
             currentUser:{},
-            historyProduct:[]
+            historyProduct:[],
+            username:'',
+            userId:null,
+            productLength:null,
+            products:[],
+            totalPrice:"",
+            totalCount:"",
+            cat:{
+                product:'',
+                userId:'',
+                price:0.0,
+                count:1
+            },
+            priceRange: 0,
+            selectedBrand: 0,
         }
     },
     async mounted() {
+        const search = new URLSearchParams(window.location.search);
+        this.esSelect.type = search.get('type');
+        this.esSelect.categoryLevelId = search.get('categoryLevelId');
         axios.get("getBrand").then((result) => {
             console.log(result.data);
-          this.brandList = result.data.data
+          this.brandList = result.data
         });
+        this.initLogin()
+        this.initCat()
         var token = localStorage.getItem("token");
         if(token != null && token != ''){
             await this.getToken(token);
         }
-        const search = new URLSearchParams(window.location.search);
         const name = search.get("name");
         this.esSelect.name = name
         this.getBrandProduct(1);
-        this.getHistoryProduct();
+        if(this.currentUser.id != null && this.currentUser.id != ''){
+            this.getHistoryProduct();
+        }
     },
     methods: {
       async  getToken(token){
@@ -692,8 +724,8 @@
                     }
                 }).then((result) => {
                     console.log(result.data);
-                    this.currentUser = result.data.data
-                    this.esSelect.userId = result.data.data.id
+                    this.currentUser = result.data
+                    this.esSelect.userId = result.data.id
                 });
             },
         handleCurrentChange(val){
@@ -707,24 +739,34 @@
             this.esSelect.currentPageNo = val
             axios.post("getProFromEs",this.esSelect).then((result) => {
               console.log(result.data)
-                this.page = result.data.data;
-              this.productList = result.data.data.data
+                this.page = result.data;
+              this.productList = result.data.data
+              if(this.productList.length === 0){
+                this.isShow = false;
+              }else{
+                this.isShow = true;
+              }
             });
         },
         getPriceRange(begin,end){
             this.esSelect.begin = begin;
             this.esSelect.end = end;
             this.getBrandProduct(1);
-        },
+            if (begin === 0 && end === 0) {
+                this.priceRange = 0;
+            } else {
+                this.priceRange = Math.floor(begin / 200) + 1;
+            }        },
         getBrand(brandId){
             this.esSelect.brandId = brandId
+            this.selectedBrand = brandId;
             this.getBrandProduct(1);
         },
         productDetail(id){
             if(this.currentUser != null && this.currentUser != ''){
                 this.addHistoryProduct(id);
             }
-            // window.location.href='Product.html?id='+ id
+            window.location.href='Product.html?id='+ id
         },
         priceSort(){
             this.esSelect.sortPrice = !this.esSelect.sortPrice
@@ -768,8 +810,8 @@
                 }
             }).then((result) => {
                 console.log(result.data);
-                if(result.data.code  = 200){
-                    this.historyProduct = result.data.data
+                if(result.code === 200){
+                    this.historyProduct = result.data
                 }
             });
         },
@@ -782,7 +824,70 @@
             }).then((result) => {
                 console.log(result.data)
             });
-        }
+        },
+        showImage(filePath){
+            return 'http://localhost:8080/getImage?filePath='+ filePath
+        },
+        initLogin() {
+                 let token=localStorage.getItem("token");
+                 axios.get('http://localhost:8080/getUser', {params: {token: token}})
+                     .then((resp) => {
+                         console.log(resp.data);
+                         this.username=resp.data.userName
+                         this.userId=resp.data.id
+                     });
+             },
+             initCat() {
+                 let token=localStorage.getItem("token");
+                 axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
+                     .then((resp) => {
+                         console.log(resp.data);
+                         this.products=resp.data
+                         let sum = 0;
+                         let num=0;
+                         this.productLength=this.products.length
+                         for (let i = 0; i < this.products.length; i++) {
+                             sum += this.products[i].price*this.products[i].count;
+                             num+=this.products[i].count
+                             this.totalPrice=sum;
+                             this.totalCount=num;
+                         }
+                     });
+             },
+             addCat(productId,price) {
+                this.cat.productId = productId
+                this.cat.userId = this.userId
+                this.cat.price = this.cat.count * price;
+                 axios.post('http://localhost:8080/addCats',this.cat )
+                     .then((resp) => {
+                         console.log(resp.data);
+                         if (resp.code===200){
+                             alert("添加成功!");
+                             this.initCat();
+                         }
+                    });
+             },
+        logout() {
+            let token=localStorage.getItem("token");
+            localStorage.removeItem("token");
+            axios.get('http://localhost:8080/logout', {params: {token: token}})
+                .then((resp) => {
+                    console.log(resp.data);
+                    window.location.href="index.html"
+                });
+        },
+        cleanHistory(){
+            if(this.userId == null){
+                return;
+            }
+            axios.get('cleanHistory',{
+                params:{
+                    userId:this.userId
+                }
+            }).then((result) => {
+                console.log(console.log);
+            });
+        },
     },
   })
 </script>

@@ -21,7 +21,25 @@
             and p.isDelete = 0
         </where>
     </select>
-
+    <select id="getProductByFirstCategoryId" parameterType="int" resultType="Product">
+        SELECT p.id,
+               p.name,
+               description,
+               price,
+               stock,
+               categoryLevelId,
+               fileId,
+               filePath,
+               p.isDelete,
+               p.createTime,
+               c.name,
+               parentId,
+               type
+        FROM easybuy_product p,easybuy_file f,easybuy_product_category c
+        WHERE p.id = f.productId and p.categoryLevelId = c.id
+          and p.isDelete = 0
+          AND parentId IN (SELECT id FROM easybuy_product_category WHERE parentId = #{parentId})
+    </select>
     <select id="getProductByCategoryId" parameterType="int" resultType="Product">
         SELECT p.id,
                p.name,
@@ -69,12 +87,14 @@
         p.isDelete,
         p.createTime,
         filePath,
-        c.name cname,
+        c.name as categoryName,
         parentId,
-        type
-        from easybuy_product p,easybuy_file f,easybuy_product_category c
+        type,
+        b.id as brandId,
+        b.name as brandName
+        from easybuy_product p,easybuy_file f,easybuy_product_category c,easybuy_brand b
         <where>
-            p.id = f.productId and p.categoryLevelId = c.id
+            p.id = f.productId and p.categoryLevelId = c.id and b.id=p.brandId
             and p.id = #{id}
             and p.isDelete = 0
         </where>
@@ -120,7 +140,8 @@
     </update>
 
     <select id="getProductByLogin"  resultType="Product">
-        SELECT id, name, description, price, brandId, stock, categoryLevelId, fileId, isDelete, createTime from easybuy_product where isDelete=0 and name=#{loginName}
+        SELECT id, name, description, price, brandId, stock, categoryLevelId, fileId, isDelete, createTime
+        from easybuy_product where isDelete=0 and name=#{loginName}
     </select>
 
     <select id="getCollectProduct" parameterType="Collect" resultType="Product">
@@ -150,7 +171,7 @@
     </select>
 
     <select id="getHistoryProduct" parameterType="History" resultType="Product">
-        select p.id,
+        select distinct p.id,
                p.name,
                description,
                price,
@@ -167,4 +188,94 @@
                 order by h.createTime desc
                 limit 0,5
     </select>
+    <update id="updateStock"  >
+        update easybuy_product set stock=#{stock} where id = #{id}
+    </update>
+
+    <select id="getProductListByproductList" resultType="Cat">
+        SELECT
+        c.name as categoryName,
+        p.id,
+        p.name,
+        description,
+        price,
+        stock,
+        categoryLevelId,
+        fileId,
+        filePath,
+        p.isDelete,
+        p.createTime,
+        parentId,
+        type
+        FROM easybuy_product p, easybuy_file f, easybuy_product_category c
+        WHERE p.id = f.productId
+        AND p.categoryLevelId = c.id
+        AND p.isDelete = 0
+        AND p.id IN
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    <select id="getProductBySecondCategoryId" parameterType="int" resultType="Product">
+        SELECT p.id,
+               p.name,
+               description,
+               price,
+               stock,
+               categoryLevelId,
+               fileId,
+               filePath,
+               p.isDelete,
+               p.createTime,
+               c.name,
+               parentId,
+               type
+        FROM easybuy_product p,easybuy_file f,easybuy_product_category c
+        WHERE p.id = f.productId and p.categoryLevelId = c.id
+          and p.isDelete = 0
+          AND parentId = #{id}
+    </select>
+
+    <select id="getProductByThreeCategoryId" parameterType="int" resultType="Product">
+        SELECT p.id,
+               p.name,
+               description,
+               price,
+               stock,
+               categoryLevelId,
+               fileId,
+               filePath,
+               p.isDelete,
+               p.createTime,
+               c.name,
+               parentId,
+               type
+        FROM easybuy_product p,easybuy_file f,easybuy_product_category c
+        WHERE p.id = f.productId and p.categoryLevelId = c.id
+          and p.isDelete = 0
+          AND c.id = #{id}
+    </select>
+    <update id="updateProduct"  >
+        update easybuy_product  <set>
+        <if test="name!=null and name!=''">
+            name=#{name},
+        </if>
+        <if test="description!=null and description!=''">
+            description=#{description},
+        </if>
+        <if test="price!=null and price>0">
+            price=#{price},
+        </if>
+        <if test="brandId!=null and brandId>0">
+            brandId=#{brandId},
+        </if>
+        <if test="stock!=null and stock>0">
+            stock=#{stock},
+        </if>
+        <if test="categoryLevelId!=null and categoryLevelId>0">
+            categoryLevelId=#{categoryLevelId},
+        </if>
+    </set>
+        where id=#{id}
+    </update>
 </mapper>

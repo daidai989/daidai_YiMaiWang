@@ -30,33 +30,83 @@
     </update>
 
     <select id="checkUserExist" parameterType="com.kgc.easybuy.pojo.User" resultType="com.kgc.easybuy.pojo.User">
-        select  id,
-                loginName,
-                userName,
-                password,
-                sex,
-                identityCode,
-                email,
-                mobile,
-                roleId,
-                createTime,
-                isDel from easybuy_user
-        where loginName = #{loginName} and isDel = 0
+        SELECT
+            u.id,
+            u.loginName,
+            u.userName,
+            u.password,
+            sex,
+            identityCode,
+            email,
+            mobile,
+            a.phone,
+            roleId,
+            u.createTime,
+            a.address,
+            total_cost
+        FROM easybuy_user u
+                 LEFT JOIN (
+            SELECT userId, MAX(address) AS address, MAX(phone) AS phone
+            FROM easybuy_user_address
+            <where>
+                <if test="isDefault > 0">
+                    isDefault = #{isDefault}
+                </if>
+            </where>
+            GROUP BY userId
+                LIMIT 1
+        ) a ON u.id = a.userId
+                 LEFT JOIN (
+            SELECT userId, SUM(cost) AS total_cost
+            FROM easybuy_order
+            GROUP BY userId
+        ) o ON u.id = o.userId
+        WHERE u.loginName = #{loginName} AND u.isDel = 0
     </select>
-
     <insert id="register">
-        insert into easybuy_user(loginName, password, email, mobile, createTime,isDel,roleId) value (#{loginName}, #{password}, #{email}, #{mobile},now(), 0,3);
+        insert into easybuy_user(loginName, password, email, mobile, createTime,isDel,roleId) value (#{loginName}, #{password}, #{email}, #{mobile},
+                                                                                                     now(), 0,3);
     </insert>
 
+    <update id="updateUser" parameterType="User">
+        update easybuy_user
+        <set>
+            <if test="loginName != null and loginName != ''">
+                loginName = #{loginName},
+            </if>
+            <if test="userName != null and userName != ''">
+                userName = #{userName},
+            </if>
+            <if test="identityCode != null and identityCode != ''">
+                identityCode = #{identityCode},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="sex > 0">
+                sex = #{sex},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="mobile != null and mobile != ''">
+                mobile = #{mobile},
+            </if>
+            <if test="roleId > 0">
+                roleId = #{roleId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+
     <insert id="addUser">
-        insert into easybuy_user(loginName, password, email, mobile, createTime,isDel,roleId) value (#{loginName}, #{password}, #{email}, #{mobile},
-            now(), 0,#{userId});
         insert into easybuy_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="loginName != null">
                 loginName,
             </if>
-            <if test="password != password">
+            <if test="password != null">
                 password,
             </if>
             <if test="email != null">
@@ -74,7 +124,7 @@
             <if test="loginName != null">
                 #{loginName},
             </if>
-            <if test="password != password">
+            <if test="password != null">
                 #{password},
             </if>
             <if test="email != null">
@@ -113,31 +163,6 @@
 
             </where>
     </select>
-
-    <update id="updateUser" parameterType="User">
-        update easybuy_user
-        <set>
-            <if test="loginName != null and loginName != ''">
-                loginName = #{loginName},
-            </if>
-            <if test="password != null and password != ''">
-                password = #{password},
-            </if>
-            <if test="sex > 0">
-                sex = #{sex},
-            </if>
-            <if test="email != null and email != ''">
-                email = #{email},
-            </if>
-            <if test="mobile != null and mobile != ''">
-                mobile = #{mobile},
-            </if>
-            <if test="roleId > 0">
-                roleId = #{roleId},
-            </if>
-        </set>
-        where id = #{id}
-    </update>
 
     <update id="deleteUser">
         update easybuy_user set isDel = 1 where id = #{id}

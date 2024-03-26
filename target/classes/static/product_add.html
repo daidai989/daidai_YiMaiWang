@@ -7,14 +7,11 @@
     <link type="text/css" rel="stylesheet" href="css/style.css" />
     <link type="text/css" rel="stylesheet" href="css/antd.css">
     <link rel="stylesheet" href="css/element.css">
-    <!-- 引入组件库 -->
-    <!--[if IE 6]>
     <script src="js/iepng.js" type="text/javascript"></script>
     <script type="text/javascript">
         EvPNG.fix('div, ul, img, li, input, a');
     </script>
     <![endif]-->
-
     <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
 
@@ -24,10 +21,11 @@
     <script src="js/antd.js"></script>
     <script src="js/element.js"></script>
     <title>尤洪</title>
+
 </head>
 
 <body>
-<div id="app6">
+<div id="app15">
 
     <div class="soubg">
         <div class="sou">
@@ -190,39 +188,32 @@
                 <div class="left_n">管理中心</div>
                 <div class="left_m">
                     <div class="left_m_t t_bg1">订单中心</div>
-
                     <ul>
-                        <li><a href="Member_Product.html" class="now">我的订单</a></li>
-                        <li><a href="member/Member_Address.html">收货地址</a></li>
-                        <li><a href="#">缺货登记</a></li>
-                        <li><a href="#">跟踪订单</a></li>
-                    </ul>
-                </div>
-                <div class="left_m">
-                    <div class="left_m_t t_bg2">会员中心</div>
-                    <ul>
-                        <li><a href="Member_User.html">用户信息</a></li>
+                        <li><a href="userOrder.html">我的订单</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="order.html">全部订单</a></li>
+                        <li><a href="Member_Address.html">地址管理</a></li>
                         <li><a href="Member_Collect.html">我的收藏</a></li>
-                        <li><a href="Member_Msg.html">我的留言</a></li>
-                        <li><a href="Member_Links.html">推广链接</a></li>
-                        <li><a href="#">我的评论</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg3">账户中心</div>
+                    <div class="left_m_t t_bg2">用户中心</div>
                     <ul>
-                        <li><a href="Member_Safe.html">账户安全</a></li>
-                        <li><a href="Member_Packet.html">我的红包</a></li>
-                        <li><a href="Member_Money.html">资金管理</a></li>
+                        <li><a href="User_detail.html">用户信息</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="Member_Member.html">用户列表</a></li>
+                    </ul>
+                </div>
+                <div class="left_m"  v-if="$data.user.roleId===1||$data.user.roleId===2">
+                    <div class="left_m_t t_bg3">商品管理</div>
+                    <ul>
+                        <li><a href="Category.html"分类管理</a></li>
+                        <li><a href="Member_Product.html" class="now">>商品管理</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg4">分销中心</div>
+                    <div class="left_m_t t_bg4">咨询管理</div>
                     <ul>
-                        <li><a href="Member_Member.html">我的会员</a></li>
-                        <li><a href="Member_Results.html">我的业绩</a></li>
-                        <li><a href="Member_Commission.html">我的佣金</a></li>
-                        <li><a href="Member_Cash.html">申请提现</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="news.html">咨询列表</a></li>
+                        <li><a href="user_news.html">所有咨询</a></li>
                     </ul>
                 </div>
             </div>
@@ -263,7 +254,6 @@
                             </a-form-model-item>
                             <a-form-model-item prop="filePaths" label="图片上传">
                                 <el-upload
-                                        class="upload-demo"
                                         action="/upload"
                                         name="filePath"
                                         :before-upload="beforeUpload"
@@ -272,9 +262,12 @@
                                         :limit="1"
                                         :on-exceed="handleExceed"
                                 >
+                                    <el-button size="small" type="primary">点击上传</el-button>
                                     <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2mb</div>
                                 </el-upload>
                             </a-form-model-item>
+
+
 
 
                             <a-form-model-item >
@@ -373,9 +366,10 @@
     </div>
 </div>
 </body>
+<script type="text/javascript" src="js/request.js"></script>
 <script type="text/javascript">
     new Vue({
-        el: '#app6',
+        el: '#app15',
 
         data() {
             let checkProductName=(rule, value, callback) =>{
@@ -384,7 +378,7 @@
                     .then((resp) => {
                         if (!value) {
                             callback(new Error("请输入名字"));
-                        }else if (resp.data.code !== 200) {
+                        }else if (resp.code !== 200) {
                             callback(new Error("名字已经存在"));
                         }else {
                             callback()
@@ -441,14 +435,21 @@
 
         },
         methods: {
+            checkRoled() {
+                let token=localStorage.getItem("token");
+                axios.get('http://localhost:8080/checkRoled', {params: {token: token}})
+                    .then((resp) => {
+
+                    });
+            },
             initLogin() {
                 let token=localStorage.getItem("token");
                 axios.get('http://localhost:8080/getUser', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.user.username=resp.data.data.userName
-                        this.user.id=resp.data.data.id
-                        this.productsOptions.userId=resp.data.data.id
+                        this.user.username=resp.data.userName
+                        this.user.id=resp.data.id
+                        this.productsOptions.userId=resp.data.id
                     });
             },
             initCat() {
@@ -456,7 +457,7 @@
                 axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.products=resp.data.data
+                        this.products=resp.data
                         let sum = 0;
                         this.productLength=this.products.length
                         for (let i = 0; i < this.products.length; i++) {
@@ -470,7 +471,7 @@
                 axios.get('http://localhost:8080/getBrand')
                     .then((resp) => {
                         console.log(resp.data);
-                       this.brandOptions=resp.data.data
+                       this.brandOptions=resp.data
 
                     });
             },
@@ -483,7 +484,7 @@
                 axios.get('http://localhost:8080/getAllCategory')
                     .then((resp) => {
                         console.log(resp.data);
-                        this.theFirst = resp.data.data.map(item => ({
+                        this.theFirst = resp.data.map(item => ({
                             value: item.id,
                             label: item.name,
                             children:item.childCategory?item.childCategory.map(child=>({
@@ -518,9 +519,11 @@
                 this.$message.warning(`当前限制选择 1个文件`);
             },
             onUploadSuccess(response) {
+                console.log(response)
+
                 if (response.code === 200) {
                     this.$message.success('文件上传成功');
-                    console.log(response.data)
+                    console.log(response)
                     this.productsOptions.filePath=response.data
                 } else {
                     this.$message.error('文件上传失败');
@@ -532,7 +535,7 @@
                         axios
                             .post("/addProduct", this.productsOptions)
                             .then((resp) => {
-                                if (resp.data.code === 200) {
+                                if (resp.code=== 200) {
                                     window.location.href="Member_Product.html"
                                 }
                             })
@@ -550,6 +553,7 @@
 
         },
         mounted() {
+            this.checkRoled()
             this.initLogin()
             this.initCat()
             this.getAllCategory()

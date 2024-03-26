@@ -2,27 +2,33 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link type="text/css" rel="stylesheet" href="../css/style.css" />
-    <link type="text/css" rel="stylesheet" href="../css/antd.css">
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+    <link type="text/css" rel="stylesheet" href="css/antd.css">
     <!--[if IE 6]>
-    <script src="../js/iepng.js" type="text/javascript"></script>
+    <script src="js/iepng.js" type="text/javascript"></script>
     <script type="text/javascript">
         EvPNG.fix('div, ul, img, li, input, a');
     </script>
     <![endif]-->
 
-    <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="../js/menu.js"></script>
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
 
-    <script type="text/javascript" src="../js/select.js"></script>
-    <script src="../js/vue.js"></script>
-    <script src="../js/axios.js"></script>
-    <script src="../js/antd.js"></script>
+    <script type="text/javascript" src="js/select.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/axios.js"></script>
+    <script src="js/antd.js"></script>
+    <style>
+        .ant-table tr:nth-child(4) td:nth-child(3) {
+            overflow: auto;
+            max-width: 0px;
+        }
+    </style>
 
     <title>尤洪</title>
 </head>
 <body>
-<div id="app9">
+<div id="app7">
     <!--Begin Header Begin-->
     <div class="soubg">
         <div class="sou">
@@ -103,7 +109,7 @@
         </span>
             <!--End 所在收货地区 End-->
             <span class="fr">
-        	<span class="fl">你好，{{$data.user.username ?  $data.user.username : '请登录'}}&nbsp;<a v-if="!$data.user.username" href="../Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.user.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
+        	<span class="fl">你好，{{$data.user.username ?  $data.user.username : '请登录'}}&nbsp;<a v-if="!$data.user.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.user.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
                     href="#">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
@@ -146,28 +152,33 @@
             </span>
             <span class="fl">|&nbsp;关注我们：</span>
             <span class="s_sh"><a href="#" class="sh1">新浪</a><a href="#" class="sh2">微信</a></span>
-            <span class="fr">|&nbsp;<a href="#">手机版&nbsp;<img src="../images/s_tel.png" align="absmiddle" /></a></span>
+            <span class="fr">|&nbsp;<a href="#">手机版&nbsp;<img src="images/s_tel.png" align="absmiddle" /></a></span>
         </span>
         </div>
     </div>
     <div class="m_top_bg">
         <div class="top">
-            <div class="m_logo"><a href="Index.html"><img src="../images/logo1.png" /></a></div>
+            <div class="m_logo"><a href="Index.html"><img src="images/logo1.png" /></a></div>
             <div class="i_car">
                 <div class="car_t">购物车 [ <span>{{productLength}}</span> ]</div>
                 <div class="car_bg">
                     <!--Begin 购物车未登录 Begin-->
                     <ul v-if="$data.user.username" class="cars">
-                        <li v-for="(item, index) in products" :key="index" >
-                            <div class="img"><a href="#"><img height="58" :src="'http://localhost:8080/getImage?filePath=' + item.filePath" width="58"/></a></div>
-                            <div class="name"><a href="#">{{item.name}}</a></div>
-                            <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
-                        </li>
-                        <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
-                        <div class="price_a"><a href="#">去购物车结算</a></div>
+                        <div v-if="$data.productLength">
+                            <li v-for="(item, index) in products" :key="index" >
+                                <div class="img"><a href="#"><img height="58" :src="'/getImage?filePath=' + item.filePath" width="58"/></a></div>
+                                <div class="name"><a href="#">{{item.name}}</a></div>
+                                <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
+                            </li>
+                            <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
+                            <div class="price_a"><a href="BuyCar.html">去购物车结算</a></div>
+                        </div>
+                        <div v-else class="un_login">
+                            购物车暂无东西
+                        </div>
                     </ul>
                     <div v-else class="un_login">
-                        还未登录！<a href="../Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！
+                        还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！
 
                     </div>
 
@@ -184,39 +195,32 @@
                 <div class="left_n">管理中心</div>
                 <div class="left_m">
                     <div class="left_m_t t_bg1">订单中心</div>
-
                     <ul>
-                        <li><a href="../Member_Product.html" class="now">我的订单</a></li>
-                        <li><a href="Member_Address.html">收货地址</a></li>
-                        <li><a href="#">缺货登记</a></li>
-                        <li><a href="#">跟踪订单</a></li>
-                    </ul>
-                </div>
-                <div class="left_m">
-                    <div class="left_m_t t_bg2">会员中心</div>
-                    <ul>
-                        <li><a href="Member_User.html">用户信息</a></li>
+                        <li><a href="userOrder.html" class="now">我的订单</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="order.html">全部订单</a></li>
+                        <li><a href="Member_Address.html">地址管理</a></li>
                         <li><a href="Member_Collect.html">我的收藏</a></li>
-                        <li><a href="Member_Msg.html">我的留言</a></li>
-                        <li><a href="Member_Links.html">推广链接</a></li>
-                        <li><a href="#">我的评论</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg3">账户中心</div>
+                    <div class="left_m_t t_bg2">用户中心</div>
                     <ul>
-                        <li><a href="Member_Safe.html">账户安全</a></li>
-                        <li><a href="Member_Packet.html">我的红包</a></li>
-                        <li><a href="Member_Money.html">资金管理</a></li>
+                        <li><a href="User_detail.html">用户信息</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="Member_Member.html">用户列表</a></li>
+                    </ul>
+                </div>
+                <div class="left_m"  v-if="$data.user.roleId===1||$data.user.roleId===2">
+                    <div class="left_m_t t_bg3">商品管理</div>
+                    <ul>
+                        <li><a href="Category.html">分类管理</a></li>
+                        <li><a href="Member_Product.html">商品管理</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg4">分销中心</div>
+                    <div class="left_m_t t_bg4">咨询管理</div>
                     <ul>
-                        <li><a href="Member_Member.html">我的会员</a></li>
-                        <li><a href="Member_Results.html">我的业绩</a></li>
-                        <li><a href="Member_Commission.html">我的佣金</a></li>
-                        <li><a href="Member_Cash.html">申请提现</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2" class="now"><a href="news.html">咨询列表</a></li>
+                        <li><a href="user_news.html">所有咨询</a></li>
                     </ul>
                 </div>
             </div>
@@ -228,14 +232,11 @@
                         <a-input type="text" v-model="title" placeholder="新闻名"></a-input>
                         <a-button type="primary" @click="viewNewsList(1)">查询</a-button>
                         <a href="news_add.html"><a-button type="primary">添加新闻</a-button></a>
-
                     </div>
-
-
                 </div>
                 <a-table
                         :columns="columns"
-                        :data-source="AllOrders"
+                        :data-source="AllNews"
                         row-key="id"
                         :pagination="pagination"
                         @change="handleTableChange"
@@ -245,111 +246,112 @@
                         <span><a @click="delNews(record.id)">删除</a></span>
                     </div>
                 </a-table>
-        </div>
-        <!--End 用户中心 End-->
-        <!--Begin Footer Begin -->
-        <div class="b_btm_bg b_btm_c">
-            <div class="b_btm">
-                <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
-                    <tr>
-                        <td width="72"><img src="../images/b1.png" width="62" height="62" /></td>
-                        <td><h2>正品保障</h2>正品行货  放心购买</td>
-                    </tr>
-                </table>
-                <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
-                    <tr>
-                        <td width="72"><img src="../images/b2.png" width="62" height="62" /></td>
-                        <td><h2>满38包邮</h2>满38包邮 免运费</td>
-                    </tr>
-                </table>
-                <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
-                    <tr>
-                        <td width="72"><img src="../images/b3.png" width="62" height="62" /></td>
-                        <td><h2>天天低价</h2>天天低价 畅选无忧</td>
-                    </tr>
-                </table>
-                <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
-                    <tr>
-                        <td width="72"><img src="../images/b4.png" width="62" height="62" /></td>
-                        <td><h2>准时送达</h2>收货时间由你做主</td>
-                    </tr>
-                </table>
             </div>
-        </div>
-        <div class="b_nav">
-            <dl>
-                <dt><a href="#">新手上路</a></dt>
-                <dd><a href="#">售后流程</a></dd>
-                <dd><a href="#">购物流程</a></dd>
-                <dd><a href="#">订购方式</a></dd>
-                <dd><a href="#">隐私声明</a></dd>
-                <dd><a href="#">推荐分享说明</a></dd>
-            </dl>
-            <dl>
-                <dt><a href="#">配送与支付</a></dt>
-                <dd><a href="#">货到付款区域</a></dd>
-                <dd><a href="#">配送支付查询</a></dd>
-                <dd><a href="#">支付方式说明</a></dd>
-            </dl>
-            <dl>
-                <dt><a href="#">会员中心</a></dt>
-                <dd><a href="#">资金管理</a></dd>
-                <dd><a href="#">我的收藏</a></dd>
-                <dd><a href="#">我的订单</a></dd>
-            </dl>
-            <dl>
-                <dt><a href="#">服务保证</a></dt>
-                <dd><a href="#">退换货原则</a></dd>
-                <dd><a href="#">售后服务保证</a></dd>
-                <dd><a href="#">产品质量保证</a></dd>
-            </dl>
-            <dl>
-                <dt><a href="#">联系我们</a></dt>
-                <dd><a href="#">网站故障报告</a></dd>
-                <dd><a href="#">购物咨询</a></dd>
-                <dd><a href="#">投诉与建议</a></dd>
-            </dl>
-            <div class="b_tel_bg">
-                <a href="#" class="b_sh1">新浪微博</a>
-                <a href="#" class="b_sh2">腾讯微博</a>
-                <p>
-                    服务热线：<br />
-                    <span>400-123-4567</span>
-                </p>
+            <!--End 用户中心 End-->
+            <!--Begin Footer Begin -->
+            <div class="b_btm_bg b_btm_c">
+                <div class="b_btm">
+                    <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td width="72"><img src="images/b1.png" width="62" height="62" /></td>
+                            <td><h2>正品保障</h2>正品行货  放心购买</td>
+                        </tr>
+                    </table>
+                    <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td width="72"><img src="images/b2.png" width="62" height="62" /></td>
+                            <td><h2>满38包邮</h2>满38包邮 免运费</td>
+                        </tr>
+                    </table>
+                    <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td width="72"><img src="images/b3.png" width="62" height="62" /></td>
+                            <td><h2>天天低价</h2>天天低价 畅选无忧</td>
+                        </tr>
+                    </table>
+                    <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td width="72"><img src="images/b4.png" width="62" height="62" /></td>
+                            <td><h2>准时送达</h2>收货时间由你做主</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
-            <div class="b_er">
-                <div class="b_er_c"><img src="../images/er.gif" width="118" height="118" /></div>
-                <img src="../images/ss.png" />
+            <div class="b_nav">
+                <dl>
+                    <dt><a href="#">新手上路</a></dt>
+                    <dd><a href="#">售后流程</a></dd>
+                    <dd><a href="#">购物流程</a></dd>
+                    <dd><a href="#">订购方式</a></dd>
+                    <dd><a href="#">隐私声明</a></dd>
+                    <dd><a href="#">推荐分享说明</a></dd>
+                </dl>
+                <dl>
+                    <dt><a href="#">配送与支付</a></dt>
+                    <dd><a href="#">货到付款区域</a></dd>
+                    <dd><a href="#">配送支付查询</a></dd>
+                    <dd><a href="#">支付方式说明</a></dd>
+                </dl>
+                <dl>
+                    <dt><a href="#">会员中心</a></dt>
+                    <dd><a href="#">资金管理</a></dd>
+                    <dd><a href="#">我的收藏</a></dd>
+                    <dd><a href="#">我的订单</a></dd>
+                </dl>
+                <dl>
+                    <dt><a href="#">服务保证</a></dt>
+                    <dd><a href="#">退换货原则</a></dd>
+                    <dd><a href="#">售后服务保证</a></dd>
+                    <dd><a href="#">产品质量保证</a></dd>
+                </dl>
+                <dl>
+                    <dt><a href="#">联系我们</a></dt>
+                    <dd><a href="#">网站故障报告</a></dd>
+                    <dd><a href="#">购物咨询</a></dd>
+                    <dd><a href="#">投诉与建议</a></dd>
+                </dl>
+                <div class="b_tel_bg">
+                    <a href="#" class="b_sh1">新浪微博</a>
+                    <a href="#" class="b_sh2">腾讯微博</a>
+                    <p>
+                        服务热线：<br />
+                        <span>400-123-4567</span>
+                    </p>
+                </div>
+                <div class="b_er">
+                    <div class="b_er_c"><img src="images/er.gif" width="118" height="118" /></div>
+                    <img src="images/ss.png" />
+                </div>
             </div>
-        </div>
-        <div class="btmbg">
-            <div class="btm">
-                备案/许可证编号：蜀ICP备12009302号-1-www.dingguagua.com   Copyright © 2015-2018 尤洪商城网 All Rights Reserved. 复制必究 , Technical Support: Dgg Group <br />
-                <img src="../images/b_1.gif" width="98" height="33" /><img src="../images/b_2.gif" width="98" height="33" /><img src="../images/b_3.gif" width="98" height="33" /><img src="../images/b_4.gif" width="98" height="33" /><img src="../images/b_5.gif" width="98" height="33" /><img src="../images/b_6.gif" width="98" height="33" />
+            <div class="btmbg">
+                <div class="btm">
+                    备案/许可证编号：蜀ICP备12009302号-1-www.dingguagua.com   Copyright © 2015-2018 尤洪商城网 All Rights Reserved. 复制必究 , Technical Support: Dgg Group <br />
+                    <img src="images/b_1.gif" width="98" height="33" /><img src="images/b_2.gif" width="98" height="33" /><img src="images/b_3.gif" width="98" height="33" /><img src="images/b_4.gif" width="98" height="33" /><img src="images/b_5.gif" width="98" height="33" /><img src="images/b_6.gif" width="98" height="33" />
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 </body>
-
+<script type="text/javascript" src="js/request.js"></script>
 <script type="text/javascript">
     new Vue({
-        el: '#app9',
+        el: '#app7',
         data:{
             title:"",
             columns: [
-                { title: "订单号", dataIndex: "serialNumber", key: "serialNumber" },
-                { title: "订单时间", dataIndex: "createTime", key: "createTime" },
-                { title: "订单总金额", dataIndex: "content", key: "content" },
-                { title: "订单状态", dataIndex: "shortTitle", key: "shortTitle" },
+                { title: "序号", dataIndex: "index", key: "index" },
+                { title: "标题", dataIndex: "title", key: "title" },
+                { title: "内容", dataIndex: "content", key: "content", class: "scrollable-cell" },
+                { title: "简言", dataIndex: "shortTitle", key: "shortTitle" },
+                { title: "上架时间", dataIndex: "createTime", key: "createTime" },
                 {
                     title: "操作",
                     key: "action",
                     scopedSlots: { customRender: "action" },
                 },
             ],
-            AllOrder: [],
+            AllNews: [],
             pagination: {
                 showQuickJumper: true,
                 showTotal: (total, range) => {
@@ -363,6 +365,7 @@
             user:{
                 username:"",
                 id:null,
+                roleId:null,
             },
             products:[],
 
@@ -377,8 +380,9 @@
                 axios.get('http://localhost:8080/getUser', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.user.username=resp.data.data.userName
-                        this.user.id=resp.data.data.id
+                        this.user.username=resp.data.userName
+                        this.user.id=resp.data.id
+                        this.user.roleId=resp.data.roleId
                     });
             },
             initCat() {
@@ -386,7 +390,7 @@
                 axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.products=resp.data.data
+                        this.products=resp.data
                         let sum = 0;
                         this.productLength=this.products.length
                         for (let i = 0; i < this.products.length; i++) {
@@ -403,15 +407,15 @@
                     }})
                     .then((resp) => {
                         console.log(resp.data)
-                        const pageSize = resp.data.pageSize;
+                        const pageSize = resp.pageSize;
                         const startIndex = (currentNo - 1) * pageSize + 1;
-                        resp.data.list.forEach((news, index) => {
-                            order.index = startIndex + index;
+                        resp.list.forEach((news, index) => {
+                            news.index = startIndex + index;
                         });
-                        this.AllNews = resp.data.list;
-                        this.pagination.current = resp.data.pageNum;
-                        this.pagination.total = resp.data.total;
-                        this.pagination.pageSize = resp.data.pageSize;
+                        this.AllNews = resp.list;
+                        this.pagination.current = resp.pageNum;
+                        this.pagination.total = resp.total;
+                        this.pagination.pageSize = resp.pageSize;
                     });
             },
             delNews(id) {
@@ -425,8 +429,16 @@
 
                     });
             },
+            checkRoled() {
+                let token=localStorage.getItem("token");
+                axios.get('http://localhost:8080/checkRoled', {params: {token: token}})
+                    .then((resp) => {
+
+                    });
+            },
         },
         mounted() {
+            this.checkRoled()
             this.initLogin()
             this.initCat()
             this.viewNewsList(1)
