@@ -129,8 +129,8 @@
             <span class="fr">
 
 
-                <span class="fl">你好，{{$data.username ?  $data.username : '请登录'}}&nbsp;<a v-if="!$data.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
-                        href="Member_Product.html">我的订单</a>&nbsp;|</span>
+                <span class="fl">你好，{{$data.username ?  $data.username : '请登录'}}&nbsp;<a v-if="!$data.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="register.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
+                    href="userOrder.html">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
                 	<a href="#">收藏夹</a>
@@ -198,7 +198,7 @@
                             <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
                         </li>
                         <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
-                        <div class="price_a"><a href="#">去购物车结算</a></div>
+                        <div class="price_a"><a href="BuyCar.html">去购物车结算</a></div>
                     </div>
                     <div v-else class="un_login">
                         购物车暂无东西
@@ -222,17 +222,17 @@
                 <div class="leftNav">
                     <ul>
                         <li v-for="(item, index) in theFirst" :key="item.id" @mouseenter="loadSecondAndThird(item.id,index)" @mouseleave="hideSecondAndThird(index)">
-                            <div class="fj">
+                            <div class="fj" @click="goGategoryList(item.type,item.id)">
                                 <span class="n_img"><span></span><img src="images/nav1.png"/></span>
                                 <span class="fl">{{item.name}}</span>
                             </div>
                             <div class="zj" :class="[{ 'block1': activeIndex === index, 'none1': activeIndex !== index }]">
                                 <div class="zj_l">
-                                    <div class="zj_l_c" v-for="(subItem, index) in theSecond" :key="subItem.id">
+                                    <div @click="goGategoryList(subItem1.type,subItem1.id)" class="zj_l_c" v-for="(subItem1, index) in theSecond" :key="subItem1.id">
                                         <h2>
-                                            {{subItem.name}}
+                                            {{subItem1.name}}
                                         </h2>
-                                        <a v-for="(subItem, index) in theThird" :key="subItem.id">{{subItem.name}}|</a>|
+                                        <a @click="goGategoryList(subItem.type,subItem.id)" v-for="(subItem, index) in theThird" :key="subItem.id">{{subItem.name}}|</a>|
                                     </div>
                                 </div>
                                 <div class="zj_r">
@@ -411,7 +411,7 @@
                         倒计时：<span>1200</span> 时 <span>30</span> 分 <span>28</span> 秒
                     </div>
                 </div>
-                <div class="sell_3" @click="getProductDetail(specialSell[4].id)">
+                <div class="sell_3" @click="getProductDetail(specialSell[3].id)">
                     <div class="s_img"><a href="#"><img height="155" :src="showImages(specialSell[3].filePath)" width="185"/></a></div>
                     <div class="s_price">￥<span>{{specialSell[3].price}}</span></div>
                     <div class="s_name">
@@ -754,6 +754,9 @@
                 this.activeIndex = null;
             },
             getProductDetail(id){
+                if (this.userId != '' && this.userId != null){
+                    this.addHistoryProduct(id)
+                }
                 window.location.href="Product.html?id=" + id;
             },
             showImages(filePath){
@@ -839,6 +842,7 @@
                     .then((resp) => {
                         console.log(resp.data);
                         this.username=resp.data.data.userName
+                        this.userId = resp.data.data.id
                     });
             },
             initCat() {
@@ -862,9 +866,21 @@
                     .then((resp) => {
                         console.log(resp.data);
                         window.location.href="index.html"
-                    });
+                });
             },
-
+            addHistoryProduct(val){
+                axios.get('addProductHistory',{
+                    params:{
+                        userId:this.userId,
+                        productId:val
+                    }
+                }).then((result) => {
+                    console.log(result.data)
+                });
+            },
+            goGategoryList(type,categoryLevelId){
+                window.location.href="CategoryList.html?type=" + type + "&categoryLevelId=" + categoryLevelId
+            }
         }
     })
 </script>

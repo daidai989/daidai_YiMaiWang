@@ -27,7 +27,7 @@
 </head>
 
 <body>
-<div id="app9">
+<div id="app29">
     <div class="soubg">
         <div class="sou">
             <!--Begin 所在收货地区 Begin-->
@@ -163,13 +163,18 @@
                 <div class="car_bg">
                     <!--Begin 购物车未登录 Begin-->
                     <ul v-if="$data.user.username" class="cars">
-                        <li v-for="(item, index) in products" :key="index" >
-                            <div class="img"><a href="#"><img height="58" :src="'http://localhost:8080/getImage?filePath=' + item.filePath" width="58"/></a></div>
-                            <div class="name"><a href="#">{{item.name}}</a></div>
-                            <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
-                        </li>
-                        <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
-                        <div class="price_a"><a href="#">去购物车结算</a></div>
+                        <div v-if="$data.productLength">
+                            <li v-for="(item, index) in products" :key="index" >
+                                <div class="img"><a href="#"><img height="58" :src="'/getImage?filePath=' + item.filePath" width="58"/></a></div>
+                                <div class="name"><a href="#">{{item.name}}</a></div>
+                                <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
+                            </li>
+                            <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
+                            <div class="price_a"><a href="BuyCar.html">去购物车结算</a></div>
+                        </div>
+                        <div v-else class="un_login">
+                            购物车暂无东西
+                        </div>
                     </ul>
                     <div v-else class="un_login">
                         还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！
@@ -189,39 +194,32 @@
                 <div class="left_n">管理中心</div>
                 <div class="left_m">
                     <div class="left_m_t t_bg1">订单中心</div>
-
                     <ul>
-                        <li><a href="Member_Product.html" class="now">我的订单</a></li>
-                        <li><a href="Member_Address.html">收货地址</a></li>
-                        <li><a href="#">缺货登记</a></li>
-                        <li><a href="#">跟踪订单</a></li>
-                    </ul>
-                </div>
-                <div class="left_m">
-                    <div class="left_m_t t_bg2">会员中心</div>
-                    <ul>
-                        <li><a href="Member_User.html">用户信息</a></li>
+                        <li><a href="userOrder.html" class="now">我的订单</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="order.html">全部订单</a></li>
+                        <li><a href="Member_Address.html">地址管理</a></li>
                         <li><a href="Member_Collect.html">我的收藏</a></li>
-                        <li><a href="Member_Msg.html">我的留言</a></li>
-                        <li><a href="Member_Links.html">推广链接</a></li>
-                        <li><a href="#">我的评论</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg3">账户中心</div>
+                    <div class="left_m_t t_bg2">用户中心</div>
                     <ul>
-                        <li><a href="Member_Safe.html">账户安全</a></li>
-                        <li><a href="Member_Packet.html">我的红包</a></li>
-                        <li><a href="Member_Money.html">资金管理</a></li>
+                        <li><a href="User_detail.html">用户信息</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="Member_Member.html">用户列表</a></li>
+                    </ul>
+                </div>
+                <div class="left_m"  v-if="$data.user.roleId===1||$data.user.roleId===2">
+                    <div class="left_m_t t_bg3">商品管理</div>
+                    <ul>
+                        <li><a href="Category.html">分类管理</a></li>
+                        <li><a href="Member_Product.html">商品管理</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg4">分销中心</div>
+                    <div class="left_m_t t_bg4">咨询管理</div>
                     <ul>
-                        <li><a href="Member_Member.html">我的会员</a></li>
-                        <li><a href="Member_Results.html">我的业绩</a></li>
-                        <li><a href="Member_Commission.html">我的佣金</a></li>
-                        <li><a href="Member_Cash.html">申请提现</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="news.html">咨询列表</a></li>
+                        <li><a href="user_news.html">所有咨询</a></li>
                     </ul>
                 </div>
             </div>
@@ -349,8 +347,7 @@
 <script type="text/javascript" src="js/request.js"></script>
 <script type="text/javascript">
     new Vue({
-        el: '#app9',
-
+        el: '#app29',
         data() {
             let checkNewsTitle=(rule, value, callback) =>{
                 const urlParams = new URLSearchParams(window.location.search);
@@ -364,7 +361,7 @@
                             callback(new Error("请输入标题"));
                         }else if (value.length<1||value.length>20){
                             callback(new Error("标题长度错误"));
-                        } else if (resp.data.code !== 200) {
+                        } else if (resp.code !== 200) {
                             // 将resp.data.data.id转换为整数类型
 
                             callback(new Error("标题已经存在"));
@@ -383,6 +380,7 @@
                 user:{
                     username:"",
                     id:null,
+                    roleId:null,
                 },
                 news: {
                     id:null,
@@ -418,9 +416,10 @@
                 axios.get('http://localhost:8080/getUser', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.user.username=resp.data.data.userName
-                        this.user.id=resp.data.data.id
-                        this.productsOptions.userId=resp.data.data.id
+                        this.user.username=resp.data.userName
+                        this.user.id=resp.data.id
+                        console.log(resp.data.roleId)
+                        this.user.roleId=resp.data.roleId
                     });
             },
             initCat() {
@@ -428,7 +427,7 @@
                 axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.products=resp.data.data
+                        this.products=resp.data
                         let sum = 0;
                         this.productLength=this.products.length
                         for (let i = 0; i < this.products.length; i++) {
@@ -444,9 +443,9 @@
                 axios.get('http://localhost:8080/getNewsById', {params: {id: id}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.news.title=resp.data.data.title
-                        this.news.content=resp.data.data.content
-                        this.news.shortTitle=resp.data.data.shortTitle
+                        this.news.title=resp.data.title
+                        this.news.content=resp.data.content
+                        this.news.shortTitle=resp.data.shortTitle
 
                     });
             },
@@ -462,7 +461,7 @@
                         axios
                             .post("/updateNews", this.news)
                             .then((resp) => {
-                                if (resp.data.code === 200) {
+                                if (resp.code === 200) {
                                     window.location.href="news.html"
                                 }
                             })
@@ -487,9 +486,26 @@
 
                     });
             },
+            logout() {
+                let token=localStorage.getItem("token");
+                localStorage.removeItem("token");
+                axios.get('http://localhost:8080/logout', {params: {token: token}})
+                    .then((resp) => {
+                        console.log(resp.data);
+                        window.location.href="index.html"
+                    });
+            },
+            checkRoled() {
+                let token=localStorage.getItem("token");
+                axios.get('http://localhost:8080/checkRoled', {params: {token: token}})
+                    .then((resp) => {
+
+                    });
+            },
 
         },
         mounted() {
+            this.checkRoled()
             this.checkRoled()
             this.initLogin()
             this.initCat()
