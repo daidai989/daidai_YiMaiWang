@@ -6,7 +6,6 @@
         from  easybuy_user_address a ,easybuy_user u where a.userId =u.id and a.isDefault=1 and a.isDel=0 and u.id=#{id}
     </select>
 
-
     <select id="getAddressById" resultType="Address">
         select id,
             userId,
