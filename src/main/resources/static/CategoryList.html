@@ -31,6 +31,12 @@
             background-repeat: no-repeat;
             background-position: 10px center;
         }
+        .highlight1 {
+            color: red !important;
+        }
+        .highlight2 {
+            color: red !important;
+        }
     </style>
 </head>
 <body>
@@ -116,7 +122,7 @@
             <!--End 所在收货地区 End-->
             <span class="fr">
         	 <span class="fl">你好，{{$data.username ?  $data.username : '请登录'}}&nbsp;<a v-if="!$data.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="register.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
-                     href="user_order.html">我的订单</a>&nbsp;|</span>
+                     href="userOrder.html">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
                 	<a href="#">收藏夹</a>
@@ -165,10 +171,8 @@
     <div class="top">
         <div class="logo"><a href="Index.html"><img src="images/logo.png" /></a></div>
         <div class="search">
-            <form>
-                <input type="text" value="" class="s_ipt" />
-                <input type="submit" value="搜索" class="s_btn" />
-            </form>
+                <input type="text" v-model="esSelect.name" class="s_ipt" />
+                <input type="submit" @click="getBrandProduct(1)" value="搜索" class="s_btn" />
             <span class="fl"><a href="#">咖啡</a><a href="#">iphone 6S</a><a href="#">新鲜美食</a><a href="#">蛋糕</a><a href="#">日用品</a><a href="#">连衣裙</a></span>
         </div>
         <div class="i_car">
@@ -182,7 +186,7 @@
                         <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
                     </li>
                     <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
-                    <div class="price_a"><a href="#">去购物车结算</a></div>
+                    <div class="price_a"><a href="BuyCar.html">去购物车结算</a></div>
                 </ul>
                 <div v-else class="un_login">
                     还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！
@@ -467,19 +471,22 @@
             <table border="0" class="choice" style="width:100%; font-family:'宋体'; margin:0 auto;" cellspacing="0" cellpadding="0">
                 <tr valign="top">
                     <td width="70">&nbsp; 品牌：</td>
-                    <td class="td_a"><a @click="getBrand(0)">全部</a><a @click="getBrand(brand.id)" v-for="brand in brandList" :key="brand.id">{{brand.name}}</a></td>
+                    <td class="td_a">
+                        <a :class="{ 'highlight2': selectedBrand === 0 }" @click="getBrand(0)">全部</a>
+                        <a :class="{ 'highlight2': selectedBrand === brand.id }" @click="getBrand(brand.id)" v-for="brand in brandList" :key="brand.id">{{brand.name}}</a>
+                    </td>
                 </tr>
                 <tr valign="top">
                     <td>&nbsp; 价格：</td>
                     <td class="td_a">
-                        <a  @click="getPriceRange(0,0)">全部</a>
-                        <a  @click="getPriceRange(0,199)">0-199</a>
-                        <a  @click="getPriceRange(200,399)">200-399</a>
-                        <a  @click="getPriceRange(400,599)">400-599</a>
-                        <a  @click="getPriceRange(600,899)">600-899</a>
-                        <a  @click="getPriceRange(900,1299)">900-1299</a>
-                        <a  @click="getPriceRange(1300,1399)">1300-1399</a>
-                        <a  @click="getPriceRange(1400,-1)">1400以上</a>
+                        <a :class="{ 'highlight1': priceRange === 0 }" @click="getPriceRange(0,0)">全部</a>
+                        <a :class="{ 'highlight1': priceRange === 1 }" @click="getPriceRange(0,199)">0-199</a>
+                        <a :class="{ 'highlight1': priceRange === 2 }" @click="getPriceRange(200,399)">200-399</a>
+                        <a :class="{ 'highlight1': priceRange === 3 }" @click="getPriceRange(400,599)">400-599</a>
+                        <a :class="{ 'highlight1': priceRange === 4 }" @click="getPriceRange(600,899)">600-899</a>
+                        <a :class="{ 'highlight1': priceRange === 5 }" @click="getPriceRange(900,1299)">900-1299</a>
+                        <a :class="{ 'highlight1': priceRange === 6 }" @click="getPriceRange(1300,1399)">1300-1399</a>
+                        <a :class="{ 'highlight1': priceRange === 7 }" @click="getPriceRange(1400,-1)">1400以上</a>
                     </td>
                 </tr>
                 <tr>
@@ -498,10 +505,12 @@
             <div class="l_history">
                 <div class="his_t">
                     <span class="fl">浏览历史</span>
-                    <span class="fr"><a href="#">清空</a></span>
+                    <span class="fr"><a @click="cleanHistory">清空</a></span>
                 </div>
                 <ul>
-                    <li @click="addHistoryProduct(product.id)" v-for="(product, index) in historyProduct" :key="product.id">
+                    <li v-if="currentUser == null">请<a href="Login.html">登录</a>，查看更多</li>
+                    <li v-if="historyProduct == null">你还没有浏览过商品哦！</li>
+                    <li v-if="historyProduct != null" @click="addHistoryProduct(product.id)" v-for="(product, index) in historyProduct" :key="product.id">
                         <div class="img"><a><img :src="showImage(product.filePath)" width="185" height="162" /></a></div>
                         <div class="name"><a href="#">{{product.name}}</a></div>
                         <div class="price">
@@ -513,7 +522,7 @@
             <div class="l_list">
                 <div class="list_t">
             	<span class="fl list_or">
-                	<a href="#" class="now">默认</a>
+                	<a href="#" class="now" @click="">默认</a>
                     <a href="#">
                     	<span class="fl">销量</span>
                         <span class="i_up">销量从低到高显示</span>
@@ -529,7 +538,8 @@
                     <span class="fr">共发现120件</span>
                 </div>
                 <div class="list_c">
-                    <ul class="cate_list">
+                    <ul v-if="!isShow">当前查询下没有商品哦</ul>
+                    <ul v-if="isShow" class="cate_list" v-if="productList != null">
                         <li  v-for="(product,index) in productList" :key="product.id">
                             <div @click="productDetail(product.id)">
                                 <div class="img"><a ><img :src="showImage(product.filePath)" width="210" height="185" /></a></div>
@@ -540,7 +550,7 @@
                             </div>
                             <div class="carbg">
                                 <a class="ss" :class="product.collection ? {'yes':true} : ''" @click="switchClass(index)">收藏</a>
-                                <a class="j_car">加入购物车</a>
+                                <a class="j_car" @click="addCat(product.id,product.price)">加入购物车</a>
                             </div>
                         </li>
                     </ul>
@@ -644,6 +654,7 @@
 <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
 <![endif]-->
 </html>
+<script type="text/javascript" src="js/request.js"></script>
 <script >
   new Vue({
     el:"#root3",
@@ -663,6 +674,7 @@
                 type:0,
                 categoryLevelId:0,
             },
+            isShow:false,
             searchValue:'',
             page:[],
             currentUser:{},
@@ -673,6 +685,14 @@
             products:[],
             totalPrice:"",
             totalCount:"",
+            cat:{
+                product:'',
+                userId:'',
+                price:0.0,
+                count:1
+            },
+            priceRange: 0,
+            selectedBrand: 0,
         }
     },
     async mounted() {
@@ -681,7 +701,7 @@
         this.esSelect.categoryLevelId = search.get('categoryLevelId');
         axios.get("getBrand").then((result) => {
             console.log(result.data);
-          this.brandList = result.data.data
+          this.brandList = result.data
         });
         this.initLogin()
         this.initCat()
@@ -704,8 +724,8 @@
                     }
                 }).then((result) => {
                     console.log(result.data);
-                    this.currentUser = result.data.data
-                    this.esSelect.userId = result.data.data.id
+                    this.currentUser = result.data
+                    this.esSelect.userId = result.data.id
                 });
             },
         handleCurrentChange(val){
@@ -719,17 +739,27 @@
             this.esSelect.currentPageNo = val
             axios.post("getProFromEs",this.esSelect).then((result) => {
               console.log(result.data)
-                this.page = result.data.data;
-              this.productList = result.data.data.data
+                this.page = result.data;
+              this.productList = result.data.data
+              if(this.productList.length === 0){
+                this.isShow = false;
+              }else{
+                this.isShow = true;
+              }
             });
         },
         getPriceRange(begin,end){
             this.esSelect.begin = begin;
             this.esSelect.end = end;
             this.getBrandProduct(1);
-        },
+            if (begin === 0 && end === 0) {
+                this.priceRange = 0;
+            } else {
+                this.priceRange = Math.floor(begin / 200) + 1;
+            }        },
         getBrand(brandId){
             this.esSelect.brandId = brandId
+            this.selectedBrand = brandId;
             this.getBrandProduct(1);
         },
         productDetail(id){
@@ -780,8 +810,8 @@
                 }
             }).then((result) => {
                 console.log(result.data);
-                if(result.data.code  = 200){
-                    this.historyProduct = result.data.data
+                if(result.code === 200){
+                    this.historyProduct = result.data
                 }
             });
         },
@@ -803,8 +833,8 @@
                  axios.get('http://localhost:8080/getUser', {params: {token: token}})
                      .then((resp) => {
                          console.log(resp.data);
-                         this.username=resp.data.data.userName
-                         this.id=resp.data.data.id
+                         this.username=resp.data.userName
+                         this.userId=resp.data.id
                      });
              },
              initCat() {
@@ -812,7 +842,7 @@
                  axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
                      .then((resp) => {
                          console.log(resp.data);
-                         this.products=resp.data.data
+                         this.products=resp.data
                          let sum = 0;
                          let num=0;
                          this.productLength=this.products.length
@@ -822,18 +852,18 @@
                              this.totalPrice=sum;
                              this.totalCount=num;
                          }
-
                      });
              },
-             addCat() {
-                this.cat.productId = this.product.id
-                this.cat.userId = this.user.id
-                this.cat.price = this.cat.count * this.product.price;
+             addCat(productId,price) {
+                this.cat.productId = productId
+                this.cat.userId = this.userId
+                this.cat.price = this.cat.count * price;
                  axios.post('http://localhost:8080/addCats',this.cat )
                      .then((resp) => {
                          console.log(resp.data);
-                         if (resp.data.code===200){
-                             this.isBounce=true;
+                         if (resp.code===200){
+                             alert("添加成功!");
+                             this.initCat();
                          }
                     });
              },
@@ -845,6 +875,18 @@
                     console.log(resp.data);
                     window.location.href="index.html"
                 });
+        },
+        cleanHistory(){
+            if(this.userId == null){
+                return;
+            }
+            axios.get('cleanHistory',{
+                params:{
+                    userId:this.userId
+                }
+            }).then((result) => {
+                console.log(console.log);
+            });
         },
     },
   })

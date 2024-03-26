@@ -187,9 +187,8 @@
                 <div class="left_n">管理中心</div>
                 <div class="left_m">
                     <div class="left_m_t t_bg1">订单中心</div>
-
                     <ul>
-                        <li><a href="user_order.html" class="now">我的订单</a></li>
+                        <li><a href="userOrder.html" class="now">我的订单</a></li>
                         <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="order.html">全部订单</a></li>
                         <li><a href="Member_Address.html">地址管理</a></li>
                         <li><a href="Member_Collect.html">我的收藏</a></li>
@@ -199,10 +198,10 @@
                     <div class="left_m_t t_bg2">用户中心</div>
                     <ul>
                         <li><a href="User_detail.html">用户信息</a></li>
-                        <li><a href="Member_Member.html">用户列表</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="Member_Member.html">用户列表</a></li>
                     </ul>
                 </div>
-                <div class="left_m">
+                <div class="left_m"  v-if="$data.user.roleId===1||$data.user.roleId===2">
                     <div class="left_m_t t_bg3">商品管理</div>
                     <ul>
                         <li><a href="Category.html">分类管理</a></li>
@@ -212,7 +211,8 @@
                 <div class="left_m">
                     <div class="left_m_t t_bg4">咨询管理</div>
                     <ul>
-                        <li><a href="news.html">咨询列表</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="news.html">咨询列表</a></li>
+                        <li><a href="user_news.html">所有咨询</a></li>
                     </ul>
                 </div>
             </div>
@@ -223,6 +223,7 @@
                     <div style="display: flex; justify-content: center;">
                         <a-input type="text" v-model="orderNumber" placeholder="订单号"></a-input>
                         <a-button type="primary" @click="viewOrderList(1)">查询</a-button>
+
                     </div>
                 </div>
                 <a-table
@@ -238,11 +239,11 @@
                         <span v-else-if="text === 2" style="color: orange">已取消</span>
                     </div>
                     <div slot="action" slot-scope="text, record">
-                        <span v-if="record.status === 1"><a @click="delOrder(record.id)">删除</a></span>
+                        <span v-if="record.status === 1"><a @click="delOrder(record.id)">删除</a>
+                        <a @click="viewOrder_dtail(record.id)">查看</a></span>
                         <span v-else-if="record.status === 0">
                                         <a @click="cancel(record.id)">取消</a>
                                         <a @click="alipay_use(record.serialNumber)">去支付</a>
-                                        <span>{{send}}</span>
                             </span>
                         <span v-else-if="record.status === 2"><a @click="delOrder(record.id)">删除</a></span>
                     </div>
@@ -436,11 +437,12 @@
             async viewOrderList(currentNo) {
                 console.log(this.user.id)
                 await axios.get('http://localhost:8080/getOrderListByPage',{params:{
-                        currentNo:currentNo,
-                        serialNumber:this.serialNumber,
+                        currentPageNo:currentNo,
+                        serialNumber:this.orderNumber,
                         userId:this.user.id
                     }})
                     .then((resp) => {
+                        console.log(resp)
                         this.AllOrders = resp.list;
                         this.pagination.current = resp.pageNum;
                         this.pagination.total = resp.total;
@@ -542,6 +544,9 @@
                         console.log(resp.data);
                         window.location.href="index.html"
                     });
+            },
+            viewOrder_dtail(id){
+                window.location.href="order_detail.html?id=" + id
             },
             checkRoled() {
                 let token=localStorage.getItem("token");

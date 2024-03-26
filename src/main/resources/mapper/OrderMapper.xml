@@ -49,7 +49,7 @@
     <select id="getOrderList" parameterType="Order" resultType="Order">
         select o.id, userId, o.loginName, userAddress, o.createTime, cost, serialNumber, o.isDel,status from easy_buy.easybuy_order o,easy_buy.easybuy_user u
         <where>
-            o.userId=u.id and o.isDel=0 and status &lt; 2
+            o.userId=u.id and o.isDel=0
             <if test="serialNumber!=null and serialNumber!=''">
                 and serialNumber like Concat('%',#{serialNumber},'%')
             </if>

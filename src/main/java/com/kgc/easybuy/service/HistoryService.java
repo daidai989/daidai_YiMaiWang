@@ -5,5 +5,5 @@ import com.kgc.easybuy.pojo.ResponseMessage;
 
 public interface HistoryService {
     public ResponseMessage addProductHistory(History history);
-
+    public ResponseMessage cleanHistory(int userId);
 }

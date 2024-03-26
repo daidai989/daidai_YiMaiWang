@@ -87,7 +87,7 @@
         p.isDelete,
         p.createTime,
         filePath,
-        c.name cname,
+        c.name as categoryName,
         parentId,
         type,
         b.id as brandId,
@@ -255,5 +255,27 @@
           and p.isDelete = 0
           AND c.id = #{id}
     </select>
-
+    <update id="updateProduct"  >
+        update easybuy_product  <set>
+        <if test="name!=null and name!=''">
+            name=#{name},
+        </if>
+        <if test="description!=null and description!=''">
+            description=#{description},
+        </if>
+        <if test="price!=null and price>0">
+            price=#{price},
+        </if>
+        <if test="brandId!=null and brandId>0">
+            brandId=#{brandId},
+        </if>
+        <if test="stock!=null and stock>0">
+            stock=#{stock},
+        </if>
+        <if test="categoryLevelId!=null and categoryLevelId>0">
+            categoryLevelId=#{categoryLevelId},
+        </if>
+    </set>
+        where id=#{id}
+    </update>
 </mapper>

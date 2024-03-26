@@ -189,11 +189,10 @@
                 <div class="left_n">管理中心</div>
                 <div class="left_m">
                     <div class="left_m_t t_bg1">订单中心</div>
-
                     <ul>
-                        <li><a href="order.html">我的订单</a></li>
+                        <li><a href="userOrder.html">我的订单</a></li>
                         <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="order.html">全部订单</a></li>
-                        <li><a href="member/Member_Address.html">地址管理</a></li>
+                        <li><a href="Member_Address.html">地址管理</a></li>
                         <li><a href="Member_Collect.html">我的收藏</a></li>
                     </ul>
                 </div>
@@ -201,20 +200,21 @@
                     <div class="left_m_t t_bg2">用户中心</div>
                     <ul>
                         <li><a href="User_detail.html">用户信息</a></li>
-                        <li><a href="Member_Member.html">用户列表</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="Member_Member.html">用户列表</a></li>
                     </ul>
                 </div>
-                <div class="left_m">
+                <div class="left_m"  v-if="$data.user.roleId===1||$data.user.roleId===2">
                     <div class="left_m_t t_bg3">商品管理</div>
                     <ul>
-                        <li><a href="category/Category.html">分类管理</a></li>
+                        <li><a href="Category.html">分类管理</a></li>
                         <li><a href="Member_Product.html">商品管理</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg4" >咨询管理</div>
+                    <div class="left_m_t t_bg4">咨询管理</div>
                     <ul>
-                        <li><a href="news.html" class="now">咨询列表</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2" class="now"><a href="news.html">咨询列表</a></li>
+                        <li><a href="user_news.html">所有咨询</a></li>
                     </ul>
                 </div>
             </div>
@@ -339,6 +339,7 @@
     </div>
 </div>
 </body>
+<script type="text/javascript" src="js/request.js"></script>
 <script type="text/javascript">
     new Vue({
         el: '#app8',
@@ -449,9 +450,17 @@
             resetForm(formName) {
                 this.$refs[formName].resetFields();
             },
+            checkRoled() {
+                let token=localStorage.getItem("token");
+                axios.get('http://localhost:8080/checkRoled', {params: {token: token}})
+                    .then((resp) => {
+
+                    });
+            },
 
         },
         mounted() {
+            this.checkRoled()
             this.initLogin()
             this.initCat()
         }

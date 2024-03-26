@@ -4,4 +4,6 @@ import com.kgc.easybuy.pojo.History;
 
 public interface HistoryMapper {
     public int addProductHistory(History history);
+
+    public int cleanHistory(int userId);
 }

@@ -73,8 +73,8 @@ public class AlipayController {
             params.remove("sign_type");
         }
         alipayDBPojo.setOut_trade_no(params.get("out_trade_no"));
-        alipayDBPojo.setTotal_amount(Double.parseDouble(params.get("total_amount")));
-        ResponseMessage msg = alipayServiceImpl.alipayNotify(params, alipayDBPojo);
+        alipayDBPojo.setTotal_amount(Integer.parseInt(params.get("total_amount")));
+        ResponseMessage msg = alipayServiceImpl.alipayNotify(params,alipayDBPojo);
         PrintWriter pw = null;
         try {
             pw = resp.getWriter();

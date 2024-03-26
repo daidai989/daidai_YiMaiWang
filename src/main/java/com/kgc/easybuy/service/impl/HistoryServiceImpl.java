@@ -21,4 +21,13 @@ public class HistoryServiceImpl implements HistoryService {
         }
         return ResponseMessage.error("添加历史记录失败！");
     }
+
+    @Override
+    public ResponseMessage cleanHistory(int userId) {
+        int count = historyMapper.cleanHistory(userId);
+        if (count > 0){
+            return ResponseMessage.success();
+        }
+        return ResponseMessage.error("清空历史记录失败！");
+    }
 }

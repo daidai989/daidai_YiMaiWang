@@ -17,7 +17,7 @@
 	<script type="text/javascript" src="js/lrscroll_1.js"></script>
 
 
-	<script type="text/javascript" src="js/n_nav.js"></script>
+    <script type="text/javascript" src="js/n_nav.js"></script>
 
     <link rel="stylesheet" type="text/css" href="css/ShopShow.css" />
     <link rel="stylesheet" type="text/css" href="css/MagicZoom.css" />
@@ -167,59 +167,59 @@
             <span class="s_sh"><a href="#" class="sh1">新浪</a><a href="#" class="sh2">微信</a></span>
             <span class="fr">|&nbsp;<a href="#">手机版&nbsp;<img src="images/s_tel.png" align="absmiddle" /></a></span>
         </span>
+        </div>
     </div>
-</div>
-<div class="top">
-    <div class="logo"><a href="Index.html"><img src="images/logo.png" /></a></div>
-    <div class="search">
-    	<form>
-        	<input type="text" value="" class="s_ipt" />
-            <input type="submit" value="搜索" class="s_btn" />
-        </form>
-        <span class="fl"><a href="#">咖啡</a><a href="#">iphone 6S</a><a href="#">新鲜美食</a><a href="#">蛋糕</a><a href="#">日用品</a><a href="#">连衣裙</a></span>
-    </div>
-    <div class="i_car">
-        <div class="car_t">购物车 [ <span>{{productLength}}</span> ]</div>
-        <div class="car_bg">
-            <!--Begin 购物车未登录 Begin-->
-            <ul v-if="user.username != ''" class="cars">
-                <li v-for="(item, index) in products" :key="index" >
-                    <div class="img"><a href="#"><img height="58" :src="'/getImage?filePath=' + item.filePath" width="58"/></a></div>
-                    <div class="name"><a href="#">{{item.name}}</a></div>
-                    <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
-                </li>
-                <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
-                <div class="price_a"><a href="#">去购物车结算</a></div>
-            </ul>
-            <div v-else class="un_login">
-                还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！
+    <div class="top">
+        <div class="logo"><a href="Index.html"><img src="images/logo.png" /></a></div>
+        <div class="search">
+            <form>
+                <input type="text" value="" class="s_ipt" />
+                <input type="submit" value="搜索" class="s_btn" />
+            </form>
+            <span class="fl"><a href="#">咖啡</a><a href="#">iphone 6S</a><a href="#">新鲜美食</a><a href="#">蛋糕</a><a href="#">日用品</a><a href="#">连衣裙</a></span>
+        </div>
+        <div class="i_car">
+            <div class="car_t">购物车 [ <span>{{productLength}}</span> ]</div>
+            <div class="car_bg">
+                <!--Begin 购物车未登录 Begin-->
+                <ul v-if="$data.user.username" class="cars">
+                    <li v-for="(item, index) in products" :key="index" >
+                        <div class="img"><a href="#"><img height="58" :src="'/getImage?filePath=' + item.filePath" width="58"/></a></div>
+                        <div class="name"><a href="#">{{item.name}}</a></div>
+                        <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
+                    </li>
+                    <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
+                    <div class="price_a"><a href="#">去购物车结算</a></div>
+                </ul>
+                <div v-else class="un_login">
+                    还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！
 
             </div>
 
-            <!--End 购物车已登录 End-->
+                <!--End 购物车已登录 End-->
+            </div>
         </div>
     </div>
-</div>
-<!--End Header End-->
-<!--Begin Menu Begin-->
-<div class="menu_bg">
-	<div class="menu">
-    	<!--Begin 商品分类详情 Begin-->
-    	<div class="nav">
-        	<div class="nav_t">全部商品分类</div>
-            <div class="leftNav none">
-                <ul>
-                    <li v-for="(item, index) in theFirst" :key="index" @mouseenter="loadSecondAndThird(item.id)">
-                    	<div class="fj">
-                        	<span class="n_img"><span></span><img src="images/nav1.png" /></span>
-                            <span class="fl">{{item.name}}</span>
-                        </div>
-                        <div class="zj">
-                            <div class="zj_l">
-                                <div class="zj_l_c"v-for="(subItem, index) in theSecond" :key="index">
-                                    <h2>{{subItem.name}}</h2>
-                                    <a v-for="(subItem, index) in theThird" :key="index">{{subItem.name}}|</a>
-                                </div>
+    <!--End Header End-->
+    <!--Begin Menu Begin-->
+    <div class="menu_bg">
+        <div class="menu">
+            <!--Begin 商品分类详情 Begin-->
+            <div class="nav">
+                <div class="nav_t">全部商品分类</div>
+                <div class="leftNav none">
+                    <ul>
+                        <li v-for="(item, index) in theFirst" :key="index" @mouseenter="loadSecondAndThird(item.id)">
+                            <div class="fj">
+                                <span class="n_img"><span></span><img src="images/nav1.png" /></span>
+                                <span class="fl">{{item.name}}</span>
+                            </div>
+                            <div class="zj">
+                                <div class="zj_l">
+                                    <div class="zj_l_c"v-for="(subItem, index) in theSecond" :key="index">
+                                        <h2>{{subItem.name}}</h2>
+                                        <a v-for="(subItem, index) in theThird" :key="index">{{subItem.name}}|</a>
+                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -303,7 +303,7 @@
                 </div>
                 <div class="des_join">
                     <div class="j_nums">
-                         <input type="text" v-model="cat.count" @change="checkNum" class="n_ipt" />
+                         <input type="text" v-model="productNum" @change="checkNum" class="n_ipt" />
                         <input type="button" value="" @click="add" class="n_btn_1" />
                         <input type="button" value="" @click="reduce" class="n_btn_2" />
                      </div>
@@ -572,13 +572,12 @@
 
     <!--Begin 弹出层-加入购物车 Begin-->
     <div id="fade1" class="black_overlay"></div>
-    <div id="MyDiv1" class="white_content" v-if="$data.isBounce===true">
+    <div id="MyDiv1" class="white_content" >
         <div class="white_d">
             <div class="notice_t">
                 <span class="fr" style="margin-top:10px; cursor:pointer;" onclick="CloseDiv_1('MyDiv1','fade1')"><img src="images/close.gif" /></span>
             </div>
             <div class="notice_c">
-
                 <table border="0" align="center" style="margin-top:0px;" cellspacing="0" cellpadding="0">
                   <tr valign="top">
                     <td width="40"><img src="images/suc.png" /></td>
@@ -693,8 +692,10 @@
 
 
 </html>
+<script type="text/javascript" src="js/request.js"></script>
 <script>
- const vm =  new Vue({
+
+    const vm =  new Vue({
         el:"#app2",
         data:{
            product:{
@@ -707,6 +708,8 @@
                categoryName:'',
                parentId:'',
            },
+           productNum:1,
+           // allPrice:0.0,
             recommendList:[],
             recommendPrice:0.0,
             recommendNum:1,
@@ -716,6 +719,7 @@
             totalPrice:"",
             totalCount:"",
             user:{
+
                 username:"",
                 id:null,
             },
@@ -749,14 +753,14 @@
                         id:this.product.id
                     }
                 }).then((result) => {
-                    this.product.id = result.data.data.id;
-                    this.product.name = result.data.data.name;
-                    this.product.description = result.data.data.description;
-                    this.product.price = result.data.data.price;
-                    this.product.stock = result.data.data.stock;
-                    this.product.filePath = result.data.data.filePath;
-                    this.product.categoryName = result.data.data.categoryName;
-                    this.product.parentId = result.data.data.parentId;
+                    this.product.id = result.data.id;
+                    this.product.name = result.data.name;
+                    this.product.description = result.data.description;
+                    this.product.price = result.data.price;
+                    this.product.stock = result.data.stock;
+                    this.product.filePath = result.data.filePath;
+                    this.product.categoryName = result.data.categoryName;
+                    this.product.parentId = result.data.parentId;
                     // this.allPrice = this.product.price * this.productNum
                 });
             },
@@ -794,84 +798,84 @@
                         parentId:this.product.parentId,
                         id:this.product.id
                     }
-                 }).then((result) => {
-                    this.recommendList = result.data.data
-                 });
-             },
-             getCheckbox($event, product) {
-                 if ($event.target.checked) {
-                     this.ids.push(product.id);
-                     this.recommendPrice += product.price;
-                 } else {
-                     const index = this.ids.indexOf(product.id);
-                     if (index > -1) {
-                         this.ids.splice(index, 1);
-                     }
-                     this.recommendPrice -= product.price;
-                 }
-                 this.productPrice = this.recommendPrice * this.recommendNum;
-             },
+                }).then((result) => {
+                    this.recommendList = result.data
+                });
+            },
+            getCheckbox($event, product) {
+                if ($event.target.checked) {
+                    this.ids.push(product.id);
+                    this.recommendPrice += product.price;
+                } else {
+                    const index = this.ids.indexOf(product.id);
+                    if (index > -1) {
+                        this.ids.splice(index, 1);
+                    }
+                    this.recommendPrice -= product.price;
+                }
+                this.productPrice = this.recommendPrice * this.recommendNum;
+            },
 
-             checkNumber(){
-                 var check = /^[1-9]\d*$/
-                 if (!check.test(this.recommendNum) || this.recommendNum > 20){
-                     this.recommendNum = 1
-                 }
-                 this.productPrice = this.recommendPrice * this.recommendNum
-             },
-             toggleColor(color){
-                 this.isTrue=color;
-             },
-             firstLoad() {
-                 axios.get('http://localhost:8080/getFirstCategory')
-                     .then((resp) => {
-                         this.theFirst = resp.data.data;
-                     });
-             },
-             loadSecondAndThird(id) {
-                 this.secondLoad(id);
-             },
-             secondLoad(id) {
-                 axios.get('http://localhost:8080/getSecondCategory', {params: {id: id}})
-                     .then((resp) => {
-                         console.log(resp.data);
-                         this.theSecond = resp.data.data;
-                         if (this.theSecond.length > 0) {
-                             this.thirdLoad(this.theSecond[0].id);
-                         }
-                     });
-             },
-             thirdLoad(id) {
-                 axios.get('http://localhost:8080/getThirdCategory', {params: {id: id}})
-                     .then((resp) => {
-                         console.log(resp.data);
-                         this.theThird = resp.data.data;
-                     });
-             },
-             initLogin() {
-                 let token=localStorage.getItem("token");
-                 axios.get('http://localhost:8080/getUser', {params: {token: token}})
-                     .then((resp) => {
-                         console.log(resp.data);
-                         this.user.username=resp.data.data.userName
-                         this.user.id=resp.data.data.id
-                     });
-             },
-             initCat() {
-                 let token=localStorage.getItem("token");
-                 axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
-                     .then((resp) => {
-                         console.log(resp.data);
-                         this.products=resp.data.data
-                         let sum = 0;
-                         let num=0;
-                         this.productLength=this.products.length
-                         for (let i = 0; i < this.products.length; i++) {
-                             sum += this.products[i].price*this.products[i].count;
-                             num+=this.products[i].count
-                             this.totalPrice=sum;
-                             this.totalCount=num;
-                         }
+            checkNumber(){
+                var check = /^[1-9]\d*$/
+                if (!check.test(this.recommendNum) || this.recommendNum > 20){
+                    this.recommendNum = 1
+                }
+                this.productPrice = this.recommendPrice * this.recommendNum
+            },
+            toggleColor(color){
+                this.isTrue=color;
+            },
+            firstLoad() {
+                axios.get('http://localhost:8080/getFirstCategory')
+                    .then((resp) => {
+                        this.theFirst = resp.data;
+                    });
+            },
+            loadSecondAndThird(id) {
+                this.secondLoad(id);
+            },
+            secondLoad(id) {
+                axios.get('http://localhost:8080/getSecondCategory', {params: {id: id}})
+                    .then((resp) => {
+                        console.log(resp.data);
+                        this.theSecond = resp.data;
+                        if (this.theSecond.length > 0) {
+                            this.thirdLoad(this.theSecond[0].id);
+                        }
+                    });
+            },
+            thirdLoad(id) {
+                axios.get('http://localhost:8080/getThirdCategory', {params: {id: id}})
+                    .then((resp) => {
+                        console.log(resp.data);
+                        this.theThird = resp.data;
+                    });
+            },
+            initLogin() {
+                let token=localStorage.getItem("token");
+                axios.get('http://localhost:8080/getUser', {params: {token: token}})
+                    .then((resp) => {
+                        console.log(resp.data);
+                        this.user.username=resp.data.userName
+                        this.user.id=resp.data.id
+                    });
+            },
+            initCat() {
+                let token=localStorage.getItem("token");
+                axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
+                    .then((resp) => {
+                        console.log(resp.data);
+                        this.products=resp.data
+                        let sum = 0;
+                        let num=0;
+                        this.productLength=this.products.length
+                        for (let i = 0; i < this.products.length; i++) {
+                            sum += this.products[i].price*this.products[i].count;
+                            num+=this.products[i].count
+                            this.totalPrice=sum;
+                            this.totalCount=num;
+                        }
 
                      });
              },
@@ -879,28 +883,29 @@
                 this.cat.productId = this.product.id
                 this.cat.userId = this.user.id
                 this.cat.price = this.cat.count * this.product.price;
+                this.cat.count = this.productNum
                  axios.post('http://localhost:8080/addCats',this.cat )
                      .then((resp) => {
                          console.log(resp.data);
                          if (resp.data.code===200){
                              this.isBounce=true;
+                             this.initCat();
                          }
                     });
              },
 
              isSubmit(){
                  window.location.href = "BuyCar_Two.html?ids=" + encodeURIComponent(JSON.stringify(this.ids)) + "&recommendNum=" + this.recommendNum;
-
-             },
-             logout() {
-                 let token=localStorage.getItem("token");
-                 localStorage.removeItem("token");
-                 axios.get('http://localhost:8080/logout', {params: {token: token}})
-                     .then((resp) => {
-                         console.log(resp.data);
-                         window.location.href="index.html"
-                     });
-             },
+            },
+            logout() {
+                let token=localStorage.getItem("token");
+                localStorage.removeItem("token");
+                axios.get('http://localhost:8080/logout', {params: {token: token}})
+                    .then((resp) => {
+                        console.log(resp.data);
+                        window.location.href="index.html"
+                    });
+            },
         }
     })
 </script>

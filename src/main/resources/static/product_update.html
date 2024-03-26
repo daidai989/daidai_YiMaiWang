@@ -189,9 +189,8 @@
                 <div class="left_n">管理中心</div>
                 <div class="left_m">
                     <div class="left_m_t t_bg1">订单中心</div>
-
                     <ul>
-                        <li><a href="order.html">我的订单</a></li>
+                        <li><a href="userOrder.html">我的订单</a></li>
                         <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="order.html">全部订单</a></li>
                         <li><a href="Member_Address.html">地址管理</a></li>
                         <li><a href="Member_Collect.html">我的收藏</a></li>
@@ -201,20 +200,21 @@
                     <div class="left_m_t t_bg2">用户中心</div>
                     <ul>
                         <li><a href="User_detail.html">用户信息</a></li>
-                        <li><a href="Member_Member.html">用户列表</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="Member_Member.html">用户列表</a></li>
                     </ul>
                 </div>
-                <div class="left_m">
+                <div class="left_m"  v-if="$data.user.roleId===1||$data.user.roleId===2">
                     <div class="left_m_t t_bg3">商品管理</div>
                     <ul>
-                        <li><a href="Category.html">分类管理</a></li>
-                        <li><a href="Member_Product.html" class="now">商品管理</a></li>
+                        <li><a href="Category.html"分类管理</a></li>
+                        <li><a href="Member_Product.html" class="now">>商品管理</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg4" >咨询管理</div>
+                    <div class="left_m_t t_bg4">咨询管理</div>
                     <ul>
-                        <li><a href="news.html">咨询列表</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="news.html">咨询列表</a></li>
+                        <li><a href="user_news.html">所有咨询</a></li>
                     </ul>
                 </div>
             </div>
@@ -270,7 +270,7 @@
                                 </el-upload>
                                 <el-image
                                         style="width: 100px; height: 100px;"
-                                        :src="`/getImage?filePath=${productsOptions.filePath}`"
+                                        :src="showImage(productsOptions.filePath)"
                                         fit="contain"
                                 ></el-image>
 
@@ -373,6 +373,7 @@
     </div>
 </div>
 </body>
+<script type="text/javascript" src="js/request.js"></script>
 <script type="text/javascript">
     new Vue({
         el: '#app12',
@@ -389,8 +390,8 @@
                     .then((resp) => {
                         if (!value) {
                             callback(new Error("请输入名字"));
-                        }else if (resp.data.code !== 200) {
-                            const id1 = parseInt(resp.data.data.id);
+                        }else if (resp.code !== 200) {
+                            const id1 = parseInt(resp.data.id);
                             const id2 = parseInt(this.productsOptions.id);
                             if (id1 === id2) {
                                 callback();
@@ -452,14 +453,17 @@
 
         },
         methods: {
+            showImage(filePath){
+                return 'http://localhost:8080/getImage' + filePath
+            },
             initLogin() {
                 let token=localStorage.getItem("token");
                 axios.get('http://localhost:8080/getUser', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.user.username=resp.data.data.userName
-                        this.user.id=resp.data.data.id
-                        this.productsOptions.userId=resp.data.data.id
+                        this.user.username=resp.data.userName
+                        this.user.id=resp.data.id
+                        this.productsOptions.userId=resp.data.id
                     });
             },
             initCat() {
@@ -467,7 +471,7 @@
                 axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.products=resp.data.data
+                        this.products=resp.data
                         let sum = 0;
                         this.productLength=this.products.length
                         for (let i = 0; i < this.products.length; i++) {
@@ -483,19 +487,19 @@
                 axios.get('http://localhost:8080/getProductById', {params: {id: id}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.productsOptions.name=resp.data.data.name
-                        this.productsOptions.description=resp.data.data.description
-                        this.productsOptions.stock=resp.data.data.stock
-                        this.productsOptions.price=resp.data.data.price
-                        this.productsOptions.brandId=resp.data.data.brandId
-                        this.productsOptions.categoryLevelId=resp.data.data.categoryLevelId
+                        this.productsOptions.name=resp.data.name
+                        this.productsOptions.description=resp.data.description
+                        this.productsOptions.stock=resp.data.stock
+                        this.productsOptions.price=resp.data.price
+                        this.productsOptions.brandId=resp.data.brandId
+                        this.productsOptions.categoryLevelId=resp.data.categoryLevelId
                     });
             },
             initBrand() {
                 axios.get('http://localhost:8080/getBrand')
                     .then((resp) => {
                         console.log(resp.data);
-                        this.brandOptions=resp.data.data
+                        this.brandOptions=resp.data
 
                     });
             },
@@ -508,7 +512,7 @@
                 axios.get('http://localhost:8080/getAllCategory')
                     .then((resp) => {
                         console.log(resp.data);
-                        this.theFirst = resp.data.data.map(item => ({
+                        this.theFirst = resp.data.map(item => ({
                             value: item.id,
                             label: item.name,
                             children:item.childCategory?item.childCategory.map(child=>({
@@ -557,7 +561,7 @@
                         axios
                             .post("/addProduct", this.productsOptions)
                             .then((resp) => {
-                                if (resp.data.code === 200) {
+                                if (resp.code === 200) {
                                     window.location.href="Member_Product.html"
                                 }
                             })
@@ -572,9 +576,17 @@
             onFieldBlur(field) {
                 this.$refs.productsForm.validateField(field);
             },
+            checkRoled() {
+                let token=localStorage.getItem("token");
+                axios.get('http://localhost:8080/checkRoled', {params: {token: token}})
+                    .then((resp) => {
+
+                    });
+            },
 
         },
         mounted() {
+            this.checkRoled()
             this.initProduct()
             this.initLogin()
             this.initCat()

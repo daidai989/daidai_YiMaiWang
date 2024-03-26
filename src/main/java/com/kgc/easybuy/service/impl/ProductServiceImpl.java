@@ -179,15 +179,20 @@ public class  ProductServiceImpl implements ProductService {
 
     @Override
     public ResponseMessage updateProduct(Product products) {
+        Product productById = productMapper.getProductById(products.getId());
+        products.setBrandName(productById.getBrandName());
+        products.setCategoryName(productById.getCategoryName());
+        products.setCreateTime(productById.getCreateTime());
         boolean b = productMapper.updateProduct(products);
-
+        Product save = per.save(products);
         if (b) {
             Date date=new Date();
             products.setCreateTime(date);
-            Product save = per.save(products);
+
             return ResponseMessage.success(save);
         }
         return ResponseMessage.error("修改失败");
+
     }
 
     @Override

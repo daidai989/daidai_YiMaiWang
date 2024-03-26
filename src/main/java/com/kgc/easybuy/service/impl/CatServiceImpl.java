@@ -6,6 +6,7 @@ import com.kgc.easybuy.pojo.Collect;
 import com.kgc.easybuy.pojo.Product;
 import com.kgc.easybuy.pojo.ResponseMessage;
 import com.kgc.easybuy.service.CatService;
+import com.kgc.easybuy.util.EncodingUtil;
 import com.kgc.easybuy.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,8 @@ public class CatServiceImpl implements CatService {
         Map<String, Object> map = JwtUtil.parseToken(token);
         Integer userId = (Integer) map.get("id");
         List<Product> productsById = catMapper.getProductsById(userId);
-        return ResponseMessage.success(productsById);
+        List<Product> encoding = EncodingUtil.encoding(productsById);
+        return ResponseMessage.success(encoding);
     }
 
     @Override

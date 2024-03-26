@@ -18,4 +18,10 @@ public class HistoryController {
         ResponseMessage responseMessage = historyService.addProductHistory(history);
         return responseMessage;
     }
+
+    @RequestMapping("cleanHistory")
+    public ResponseMessage cleanHistory(History history){
+        ResponseMessage responseMessage = historyService.cleanHistory(history.getUserId());
+        return responseMessage;
+    }
 }

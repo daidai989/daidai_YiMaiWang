@@ -4,12 +4,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link type="text/css" rel="stylesheet" href="css/style.css" />
     <link type="text/css" rel="stylesheet" href="css/antd.css">
+    <link rel="stylesheet" href="css/element.css">
     <!--[if IE 6]>
     <script src="js/iepng.js" type="text/javascript"></script>
     <script type="text/javascript">
         EvPNG.fix('div, ul, img, li, input, a');
     </script>
     <![endif]-->
+
 
     <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
@@ -18,17 +20,13 @@
     <script src="js/vue.js"></script>
     <script src="js/axios.js"></script>
     <script src="js/antd.js"></script>
-    <style>
-        .ant-table tr:nth-child(4) td:nth-child(3) {
-            overflow: auto;
-            max-width: 0px;
-        }
-    </style>
+    <script src="js/element.js"></script>
+
 
     <title>尤洪</title>
 </head>
 <body>
-<div id="app7">
+<div id="app20">
     <!--Begin Header Begin-->
     <div class="soubg">
         <div class="sou">
@@ -109,7 +107,7 @@
         </span>
             <!--End 所在收货地区 End-->
             <span class="fr">
-        	<span class="fl">你好，{{$data.user.username ?  $data.user.username : '请登录'}}&nbsp;<a v-if="!$data.user.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.user.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
+        	<span class="fl">你好，{{$data.user.username ?  $data.user.username : '请登录'}}&nbsp;<a v-if="!$data.user.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.user.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="register.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
                     href="#">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
@@ -164,18 +162,13 @@
                 <div class="car_bg">
                     <!--Begin 购物车未登录 Begin-->
                     <ul v-if="$data.user.username" class="cars">
-                        <div v-if="$data.productLength">
-                            <li v-for="(item, index) in products" :key="index" >
-                                <div class="img"><a href="#"><img height="58" :src="'/getImage?filePath=' + item.filePath" width="58"/></a></div>
-                                <div class="name"><a href="#">{{item.name}}</a></div>
-                                <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
-                            </li>
-                            <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
-                            <div class="price_a"><a href="BuyCar.html">去购物车结算</a></div>
-                        </div>
-                        <div v-else class="un_login">
-                            购物车暂无东西
-                        </div>
+                        <li v-for="(item, index) in products" :key="index" >
+                            <div class="img"><a href="#"><img height="58" :src="'http://localhost:8080/getImage?filePath=' + item.filePath" width="58"/></a></div>
+                            <div class="name"><a href="#">{{item.name}}</a></div>
+                            <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
+                        </li>
+                        <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
+                        <div class="price_a"><a href="BuyCar.html">去购物车结算</a></div>
                     </ul>
                     <div v-else class="un_login">
                         还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！
@@ -195,9 +188,10 @@
                 <div class="left_n">管理中心</div>
                 <div class="left_m">
                     <div class="left_m_t t_bg1">订单中心</div>
+
                     <ul>
-                        <li><a href="userOrder.html" class="now">我的订单</a></li>
-                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="order.html">全部订单</a></li>
+                        <li><a href="userOrder.html">我的订单</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2" class="now"><a href="order.html">全部订单</a></li>
                         <li><a href="Member_Address.html">地址管理</a></li>
                         <li><a href="Member_Collect.html">我的收藏</a></li>
                     </ul>
@@ -217,9 +211,9 @@
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg4">咨询管理</div>
+                    <div class="left_m_t t_bg4" >咨询管理</div>
                     <ul>
-                        <li v-if="$data.user.roleId===1||$data.user.roleId===2" class="now"><a href="news.html">咨询列表</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="news.html">咨询列表</a></li>
                         <li><a href="user_news.html">所有咨询</a></li>
                     </ul>
                 </div>
@@ -229,23 +223,30 @@
                 <div class="mem_tit">商品管理</div>
                 <div class="m_search" style="margin-left: 20px;margin-top: -6px;">
                     <div style="display: flex; justify-content: center;">
-                        <a-input type="text" v-model="title" placeholder="新闻名"></a-input>
-                        <a-button type="primary" @click="viewNewsList(1)">查询</a-button>
-                        <a href="news_add.html"><a-button type="primary">添加新闻</a-button></a>
+                        <a-input type="text" v-model="orderNumber" placeholder="商品名字"></a-input>
+                        <a-button type="primary" @click="viewOrderList(1)">查询</a-button>
+
                     </div>
+
+
                 </div>
                 <a-table
                         :columns="columns"
-                        :data-source="AllNews"
+                        :data-source="AllOrders_detail"
                         row-key="id"
                         :pagination="pagination"
                         @change="handleTableChange"
                 >
-                    <div slot="action" slot-scope="text, record">
-                        <span><a :href="'news_update.html?id=' + record.id">修改</a></span>
-                        <span><a @click="delNews(record.id)">删除</a></span>
+                    <div slot="image" slot-scope="text, record">
+                        <img :src="showImages(record.filePath)" alt="Order Image" style="max-width: 100px; max-height: 100px;">
                     </div>
+                    <div slot="action" slot-scope="text, record">
+                        <a @click="delOrder_detail(record.id)">删除</a>
+                    </div>
+
+
                 </a-table>
+
             </div>
             <!--End 用户中心 End-->
             <!--Begin Footer Begin -->
@@ -336,22 +337,29 @@
 <script type="text/javascript" src="js/request.js"></script>
 <script type="text/javascript">
     new Vue({
-        el: '#app7',
+        el: '#app20',
         data:{
-            title:"",
+            orderNumber:"",
             columns: [
-                { title: "序号", dataIndex: "index", key: "index" },
-                { title: "标题", dataIndex: "title", key: "title" },
-                { title: "内容", dataIndex: "content", key: "content", class: "scrollable-cell" },
-                { title: "简言", dataIndex: "shortTitle", key: "shortTitle" },
-                { title: "上架时间", dataIndex: "createTime", key: "createTime" },
+                { title: "订单号", dataIndex: "serialNumber", key: "serialNumber" },
+
+
+                { title: "名字", dataIndex: "name", key: "name" },
+                { title: "销量", dataIndex: "count", key: "count" },
+                { title: "总消费", dataIndex: "cost", key: "cost"},
+                { title: "下单时间", dataIndex: "createTime", key: "createTime" },
+                {
+                    title: '图片',
+                    dataIndex: 'filePath',
+                    scopedSlots: { customRender: 'image' }
+                },
                 {
                     title: "操作",
                     key: "action",
                     scopedSlots: { customRender: "action" },
                 },
             ],
-            AllNews: [],
+            AllOrders_detail: [],
             pagination: {
                 showQuickJumper: true,
                 showTotal: (total, range) => {
@@ -373,23 +381,28 @@
         methods: {
             handleTableChange(pagination, filters, sorter) {
                 this.pagination = pagination;
-                this.viewNewsList(pagination.current)
+                this.viewOrderList(pagination.current)
             },
             initLogin() {
                 let token=localStorage.getItem("token");
                 axios.get('http://localhost:8080/getUser', {params: {token: token}})
                     .then((resp) => {
-                        console.log(resp.data);
                         this.user.username=resp.data.userName
                         this.user.id=resp.data.id
                         this.user.roleId=resp.data.roleId
+                        this.viewOrderList(1)
                     });
             },
-            initCat() {
+
+            showImages(filePath){
+                if (filePath!=='') {
+                    return 'http://localhost:8080/getImage?filePath='+ filePath
+                }
+            },
+            async initCat() {
                 let token=localStorage.getItem("token");
-                axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
+                await axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
                     .then((resp) => {
-                        console.log(resp.data);
                         this.products=resp.data
                         let sum = 0;
                         this.productLength=this.products.length
@@ -400,33 +413,48 @@
 
                     });
             },
-            viewNewsList(currentNo) {
-                axios.get('http://localhost:8080/getNewsListByPage',{params:{
+            async viewOrderList(currentNo) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const id = urlParams.get('id');
+                console.log(id)
+                await axios.get('http://localhost:8080/getOrder_tailListByPage',{params:{
                         currentNo:currentNo,
-                        title:this.title,
+                        name:this.orderNumber,
+                        orderId:id
                     }})
                     .then((resp) => {
-                        console.log(resp.data)
-                        const pageSize = resp.pageSize;
-                        const startIndex = (currentNo - 1) * pageSize + 1;
-                        resp.list.forEach((news, index) => {
-                            news.index = startIndex + index;
-                        });
-                        this.AllNews = resp.list;
+                        console.log(resp)
+                        this.AllOrders_detail = resp.list;
                         this.pagination.current = resp.pageNum;
                         this.pagination.total = resp.total;
                         this.pagination.pageSize = resp.pageSize;
+
                     });
             },
-            delNews(id) {
-                if (!confirm("是否删除这个新闻")){
+
+            delOrder_detail(id) {
+                if (!confirm("是否删除这个订单信息")){
                     return
                 }
-                axios.get('http://localhost:8080/delNews', {params: {id: id}})
+                axios.get('http://localhost:8080/delOrder_detail', {params: {id: id}})
                     .then((resp) => {
                         console.log(resp.data);
-                        this.viewNewsList(1)
+                        this.viewOrderList(1)
 
+                    });
+            },
+
+
+
+
+
+            logout() {
+                let token=localStorage.getItem("token");
+                localStorage.removeItem("token");
+                axios.get('http://localhost:8080/logout', {params: {token: token}})
+                    .then((resp) => {
+                        console.log(resp.data);
+                        window.location.href="index.html"
                     });
             },
             checkRoled() {
@@ -436,13 +464,16 @@
 
                     });
             },
+
         },
+
         mounted() {
             this.checkRoled()
             this.initLogin()
             this.initCat()
-            this.viewNewsList(1)
-        }
+
+        },
+
     })
 </script>
 

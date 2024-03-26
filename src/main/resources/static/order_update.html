@@ -204,9 +204,9 @@
             <div class="left_m_t t_bg1">订单中心</div>
 
             <ul>
-              <li><a href="user_order.html">我的订单</a></li>
+              <li><a href="userOrder.html">我的订单</a></li>
               <li v-if="$data.user.roleId===1||$data.user.roleId===2" class="now"><a href="order.html">全部订单</a></li>
-              <li><a href="member/Member_Address.html">地址管理</a></li>
+              <li><a href="Member_Address.html">地址管理</a></li>
               <li><a href="Member_Collect.html">我的收藏</a></li>
             </ul>
           </div>
@@ -214,20 +214,21 @@
             <div class="left_m_t t_bg2">用户中心</div>
             <ul>
               <li><a href="User_detail.html">用户信息</a></li>
-              <li><a href="Member_Member.html">用户列表</a></li>
+              <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="Member_Member.html">用户列表</a></li>
             </ul>
           </div>
-          <div class="left_m">
+          <div class="left_m"  v-if="$data.user.roleId===1||$data.user.roleId===2">
             <div class="left_m_t t_bg3">商品管理</div>
             <ul>
-              <li><a href="category/Category.html">分类管理</a></li>
+              <li><a href="Category.html">分类管理</a></li>
               <li><a href="Member_Product.html">商品管理</a></li>
             </ul>
           </div>
           <div class="left_m">
             <div class="left_m_t t_bg4" >咨询管理</div>
             <ul>
-              <li><a href="news.html">咨询列表</a></li>
+              <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="news.html">咨询列表</a></li>
+              <li><a href="user_news.html">所有咨询</a></li>
             </ul>
           </div>
         </div>
@@ -368,6 +369,7 @@
 <![endif]-->
 
 </html>
+<script type="text/javascript" src="js/request.js"></script>
 <script>
   new Vue({
     el: "#root12",
@@ -426,7 +428,7 @@
         }
       }).then((result) => {
         console.log(result.data);
-        const tempList = result.data.data.userAddress.split('/');
+        const tempList = result.data.userAddress.split('/');
         var addList = [];
         for (let i = 0; i < tempList.length; i++) {
           if (i < 3) {
@@ -436,8 +438,8 @@
           }
         }
         this.order.addressList = addList;
-        this.order.serialNumber = result.data.data.serialNumber;
-        this.order.cost = result.data.data.cost * 1;
+        this.order.serialNumber = result.data.serialNumber;
+        this.order.cost = result.data.cost * 1;
       });
     },
     methods: {
@@ -454,7 +456,7 @@
               }
             }).then((result) => {
               console.log(result.data);
-              if (result.data.code == 200) {
+              if (result.code == 200) {
                 alert("修改成功!")
                 window.location.href = "order.html"
               }
@@ -477,9 +479,9 @@
         axios.get('http://localhost:8080/getUser', { params: { token: token } })
           .then((resp) => {
             console.log(resp.data);
-            this.user.username = resp.data.data.userName
-            this.user.id = resp.data.data.id
-            this.user.roleId = resp.data.data.roleId
+            this.user.username = resp.data.userName
+            this.user.id = resp.data.id
+            this.user.roleId = resp.data.roleId
           });
       },
       initCat() {
@@ -487,7 +489,7 @@
         axios.get('http://localhost:8080/getAllCats', { params: { token: token } })
           .then((resp) => {
             console.log(resp.data);
-            this.products = resp.data.data
+            this.products = resp.data
             let sum = 0;
             let num = 0;
             this.productLength = this.products.length

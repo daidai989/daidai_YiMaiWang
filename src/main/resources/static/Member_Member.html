@@ -24,10 +24,10 @@
 <body>  
 <div id="root8">
     <!--Begin Header Begin-->
-<div class="soubg">
-	<div class="sou">
-    	<!--Begin 所在收货地区 Begin-->
-    	<span class="s_city_b">
+    <div class="soubg">
+        <div class="sou">
+            <!--Begin 所在收货地区 Begin-->
+            <span class="s_city_b">
         	<span class="fl">送货至：</span>
             <span class="s_city">
             	<span>四川</span>
@@ -101,9 +101,10 @@
                 </div>
             </span>
         </span>
-        <!--End 所在收货地区 End-->
-        <span class="fr">
-        	<span class="fl">你好，请<a href="Login.html">登录</a>&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a href="#">我的订单</a>&nbsp;|</span>
+            <!--End 所在收货地区 End-->
+            <span class="fr">
+        	<span class="fl">你好，{{$data.user.username ?  $data.user.username : '请登录'}}&nbsp;<a v-if="!$data.user.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.user.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="register.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
+                    href="#">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
                 	<a href="#">收藏夹</a>
@@ -115,7 +116,7 @@
                                 <li><a href="#">我的收藏夹</a></li>
                             </ul>
                         </div>
-                    </div>     
+                    </div>
                 </div>
                 <div class="ss_list">
                 	<a href="#">客户服务</a>
@@ -128,7 +129,7 @@
                                 <li><a href="#">客户服务</a></li>
                             </ul>
                         </div>
-                    </div>    
+                    </div>
                 </div>
                 <div class="ss_list">
                 	<a href="#">网站导航</a>
@@ -140,56 +141,41 @@
                                 <li><a href="#">网站导航</a></li>
                             </ul>
                         </div>
-                    </div>    
+                    </div>
                 </div>
             </span>
             <span class="fl">|&nbsp;关注我们：</span>
             <span class="s_sh"><a href="#" class="sh1">新浪</a><a href="#" class="sh2">微信</a></span>
             <span class="fr">|&nbsp;<a href="#">手机版&nbsp;<img src="images/s_tel.png" align="absmiddle" /></a></span>
         </span>
-    </div>
-</div>
-<div class="m_top_bg">
-    <div class="top">
-        <div class="m_logo"><a href="Index.html"><img src="images/logo1.png" /></a></div>
-        <div class="m_search">
-            <form>
-                <input type="text" value="" class="m_ipt" />
-                <input type="submit" value="搜索" class="m_btn" />
-            </form>                      
-            <span class="fl"><a href="#">咖啡</a><a href="#">iphone 6S</a><a href="#">新鲜美食</a><a href="#">蛋糕</a><a href="#">日用品</a><a href="#">连衣裙</a></span>
         </div>
-        <div class="i_car">
-            <div class="car_t">购物车 [ <span>3</span> ]</div>
-            <div class="car_bg">
-                <!--Begin 购物车未登录 Begin-->
-                <div class="un_login">还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！</div>
-                <!--End 购物车未登录 End-->
-                <!--Begin 购物车已登录 Begin-->
-                <ul class="cars">
-                    <li>
-                        <div class="img"><a href="#"><img src="images/car1.jpg" width="58" height="58" /></a></div>
-                        <div class="name"><a href="#">法颂浪漫梦境50ML 香水女士持久清新淡香 送2ML小样3只</a></div>
-                        <div class="price"><font color="#ff4e00">￥399</font> X1</div>
-                    </li>
-                    <li>
-                        <div class="img"><a href="#"><img src="images/car2.jpg" width="58" height="58" /></a></div>
-                        <div class="name"><a href="#">香奈儿（Chanel）邂逅活力淡香水50ml</a></div>
-                        <div class="price"><font color="#ff4e00">￥399</font> X1</div>
-                    </li>
-                    <li>
-                        <div class="img"><a href="#"><img src="images/car2.jpg" width="58" height="58" /></a></div>
-                        <div class="name"><a href="#">香奈儿（Chanel）邂逅活力淡香水50ml</a></div>
-                        <div class="price"><font color="#ff4e00">￥399</font> X1</div>
-                    </li>
-                </ul>
-                <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>1058</span></div>
-                <div class="price_a"><a href="#">去购物车结算</a></div>
-                <!--End 购物车已登录 End-->
+    </div>
+    <div class="m_top_bg">
+        <div class="top">
+            <div class="m_logo"><a href="Index.html"><img src="images/logo1.png" /></a></div>
+            <div class="i_car">
+                <div class="car_t">购物车 [ <span>{{productLength}}</span> ]</div>
+                <div class="car_bg">
+                    <!--Begin 购物车未登录 Begin-->
+                    <ul v-if="$data.user.username" class="cars">
+                        <li v-for="(item, index) in products" :key="index" >
+                            <div class="img"><a href="#"><img height="58" :src="'http://localhost:8080/getImage?filePath=' + item.filePath" width="58"/></a></div>
+                            <div class="name"><a href="#">{{item.name}}</a></div>
+                            <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
+                        </li>
+                        <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
+                        <div class="price_a"><a href="BuyCar.html">去购物车结算</a></div>
+                    </ul>
+                    <div v-else class="un_login">
+                        还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！
+
+                    </div>
+
+                    <!--End 购物车已登录 End-->
+                </div>
             </div>
         </div>
     </div>
-</div>
 <!--End Header End--> 
 <div class="i_bg bg_color">
     <!--Begin 用户中心 Begin -->
@@ -202,7 +188,7 @@
                 <ul>
                     <li><a href="order.html">我的订单</a></li>
                     <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="order.html">全部订单</a></li>
-                    <li><a href="member/Member_Address.html">地址管理</a></li>
+                    <li><a href="Member_Address.html">地址管理</a></li>
                     <li><a href="Member_Collect.html">我的收藏</a></li>
                 </ul>
             </div>
@@ -210,10 +196,10 @@
                 <div class="left_m_t t_bg2">用户中心</div>
                 <ul>
                     <li><a href="User_detail.html">用户信息</a></li>
-                    <li><a href="Member_Member.html" class="now">用户列表</a></li>
+                    <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="Member_Member.html">用户列表</a></li>
                 </ul>
             </div>
-            <div class="left_m">
+            <div class="left_m"  v-if="$data.user.roleId===1||$data.user.roleId===2">
                 <div class="left_m_t t_bg3">商品管理</div>
                 <ul>
                     <li><a href="Category.html">分类管理</a></li>
@@ -221,10 +207,11 @@
                 </ul>
             </div>
             <div class="left_m">
-                <div class="left_m_t t_bg4">咨询管理</div>
-                <ul>
-                    <li><a href="news.html">咨询列表</a></li>
-                </ul>
+               <div class="left_m_t t_bg4">咨询管理</div>
+                    <ul>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="news.html">咨询列表</a></li>
+                        <li><a href="user_news.html">所有咨询</a></li>
+                    </ul>
             </div>
         </div>
 		<div class="m_right">
@@ -235,9 +222,9 @@
             <div class="address">
                 登录名: <el-input style="width: 200px;"  v-model="loginName"></el-input>
                 性别： <el-select v-model="sex" placeholder="请选择">
-                <el-option value="0" label="全部"></el-option>
-                <el-option value="1" label="男"></el-option>
-                <el-option value="2" label="女"></el-option>
+                <el-option :value="0" label="全部"></el-option>
+                <el-option :value="1" label="男"></el-option>
+                <el-option :value="2" label="女"></el-option>
             </el-select>
                 <el-button @click="select" type="primary" size="small">查询</el-button>
                 <el-button @click="add" type="primary" size="small">添加用户</el-button>
@@ -379,7 +366,7 @@
     <!--End Footer End -->    
 </div>
 </div>
-
+</div>
 </body>
 
 
@@ -387,6 +374,7 @@
 <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
 <![endif]-->
 </html>
+<script type="text/javascript" src="js/request.js"></script>
 <script>
     new Vue({
         el:"#root8",
@@ -395,29 +383,48 @@
                 page:[],
                 sex:0,
                 loginName:'',
-                currentUser:{}
+                productLength:"",
+                totalPrice:"",
+                user:{
+                    username:"",
+                    id:null,
+                    roleId:null,
+                },
+                products:[],
             }
         },
         async mounted() {
-             var token = localStorage.getItem("token");
-             await this.getToken(token);
-            this. getUserList(1,5);
+            await this.initLogin()
+            this.initCat()
+            this.getUserList(1,5);
         },
         methods: {
-            async getToken(token){
-                await axios.get('http://localhost:8080/getUser',{
-                    params:{
-                        token:token
-                    }
-                }).then((result) => {
-                    console.log(result);
-                    this.currentUser = result.data.data
-                });
+           async initLogin() {
+                let token=localStorage.getItem("token");
+               await axios.get('http://localhost:8080/getUser', {params: {token: token}})
+                    .then((resp) => {
+                        this.user.username=resp.data.userName
+                        this.user.id=resp.data.id
+                        this.user.roleId=resp.data.roleId
+                    });
+            },
+            async initCat() {
+                let token=localStorage.getItem("token");
+                await axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
+                    .then((resp) => {
+                        this.products=resp.data
+                        let sum = 0;
+                        this.productLength=this.products.length
+                        for (let i = 0; i < this.products.length; i++) {
+                            sum += this.products[i].price*this.products[i].count;
+                            this.totalPrice=sum;
+                        }
+                    });
             },
             getUserList(currentPageNo,pageSize){
-                axios.get('http://localhost:8080//getUserList',{
+                axios.get('http://localhost:8080/getUserList',{
                 params:{
-                    roleId:this.currentUser.roleId,
+                    roleId:this.user.roleId,
                     sex:this.sex,
                     loginName:this.loginName,
                     currentPageNo:currentPageNo,
@@ -425,7 +432,7 @@
                 }
                 }).then((result) => {
                 console.log(result.data)
-                this.page = result.data.data
+                this.page = result.data
                 });
             },
             handleCurrentChange(pageNum) {
@@ -443,7 +450,7 @@
                         }
                     }).then((result) => {
                         console.log(result.data);
-                        if(result.data.code == 200){
+                        if(result.code == 200){
                             alert("删除成功!");
                             this. getUserList(this.page.pageNum,this.page.pageSize);
                         }
@@ -455,6 +462,15 @@
             },
             select(){
                 this.getUserList(this.page.pageNum,this.page.pageSize)
+            },
+            logout() {
+                let token=localStorage.getItem("token");
+                localStorage.removeItem("token");
+                axios.get('http://localhost:8080/logout', {params: {token: token}})
+                    .then((resp) => {
+                        console.log(resp.data);
+                        window.location.href="index.html"
+                    });
             },
         }
     })

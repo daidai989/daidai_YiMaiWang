@@ -103,7 +103,8 @@
         </span>
             <!--End 所在收货地区 End-->
             <span class="fr">
-        	<span class="fl">你好，请<a href="Login.html">登录</a>&nbsp; <a href="Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a href="#">我的订单</a>&nbsp;|</span>
+        	<span class="fl">你好，{{$data.user.username ?  $data.user.username : '请登录'}}&nbsp;<a v-if="!$data.user.username" href="Login.html">登录</a>&nbsp;&nbsp;<a v-if="$data.user.username" href="javascript:void(0)" @click="logout()">注销</a>&nbsp;&nbsp; <a href="register.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
+                    href="#">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
                 	<a href="#">收藏夹</a>
@@ -151,40 +152,25 @@
     </div>
     <div class="m_top_bg">
         <div class="top">
-            <div class="m_logo"><a href="../Index.html"><img src="images/logo1.png" /></a></div>
-            <div class="m_search">
-                <form>
-                    <input type="text" value="" class="m_ipt" />
-                    <input type="submit" value="搜索" class="m_btn" />
-                </form>
-                <span class="fl"><a href="#">咖啡</a><a href="#">iphone 6S</a><a href="#">新鲜美食</a><a href="#">蛋糕</a><a href="#">日用品</a><a href="#">连衣裙</a></span>
-            </div>
+            <div class="m_logo"><a href="Index.html"><img src="images/logo1.png" /></a></div>
             <div class="i_car">
-                <div class="car_t">购物车 [ <span>3</span> ]</div>
+                <div class="car_t">购物车 [ <span>{{productLength}}</span> ]</div>
                 <div class="car_bg">
                     <!--Begin 购物车未登录 Begin-->
-                    <div class="un_login">还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！</div>
-                    <!--End 购物车未登录 End-->
-                    <!--Begin 购物车已登录 Begin-->
-                    <ul class="cars">
-                        <li>
-                            <div class="img"><a href="#"><img src="images/car1.jpg" width="58" height="58" /></a></div>
-                            <div class="name"><a href="#">法颂浪漫梦境50ML 香水女士持久清新淡香 送2ML小样3只</a></div>
-                            <div class="price"><font color="#ff4e00">￥399</font> X1</div>
+                    <ul v-if="$data.user.username" class="cars">
+                        <li v-for="(item, index) in products" :key="index" >
+                            <div class="img"><a href="#"><img height="58" :src="'http://localhost:8080/getImage?filePath=' + item.filePath" width="58"/></a></div>
+                            <div class="name"><a href="#">{{item.name}}</a></div>
+                            <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
                         </li>
-                        <li>
-                            <div class="img"><a href="#"><img src="images/car2.jpg" width="58" height="58" /></a></div>
-                            <div class="name"><a href="#">香奈儿（Chanel）邂逅活力淡香水50ml</a></div>
-                            <div class="price"><font color="#ff4e00">￥399</font> X1</div>
-                        </li>
-                        <li>
-                            <div class="img"><a href="#"><img src="images/car2.jpg" width="58" height="58" /></a></div>
-                            <div class="name"><a href="#">香奈儿（Chanel）邂逅活力淡香水50ml</a></div>
-                            <div class="price"><font color="#ff4e00">￥399</font> X1</div>
-                        </li>
+                        <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
+                        <div class="price_a"><a href="BuyCar.html">去购物车结算</a></div>
                     </ul>
-                    <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>1058</span></div>
-                    <div class="price_a"><a href="#">去购物车结算</a></div>
+                    <div v-else class="un_login">
+                        还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！
+
+                    </div>
+
                     <!--End 购物车已登录 End-->
                 </div>
             </div>
@@ -199,36 +185,31 @@
                 <div class="left_m">
                     <div class="left_m_t t_bg1">订单中心</div>
                     <ul>
-                        <li><a href="Member_Order.html">我的订单</a></li>
-                        <li><a href="Member_Address.html">收货地址</a></li>
-                        <li><a href="#">缺货登记</a></li>
-                        <li><a href="#">跟踪订单</a></li>
-                    </ul>
-                </div>
-                <div class="left_m">
-                    <div class="left_m_t t_bg2">会员中心</div>
-                    <ul>
-                        <li><a href="Member_User.html">用户信息</a></li>
+                        <li><a href="userOrder.html">我的订单</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="order.html">全部订单</a></li>
+                        <li><a href="Member_Address.html">地址管理</a></li>
                         <li><a href="Member_Collect.html">我的收藏</a></li>
-                        <li><a href="Member_Msg.html">我的留言</a></li>
-                        <li><a href="Member_Links.html">推广链接</a></li>
-                        <li><a href="#">我的评论</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg4">商品管理</div>
+                    <div class="left_m_t t_bg2">用户中心</div>
                     <ul>
-                        <li><a href="Member_Category.html" class="now">分类管理</a></li>
-                        <li><a href="Member_Results.html">商品管理</a></li>
-                        <li><a href="Member_Cash.html">商品上架</a></li>
+                        <li><a href="User_detail.html">用户信息</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="Member_Member.html">用户列表</a></li>
+                    </ul>
+                </div>
+                <div class="left_m"  v-if="$data.user.roleId===1||$data.user.roleId===2">
+                    <div class="left_m_t t_bg3">商品管理</div>
+                    <ul>
+                        <li><a href="Category.html" class="now">分类管理</a></li>
+                        <li><a href="Member_Product.html">商品管理</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg3">账户中心</div>
+                    <div class="left_m_t t_bg4">咨询管理</div>
                     <ul>
-                        <li><a href="Member_Safe.html">账户安全</a></li>
-                        <li><a href="Member_Packet.html">我的红包</a></li>
-                        <li><a href="Member_Money.html">资金管理</a></li>
+                        <li v-if="$data.user.roleId===1||$data.user.roleId===2"><a href="news.html">咨询列表</a></li>
+                        <li><a href="user_news.html">所有咨询</a></li>
                     </ul>
                 </div>
             </div>
@@ -238,11 +219,11 @@
                     <el-form-item style="width: 300px;" label="分类名称：" prop="name">
                       <el-input v-model="category.name"></el-input>
                     </el-form-item>
-                    <el-form-item style="width: 300px;" label="分类等级：" prop="typeName">
-                        <el-input  readonly v-model="typeName"></el-input>
-                    </el-form-item>
                     <el-form-item style="width: 300px;" label="父类名称：" prop="parentName">
                         <el-input  readonly v-model="parentName"></el-input>
+                    </el-form-item>
+                    <el-form-item style="width: 300px;" label="分类等级：" prop="typeName">
+                        <el-input  readonly v-model="typeName"></el-input>
                     </el-form-item>
                     <p></p>
                     <el-form-item style="width: 300px;" label="分类等级" prop="type">
@@ -352,6 +333,7 @@
 </div>
 </body>
 </html>
+<script type="text/javascript" src="js/request.js"></script>
 <script>
     new Vue({
         el:"#root6",
@@ -364,7 +346,7 @@
                         }
                     }).then((result) => {
                         console.log(result.data)
-                        if(result.data.code != 200){
+                        if(result.code != 200){
                             callback(new Error('分类名重复'));
                         }else{
                             callback();
@@ -377,9 +359,11 @@
             }
             var checkType = (rule, value, callback) =>{
                 if(this.category.type == 0){
-                    callback(new Error('请选择你要在哪个分类下添加子分类！'));
+                    callback(new Error('请选择分类的父类！'));
                 }else if(this.category.type >3){
                     callback(new Error('三级分类下不能添加分类！'));
+                }else if (this.category.parentId == this.category.id){
+                    callback("你不能选择自己为父类！");
                 }else{
                     callback();
                 }
@@ -396,12 +380,21 @@
                     type:0,
                     parentId:-1
                 },
+                productLength:"",
+                totalPrice:"",
+                user:{
+                    username:"",
+                    id:null,
+                    roleId:null,
+                },
+                products:[],
                 typeName:'',
                 parentName:'',
                 curName:'',
                 rules:{
                 name:[
                     { required: true, message: '请输入分类名！', trigger: 'blur'},
+                    { min:2, max:6, message: '分类名应该为2-6个字符！', trigger: 'blur'},
                     { validator:checkName,trigger:'blur'}
                 ],
                  typeName:[
@@ -410,7 +403,9 @@
             }
             }
         },
-        mounted(){
+        async mounted(){
+            await this.initLogin()
+            this.initCat()
             const search =  new URLSearchParams(window.location.search);
             const id = search.get("id");
             this.category.id = id;
@@ -425,20 +420,20 @@
                     }
                 }).then((result) =>{
                     console.log(result.data);
-                    if( result.data.data.type == 1 ){
+                    if( result.data.type == 1 ){
                         this.typeName = "一级分类"
                         this.parentName = "无"
-                    }else if(result.data.data.type == 2){
+                    }else if(result.data.type == 2){
                         this.typeName = "二级分类"
-                        this.parentName = result.data.data.parentName
-                    }else if(result.data.data.type == 3){
+                        this.parentName = result.data.parentName
+                    }else if(result.data.type == 3){
                         this.typeName = "三级分类"
-                        this.parentName = result.data.data.parentName
+                        this.parentName = result.data.parentName
                     }
-                    this.category.name = result.data.data.name
-                    this.category.type = result.data.data.type
-                    this.category.parentId = result.data.data.parentId
-                    this.curName = result.data.data.name
+                    this.category.name = result.data.name
+                    this.category.type = result.data.type
+                    this.category.parentId = result.data.parentId
+                    this.curName = result.data.name
                 })
             },
             back(){
@@ -448,7 +443,7 @@
                 this.$refs[formName].validate((valid) => {
                 if (valid) {
                     axios.post('http://localhost:8080/updateCategory',this.category).then((result) => {
-                        if(result.data.code == 200){
+                        if(result.code == 200){
                             alert("修改成功！")
                             window.location.href = "Category.html"
                         }
@@ -469,7 +464,7 @@
                     console.log(result.data);
                     this.categoryList = [{
                         name: '全部分类',
-                        childCategory: result.data.data,
+                        childCategory: result.data,
                         type:0
                     }];
                 });
@@ -479,26 +474,57 @@
                 if( node.type == 0){
                     this.typeName = "一级分类"
                     this.parentName = "无"
-                    this.category.type = 2
+                    this.category.type = 1
                     this.category.parentId = node.id
                 }else if(node.type == 1){
                     this.typeName = "二级分类"
-                    this.category.type = node.type +1;
+                    this.category.type = 2;
                     this.parentName = node.name
                     this.category.parentId = node.id
                 }else if(node.type == 2){
                     this.typeName = "三级分类"
-                    this.category.type = node.type+1;
+                    this.category.type = 3
                     this.parentName = node.name
                     this.category.parentId = node.id
                 }else if(node.type == 3){
-                    this.category.type = node.type+1;
+                    this.category.type = 4
                     this.typeName = ""
                     this.parentName = ""
                     this.category.parentId = -1
                     return;
                 }
-            }
+            },
+            async initLogin() {
+                let token=localStorage.getItem("token");
+                await axios.get('http://localhost:8080/getUser', {params: {token: token}})
+                    .then((resp) => {
+                        this.user.username=resp.data.userName
+                        this.user.id=resp.data.id
+                        this.user.roleId=resp.data.roleId
+                    });
+            },
+            async initCat() {
+                let token=localStorage.getItem("token");
+                await axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
+                    .then((resp) => {
+                        this.products=resp.data
+                        let sum = 0;
+                        this.productLength=this.products.length
+                        for (let i = 0; i < this.products.length; i++) {
+                            sum += this.products[i].price*this.products[i].count;
+                            this.totalPrice=sum;
+                        }
+                    });
+            },
+            logout() {
+                let token=localStorage.getItem("token");
+                localStorage.removeItem("token");
+                axios.get('http://localhost:8080/logout', {params: {token: token}})
+                    .then((resp) => {
+                        console.log(resp.data);
+                        window.location.href="index.html"
+                    });
+            },
         }
     })
 </script>
