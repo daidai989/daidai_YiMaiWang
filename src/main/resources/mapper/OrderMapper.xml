@@ -22,7 +22,6 @@
 
     </select>
 
-
     <select id="getOrderById" resultType="Order">
         select o.id, userId, o.loginName, userAddress, o.createTime, cost, serialNumber, o.isDel,status from easy_buy.easybuy_order o,easy_buy.easybuy_user u
         where o.userId=u.id and o.id=#{id}
