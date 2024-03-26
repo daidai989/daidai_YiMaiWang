@@ -503,11 +503,11 @@
                     <span class="fr"><a href="#">清空</a></span>
                 </div>
                 <ul>
-                    <li>
-                        <div class="img"><a href="#"><img src="images/his_1.jpg" width="185" height="162" /></a></div>
-                        <div class="name"><a href="#">Dior/迪奥香水2件套装</a></div>
+                    <li @click="addHistoryProduct(product.id)" v-for="(product, index) in historyProduct" :key="product.id">
+                        <div class="img"><a><img :src="showImage(product.filePath)" width="185" height="162" /></a></div>
+                        <div class="name"><a href="#">{{product.name}}</a></div>
                         <div class="price">
-                            <font>￥<span>368.00</span></font> &nbsp; 18R
+                            <font>￥<span>{{product.price}}</span></font> &nbsp; 18R
                         </div>
                     </li>
                 </ul>
@@ -534,11 +534,11 @@
                     <ul class="cate_list">
                         <li  v-for="(product,index) in productList" :key="product.id">
                             <div @click="productDetail(product.id)">
-                                <div class="img"><a href="#"><img src="images/per_1.jpg" width="210" height="185" /></a></div>
+                                <div class="img"><a ><img :src="showImage(product.filePath)" width="210" height="185" /></a></div>
                                 <div class="price">
                                     <font>￥<span>{{product.price}}</span></font> &nbsp; {{product.description}}
                                 </div>
-                                <div class="name"><a href="#" v-html="product.name"></a></div>
+                                <div class="name"><a  v-html="product.name"></a></div>
                             </div>
                             <div class="carbg">
                                 <a class="ss" :class="product.collection ? {'yes':true} : ''" @click="switchClass(index)">收藏</a>
@@ -682,7 +682,9 @@
         const name = search.get("name");
         this.esSelect.name = name
         this.getBrandProduct(1);
-        this.getHistoryProduct();
+        if(this.currentUser.id != null && this.currentUser.id != ''){
+            this.getHistoryProduct();
+        }
     },
     methods: {
       async  getToken(token){
@@ -724,7 +726,7 @@
             if(this.currentUser != null && this.currentUser != ''){
                 this.addHistoryProduct(id);
             }
-            // window.location.href='Product.html?id='+ id
+            window.location.href='Product.html?id='+ id
         },
         priceSort(){
             this.esSelect.sortPrice = !this.esSelect.sortPrice
@@ -782,6 +784,9 @@
             }).then((result) => {
                 console.log(result.data)
             });
+        },
+        showImage(filePath){
+            return 'http://localhost:8080/getImage?filePath='+ filePath
         }
     },
   })

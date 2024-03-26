@@ -500,7 +500,7 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    axios.post('http://localhost:8080/doRegister',this.user).then((result) => {
+                    axios.post('http://localhost:8080/addUser',this.user).then((result) => {
                     console.log(result.data);
                     if(result.data.code == 200){
                         alert("添加成功!")

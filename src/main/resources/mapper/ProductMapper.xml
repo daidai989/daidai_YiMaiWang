@@ -21,7 +21,25 @@
             and p.isDelete = 0
         </where>
     </select>
-
+    <select id="getProductByFirstCategoryId" parameterType="int" resultType="Product">
+        SELECT p.id,
+               p.name,
+               description,
+               price,
+               stock,
+               categoryLevelId,
+               fileId,
+               filePath,
+               p.isDelete,
+               p.createTime,
+               c.name,
+               parentId,
+               type
+        FROM easybuy_product p,easybuy_file f,easybuy_product_category c
+        WHERE p.id = f.productId and p.categoryLevelId = c.id
+          and p.isDelete = 0
+          AND parentId IN (SELECT id FROM easybuy_product_category WHERE parentId = #{parentId})
+    </select>
     <select id="getProductByCategoryId" parameterType="int" resultType="Product">
         SELECT p.id,
                p.name,
@@ -150,7 +168,7 @@
     </select>
 
     <select id="getHistoryProduct" parameterType="History" resultType="Product">
-        select p.id,
+        select distinct p.id,
                p.name,
                description,
                price,
@@ -166,5 +184,72 @@
                 and h.userId = #{userId}
                 order by h.createTime desc
                 limit 0,5
+    </select>
+    <update id="updateStock"  >
+        update easybuy_product set stock=#{stock} where id = #{id}
+    </update>
+
+    <select id="getProductListByproductList" resultType="Cat">
+        SELECT
+        c.name as categoryName,
+        p.id,
+        p.name,
+        description,
+        price,
+        stock,
+        categoryLevelId,
+        fileId,
+        filePath,
+        p.isDelete,
+        p.createTime,
+        parentId,
+        type
+        FROM easybuy_product p, easybuy_file f, easybuy_product_category c
+        WHERE p.id = f.productId
+        AND p.categoryLevelId = c.id
+        AND p.isDelete = 0
+        AND p.id IN
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    <select id="getProductBySecondCategoryId" parameterType="int" resultType="Product">
+        SELECT p.id,
+               p.name,
+               description,
+               price,
+               stock,
+               categoryLevelId,
+               fileId,
+               filePath,
+               p.isDelete,
+               p.createTime,
+               c.name,
+               parentId,
+               type
+        FROM easybuy_product p,easybuy_file f,easybuy_product_category c
+        WHERE p.id = f.productId and p.categoryLevelId = c.id
+          and p.isDelete = 0
+          AND parentId = #{id}
+    </select>
+
+    <select id="getProductByThreeCategoryId" parameterType="int" resultType="Product">
+        SELECT p.id,
+               p.name,
+               description,
+               price,
+               stock,
+               categoryLevelId,
+               fileId,
+               filePath,
+               p.isDelete,
+               p.createTime,
+               c.name,
+               parentId,
+               type
+        FROM easybuy_product p,easybuy_file f,easybuy_product_category c
+        WHERE p.id = f.productId and p.categoryLevelId = c.id
+          and p.isDelete = 0
+          AND c.id = #{id}
     </select>
 </mapper>

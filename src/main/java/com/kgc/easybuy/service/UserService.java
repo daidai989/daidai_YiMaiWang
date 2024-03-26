@@ -17,4 +17,5 @@ public interface UserService {
     public ResponseMessage updateUser(User user);
     public ResponseMessage deleteUser(int id);
     public ResponseMessage getUserById(int id);
+    public ResponseMessage addUser(User user);
 }

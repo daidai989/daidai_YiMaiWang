@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseMessage updatePwd(User user) {
+        user.setPassword(Md5Util.getMD5String(user.getPassword()));
         int count = userMapper.updatePwd(user);
         if (count > 0){
             return  ResponseMessage.success("修改成功",count);
@@ -132,5 +133,15 @@ public class UserServiceImpl implements UserService {
             return ResponseMessage.success(user);
         }
         return ResponseMessage.error("没用该用户！");
+    }
+
+    @Override
+    public ResponseMessage addUser(User user) {
+        user.setPassword(Md5Util.getMD5String(user.getPassword()));
+        int count = userMapper.addUser(user);
+        if (count > 0){
+            return ResponseMessage.success();
+        }
+        return ResponseMessage.error("添加失败！");
     }
 }

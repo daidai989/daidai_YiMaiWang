@@ -49,14 +49,12 @@
     </insert>
 
     <insert id="addUser">
-        insert into easybuy_user(loginName, password, email, mobile, createTime,isDel,roleId) value (#{loginName}, #{password}, #{email}, #{mobile},
-            now(), 0,#{userId});
         insert into easybuy_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="loginName != null">
                 loginName,
             </if>
-            <if test="password != password">
+            <if test="password != null">
                 password,
             </if>
             <if test="email != null">
@@ -74,7 +72,7 @@
             <if test="loginName != null">
                 #{loginName},
             </if>
-            <if test="password != password">
+            <if test="password != null">
                 #{password},
             </if>
             <if test="email != null">

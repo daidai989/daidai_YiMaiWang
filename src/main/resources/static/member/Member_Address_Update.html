@@ -387,6 +387,7 @@
         totalAddess:'',
         updateId:0,
         pcTextArr:elementChinaAreaData.pcaTextArr,
+        user:{},
         page:[],
         rules:{
           addressList:[
@@ -410,14 +411,16 @@
         }
       }
     },
-    mounted() {
+    async mounted() {
+        var token = window.localStorage.getItem("token");
+       await this.getToken(token);
       var search = new URLSearchParams(window.location.search);
       var id = search.get("id");
       this.id = id;
       axios.get("http://localhost:8080/getAddressByIdAndUserId",{
           params:{
             id:id,
-            userId:18
+            userId:this.user.id
           }
         }).then((result) => {
           console.log(result.data);
@@ -442,6 +445,16 @@
         });
     },
     methods: {
+        async getToken(token){
+            await axios.get('http://localhost:8080/getUser',{
+                params:{
+                    token:token
+                }
+            }).then((result) => {
+                console.log(result);
+                this.user = result.data.data
+            });
+        },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           this.totalAddess = this.address.addressList.join('/')+'/'+ this.address.detailAddress;
@@ -451,7 +464,7 @@
               params:{
                 id:this.id,
                 address:this.totalAddess,
-                userId:18,
+                userId:this.user.id,
                 remark:this.address.remark,
                 recipient:this.address.recipient,
                 phone:this.address.phone,

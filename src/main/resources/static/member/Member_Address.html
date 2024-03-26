@@ -19,7 +19,7 @@
     <link type="text/css" rel="stylesheet" href="../css/element.css"/>
     <script type="text/javascript" src="../js/element.js"></script>
     <script type="text/javascript" src="../js/element-china-area-data.iife.js"></script>
-<title>尤洪</title>
+<title>地址管理-首页</title>
 </head>
 <body>  
   <div id="root6">
@@ -433,6 +433,7 @@
           remark:'',
           isSure:false,
         },
+        user:{},
         totalAddess:'',
         updateId:0,
         pcTextArr:elementChinaAreaData.pcaTextArr,
@@ -461,13 +462,22 @@
       }
     },
     mounted() {
-      this.getAddressList(1,5)
-    },
+          var token = window.localStorage.getItem("token");
+          axios.get('http://localhost:8080/getUser',{
+                  params:{
+                      token:token
+                  }
+             }).then((result) => {
+                  console.log(result);
+                  this.user = result.data.data
+                  this.getAddressList(1,5)
+            })
+          },
     methods: {
       getAddressList(currentPageNo,pageSize){
         axios.get('http://localhost:8080/getAddressById',{
           params:{
-            userId:18,
+            userId:this.user.id,
             currentPageNo:currentPageNo,
             pageSize:pageSize
           }
@@ -499,7 +509,7 @@
             axios.get('http://localhost:8080/addAddress',{
               params:{
                 address:this.totalAddess,
-                userId:18,
+                userId:this.user.id,
                 remark:this.address.remark,
                 recipient:this.address.recipient,
                 phone:this.address.phone,

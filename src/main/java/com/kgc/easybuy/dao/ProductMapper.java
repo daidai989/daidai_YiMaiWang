@@ -26,4 +26,9 @@ public interface ProductMapper {
     public List<Product> getCollectProduct(Collect collect);
     public List<Product> getRecommendProduct(int parentId, int id);
     public List<Product> getHistoryProduct(int userId);
+    public boolean updateStock(@Param("id") Integer id, @Param("stock") Integer stock);
+    public List<Product> getProductListByproductList(@Param("ids")List ids);
+    public List<Product> getProductByFirstCategoryId(int id);
+    public List<Product> getProductBySecondCategoryId(int id);
+    public List<Product> getProductByThreeCategoryId(int id);
 }

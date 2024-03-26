@@ -207,18 +207,18 @@
                 <div class="nav_t">全部商品分类</div>
                 <div class="leftNav">
                     <ul>
-                        <li v-for="(item, index) in theFirst" :key="index" @mouseenter="loadSecondAndThird(item.id)">
+                        <li v-for="(item, index) in theFirst" :key="item.id" @mouseenter="loadSecondAndThird(item.id)">
                             <div class="fj">
                                 <span class="n_img"><span></span><img src="images/nav1.png"/></span>
                                 <span class="fl">{{item.name}}</span>
                             </div>
                             <div class="zj" >
                                 <div class="zj_l">
-                                    <div class="zj_l_c" v-for="(subItem, index) in theSecond" :key="index">
+                                    <div class="zj_l_c" v-for="(zItem, index) in theSecond" :key="zItem.id">
                                         <h2>
-                                            {{subItem.name}}
+                                            {{zItem.name}}
                                         </h2>
-                                        <a v-for="(subItem, index) in theThird" :key="index">{{subItem.name}}|</a>|
+                                        <a v-for="(subItem, index) in theThird" :key="subItem.id">{{subItem.name}}|</a>|
                                     </div>
                                 </div>
                                 <div class="zj_r">
@@ -733,6 +733,9 @@
                     });
             },
             getProductDetail(id){
+                if (this.userId != '' && this.userId != null){
+                    this.addHistoryProduct(id)
+                }
                 window.location.href="Product.html?id=" + id;
             },
             showImages(filePath){
@@ -818,6 +821,7 @@
                     .then((resp) => {
                         console.log(resp.data);
                         this.username=resp.data.data.userName
+                        this.userId = resp.data.data.id
                     });
             },
             initCat() {
@@ -841,9 +845,18 @@
                     .then((resp) => {
                         console.log(resp.data);
                         window.location.href="index.html"
-                    });
+                });
             },
-
+            addHistoryProduct(val){
+                axios.get('addProductHistory',{
+                    params:{
+                        userId:this.userId,
+                        productId:val
+                    }
+                }).then((result) => {
+                    console.log(result.data)
+                });
+            },
         }
     })
 </script>

@@ -20,5 +20,6 @@ public class User {
     private String mobile;
     private int roleId;
     private int isDel;
-    private Date createTime;
+    private String phone;
+    private String address;
 }

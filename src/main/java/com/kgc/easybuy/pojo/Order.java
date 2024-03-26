@@ -21,4 +21,5 @@ public class Order {
       private  double  cost;
       private  String  serialNumber;
       private  Integer isDel;
+      private  Integer status;
 }

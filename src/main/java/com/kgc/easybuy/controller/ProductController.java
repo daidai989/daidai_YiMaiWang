@@ -16,6 +16,7 @@ import java.io.*;
 import java.io.File;
 import java.net.URLDecoder;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -180,5 +181,19 @@ public class ProductController {
     public ResponseMessage getHistoryProduct(int userId){
         ResponseMessage responseMessage = productService.getHistoryProduct(userId);
         return  responseMessage;
+    }
+
+    @RequestMapping("getProductListByproductList")
+    @ResponseBody
+    public ResponseMessage getProductListByproductList(@RequestBody Map<String,List<Integer>> ids){
+        List<Integer> idList = ids.get("ids");
+        ResponseMessage responseMessage = productService.getProductListByproductList(idList);
+        return responseMessage;
+    }
+    @RequestMapping("checkProductExitsByCategoryId")
+    @ResponseBody
+    public Object checkProductExitsByCategoryId(Category category){
+        ResponseMessage responseMessage = productService.checkProductExitsByCategoryId(category);
+        return responseMessage;
     }
 }

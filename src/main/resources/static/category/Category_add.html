@@ -19,7 +19,7 @@
     <link type="text/css" rel="stylesheet" href="../css/element.css"/>
     <script type="text/javascript" src="../js/element.js"></script>
     
-<title>尤洪</title>
+<title>分类管理-添加</title>
 </head>
 <body>  
 <div id="root5">
@@ -359,7 +359,7 @@
         el:"#root5",
         data(){
             var checkName = (rule, value, callback) => {
-                axios.get('checkCategoryName',{
+                axios.get('http://localhost:8080/checkCategoryName',{
                     params:{
                         name:value
                     }
@@ -397,6 +397,7 @@
                 rules:{
                 name:[
                     { required: true, message: '请输入分类名！', trigger: 'blur'},
+                    { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' },
                     { validator:checkName,trigger:'blur'}
                 ],
                  typeName:[

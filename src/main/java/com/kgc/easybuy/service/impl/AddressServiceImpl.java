@@ -89,6 +89,7 @@ public class AddressServiceImpl implements AddressService {
                 }
                 return ResponseMessage.error("设置默认地址失败！");
             }
+            return ResponseMessage.success("添加成功，但是不是默认地址！");
         }
         return ResponseMessage.error("更新失败！");
     }

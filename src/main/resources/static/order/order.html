@@ -1,28 +1,29 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link type="text/css" rel="stylesheet" href="../css/style.css" />
-    <link type="text/css" rel="stylesheet" href="../css/antd.css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link type="text/css" rel="stylesheet" href="../css/style.css" />
+    <link type="text/css" rel="stylesheet" href="../css/element.css"/>
     <!--[if IE 6]>
     <script src="../js/iepng.js" type="text/javascript"></script>
     <script type="text/javascript">
-        EvPNG.fix('div, ul, img, li, input, a');
-    </script>
+           EvPNG.fix('div, ul, img, li, input, a');
+        </script>
     <![endif]-->
 
-    <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="../js/menu.js"></script>
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
 
-    <script type="text/javascript" src="../js/select.js"></script>
-    <script src="../js/vue.js"></script>
-    <script src="../js/axios.js"></script>
-    <script src="../js/antd.js"></script>
+	<script type="text/javascript" src="js/select.js"></script>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.js"></script>
+    <script type="text/javascript" src="../js/element.js"></script>
+    <script type="text/javascript" src="../js/element-china-area-data.iife.js"></script>
 
-    <title>尤洪</title>
+<title>尤洪</title>
 </head>
 <body>
-<div id="app9">
+<div id="root11">
     <!--Begin Header Begin-->
     <div class="soubg">
         <div class="sou">
@@ -152,25 +153,40 @@
     </div>
     <div class="m_top_bg">
         <div class="top">
-            <div class="m_logo"><a href="Index.html"><img src="../images/logo1.png" /></a></div>
+            <div class="m_logo"><a href="Index.html"><img src="images/logo1.png" /></a></div>
+            <div class="m_search">
+                <form>
+                    <input type="text" value="" class="m_ipt" />
+                    <input type="submit" value="搜索" class="m_btn" />
+                </form>
+                <span class="fl"><a href="#">咖啡</a><a href="#">iphone 6S</a><a href="#">新鲜美食</a><a href="#">蛋糕</a><a href="#">日用品</a><a href="#">连衣裙</a></span>
+            </div>
             <div class="i_car">
-                <div class="car_t">购物车 [ <span>{{productLength}}</span> ]</div>
+                <div class="car_t">购物车 [ <span>3</span> ]</div>
                 <div class="car_bg">
                     <!--Begin 购物车未登录 Begin-->
-                    <ul v-if="$data.user.username" class="cars">
-                        <li v-for="(item, index) in products" :key="index" >
-                            <div class="img"><a href="#"><img height="58" :src="'http://localhost:8080/getImage?filePath=' + item.filePath" width="58"/></a></div>
-                            <div class="name"><a href="#">{{item.name}}</a></div>
-                            <div class="price"><font color="#ff4e00">￥{{item.price}}</font> X{{item.count}}</div>
+                    <div class="un_login">还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！</div>
+                    <!--End 购物车未登录 End-->
+                    <!--Begin 购物车已登录 Begin-->
+                    <ul class="cars">
+                        <li>
+                            <div class="img"><a href="#"><img src="images/car1.jpg" width="58" height="58" /></a></div>
+                            <div class="name"><a href="#">法颂浪漫梦境50ML 香水女士持久清新淡香 送2ML小样3只</a></div>
+                            <div class="price"><font color="#ff4e00">￥399</font> X1</div>
                         </li>
-                        <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalPrice}}</span></div>
-                        <div class="price_a"><a href="#">去购物车结算</a></div>
+                        <li>
+                            <div class="img"><a href="#"><img src="images/car2.jpg" width="58" height="58" /></a></div>
+                            <div class="name"><a href="#">香奈儿（Chanel）邂逅活力淡香水50ml</a></div>
+                            <div class="price"><font color="#ff4e00">￥399</font> X1</div>
+                        </li>
+                        <li>
+                            <div class="img"><a href="#"><img src="images/car2.jpg" width="58" height="58" /></a></div>
+                            <div class="name"><a href="#">香奈儿（Chanel）邂逅活力淡香水50ml</a></div>
+                            <div class="price"><font color="#ff4e00">￥399</font> X1</div>
+                        </li>
                     </ul>
-                    <div v-else class="un_login">
-                        还未登录！<a href="../Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！
-
-                    </div>
-
+                    <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>1058</span></div>
+                    <div class="price_a"><a href="#">去购物车结算</a></div>
                     <!--End 购物车已登录 End-->
                 </div>
             </div>
@@ -186,7 +202,7 @@
                     <div class="left_m_t t_bg1">订单中心</div>
 
                     <ul>
-                        <li><a href="../Member_Product.html" class="now">我的订单</a></li>
+                        <li><a href="order.html" class="now">我的订单</a></li>
                         <li><a href="Member_Address.html">收货地址</a></li>
                         <li><a href="#">缺货登记</a></li>
                         <li><a href="#">跟踪订单</a></li>
@@ -222,29 +238,61 @@
             </div>
             <div class="m_right">
                 <p></p>
-                <div class="mem_tit">商品管理</div>
-                <div class="m_search" style="margin-left: 20px;margin-top: -6px;">
-                    <div style="display: flex; justify-content: center;">
-                        <a-input type="text" v-model="title" placeholder="新闻名"></a-input>
-                        <a-button type="primary" @click="viewNewsList(1)">查询</a-button>
-                        <a href="news_add.html"><a-button type="primary">添加新闻</a-button></a>
-
+                <div class="mem_tit">全部订单</div>
+                    <div style="text-align: center;">
+                        订单号: <el-input label="订单号" style="width: 200px;"  v-model="serialNumber"></el-input>
+                        <el-button @click="getAllOrder(1)" type="primary" size="small">查询</el-button>
+                    <el-table
+                          :data="page.list"
+                          stripe
+                          style="width: 100%;text-align: center;">
+                      <el-table-column
+                            width="155"
+                              prop="serialNumber"
+                              label="订单号" width:="50">
+                      </el-table-column>
+                      <el-table-column
+                                width="155"
+                              prop="userAddress"
+                              label="订单地址">
+                      </el-table-column>
+                      <el-table-column
+                            width="155"
+                              prop="cost"
+                              label="订单总金额">
+                      </el-table-column>
+                      <el-table-column
+                            width="155"
+                              prop="status"
+                              label="订单状态">
+                        <template slot-scope="scope">
+                            <div v-if="scope.row.status == 0">未付款</div>
+                            <div v-if="scope.row.status == 1">已付款</div>
+                            <div v-if="scope.row.status == 2">已取消</div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column
+                            width="155"
+                            prop="createTime"
+                            label="下单时间" width="100">
+                        </el-table-column>
+                      <el-table-column
+                              fixed="right"
+                              label="操作">
+                      <template slot-scope="scope">
+                              <el-button @click="update(scope.row)" type="primary" size="small">修改</el-button>
+                      </template>
+                      </el-table-column>
+                      </el-table>
+                      <el-pagination
+                          @current-change="handleCurrentChange"
+                          :current-page="page.pageNum"
+                          :page-size="page.pageSize"
+                          layout="total, prev,pager, next, jumper"
+                          :total="page.total">
+                     </el-pagination>
                     </div>
-
-
-                </div>
-                <a-table
-                        :columns="columns"
-                        :data-source="AllOrders"
-                        row-key="id"
-                        :pagination="pagination"
-                        @change="handleTableChange"
-                >
-                    <div slot="action" slot-scope="text, record">
-                        <span><a :href="'news_update.html?id=' + record.id">修改</a></span>
-                        <span><a @click="delNews(record.id)">删除</a></span>
-                    </div>
-                </a-table>
+            </div>
         </div>
         <!--End 用户中心 End-->
         <!--Begin Footer Begin -->
@@ -252,7 +300,7 @@
             <div class="b_btm">
                 <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="72"><img src="../images/b1.png" width="62" height="62" /></td>
+                        <td width="72"><img src="images/b1.png" width="62" height="62" /></td>
                         <td><h2>正品保障</h2>正品行货  放心购买</td>
                     </tr>
                 </table>
@@ -333,105 +381,58 @@
 
 </body>
 
-<script type="text/javascript">
-    new Vue({
-        el: '#app9',
-        data:{
-            title:"",
-            columns: [
-                { title: "订单号", dataIndex: "serialNumber", key: "serialNumber" },
-                { title: "订单时间", dataIndex: "createTime", key: "createTime" },
-                { title: "订单总金额", dataIndex: "content", key: "content" },
-                { title: "订单状态", dataIndex: "shortTitle", key: "shortTitle" },
-                {
-                    title: "操作",
-                    key: "action",
-                    scopedSlots: { customRender: "action" },
-                },
-            ],
-            AllOrder: [],
-            pagination: {
-                showQuickJumper: true,
-                showTotal: (total, range) => {
-                    return range[0] + "-" + range[1] + " 共" + total + "条";
-                },
-                current: 1, // 当前页数
-                total: 0, // 总条数
-            },
-            productLength:"",
-            totalPrice:"",
-            user:{
-                username:"",
-                id:null,
-            },
-            products:[],
 
+<!--[if IE 6]>
+<script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+</html>
+<script>
+    new Vue({
+        el:"#root11",
+        data() {
+            return {
+                page:{},
+                user:{},
+                serialNumber:'',
+            }
+        },
+        async mounted() {
+            var token = localStorage.getItem("token");
+            await this.getUser(token);
+            this.getAllOrder(1);
         },
         methods: {
-            handleTableChange(pagination, filters, sorter) {
-                this.pagination = pagination;
-                this.viewNewsList(pagination.current)
+            async getUser(token){
+                 await axios.get('http://localhost:8080/getUser',{
+                    params:{
+                        token:token
+                    }
+                }).then((result) => {
+                    console.log(result.data.data);
+                    this.user = result.data.data
+                });
             },
-            initLogin() {
-                let token=localStorage.getItem("token");
-                axios.get('http://localhost:8080/getUser', {params: {token: token}})
-                    .then((resp) => {
-                        console.log(resp.data);
-                        this.user.username=resp.data.data.userName
-                        this.user.id=resp.data.data.id
-                    });
+            getAllOrder(currentNo){
+                axios.get('http://localhost:8080/getOrderList',{
+                    params:{
+                        currentPageNo:currentNo,
+                        pageSize:5,
+                        serialNumber:this.serialNumber,
+                        userId:this.user.id
+                    }
+                }).then((result) => {
+                    console.log(result.data);
+                    this.page = result.data.data
+                });
             },
-            initCat() {
-                let token=localStorage.getItem("token");
-                axios.get('http://localhost:8080/getAllCats', {params: {token: token}})
-                    .then((resp) => {
-                        console.log(resp.data);
-                        this.products=resp.data.data
-                        let sum = 0;
-                        this.productLength=this.products.length
-                        for (let i = 0; i < this.products.length; i++) {
-                            sum += this.products[i].price*this.products[i].count;
-                            this.totalPrice=sum;
-                        }
-
-                    });
+            handleCurrentChange(pageNum) {
+                this.page.pageNum = pageNum
+                this.getAddressList(pageNum,this.page.pageSize)
             },
-            viewNewsList(currentNo) {
-                axios.get('http://localhost:8080/getNewsListByPage',{params:{
-                        currentNo:currentNo,
-                        title:this.title,
-                    }})
-                    .then((resp) => {
-                        console.log(resp.data)
-                        const pageSize = resp.data.pageSize;
-                        const startIndex = (currentNo - 1) * pageSize + 1;
-                        resp.data.list.forEach((news, index) => {
-                            order.index = startIndex + index;
-                        });
-                        this.AllNews = resp.data.list;
-                        this.pagination.current = resp.data.pageNum;
-                        this.pagination.total = resp.data.total;
-                        this.pagination.pageSize = resp.data.pageSize;
-                    });
-            },
-            delNews(id) {
-                if (!confirm("是否删除这个新闻")){
-                    return
-                }
-                axios.get('http://localhost:8080/delNews', {params: {id: id}})
-                    .then((resp) => {
-                        console.log(resp.data);
-                        this.viewNewsList(1)
-
-                    });
+            update(row){
+                window.location.href = "order_update.html?id=" + row.id
             },
         },
-        mounted() {
-            this.initLogin()
-            this.initCat()
-            this.viewNewsList(1)
-        }
     })
 </script>
 
-</html>

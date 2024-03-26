@@ -241,9 +241,9 @@
             <div class="address">
                 登录名: <el-input style="width: 200px;"  v-model="loginName"></el-input>
                 性别： <el-select v-model="sex" placeholder="请选择">
-                <el-option :value="0" label="全部"></el-option>
-                <el-option :value="1" label="男"></el-option>
-                <el-option :value="2" label="女"></el-option>
+                <el-option value="0" label="全部"></el-option>
+                <el-option value="1" label="男"></el-option>
+                <el-option value="2" label="女"></el-option>
             </el-select>
                 <el-button @click="select" type="primary" size="small">查询</el-button>
                 <el-button @click="add" type="primary" size="small">添加用户</el-button>

@@ -22,4 +22,6 @@ public interface ProductService {
     public ResponseMessage getCollectProduct(Collect collect,Page page);
     public ResponseMessage getRecommendProduct(int parentId,int id);
     public ResponseMessage getHistoryProduct(int userId);
+    public ResponseMessage getProductListByproductList(List ids);
+    public ResponseMessage checkProductExitsByCategoryId(Category category);
 }

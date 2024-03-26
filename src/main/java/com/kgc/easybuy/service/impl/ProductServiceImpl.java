@@ -50,9 +50,10 @@ public class  ProductServiceImpl implements ProductService {
     private CollectService collectService;
     @Autowired
     private CatService catService;
+
     @Override
-    public ResponseMessage getProductList(int currentPageNo,int pageSize) {
-        PageHelper.startPage(currentPageNo,pageSize);
+    public ResponseMessage getProductList(int currentPageNo, int pageSize) {
+        PageHelper.startPage(currentPageNo, pageSize);
         List<Product> productList = productMapper.getProductList();
         List<Product> encodingPro = EncodingUtil.encoding(productList);
         PageInfo PageInfo = new PageInfo(encodingPro);
@@ -70,8 +71,8 @@ public class  ProductServiceImpl implements ProductService {
     public ResponseMessage getProductByCategoryId() {
         List<Category> firstCategories = categoryMapper.getFirstCategories();
         List<List> productList = new ArrayList<>();
-        for (Category category: firstCategories) {
-            PageHelper.startPage(1,6);
+        for (Category category : firstCategories) {
+            PageHelper.startPage(1, 6);
             List<Product> products = productMapper.getProductByCategoryId(category.getId());
             List<Product> encodingPro = EncodingUtil.encoding(products);
             PageInfo pageInfo = new PageInfo(encodingPro);
@@ -84,7 +85,7 @@ public class  ProductServiceImpl implements ProductService {
     public Product getProductById(int id) {
         Product product = productMapper.getProductById(id);
         try {
-            product.setFilePath(URLEncoder.encode(product.getFilePath(),"utf-8"));
+            product.setFilePath(URLEncoder.encode(product.getFilePath(), "utf-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -109,19 +110,19 @@ public class  ProductServiceImpl implements ProductService {
             return ResponseMessage.success(map);
         }
         QueryBuilder queryBuilder = QueryBuilders.matchQuery("name", name);
-        map= sameMethods(queryBuilder, current, pageSize);
+        map = sameMethods(queryBuilder, current, pageSize);
         map.put("current", current);
         map.put("pageSize", pageSize);
         return ResponseMessage.success(map);
     }
 
 
-    public Map sameMethods(QueryBuilder queryBuilder,int current, int pageSize) {
+    public Map sameMethods(QueryBuilder queryBuilder, int current, int pageSize) {
         List<Product> productList = new ArrayList<>();
-        Map map=new HashMap<>();
+        Map map = new HashMap<>();
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
         SortBuilder sortBuilder = SortBuilders.fieldSort("price").order(SortOrder.DESC);
-        nativeSearchQueryBuilder= nativeSearchQueryBuilder.withQuery(queryBuilder)
+        nativeSearchQueryBuilder = nativeSearchQueryBuilder.withQuery(queryBuilder)
                 .withSort(sortBuilder)
                 .withPageable(PageRequest.of(current - 1, pageSize));
         SearchHits<Product> searchHits = es.search(nativeSearchQueryBuilder.build(), Product.class);
@@ -130,7 +131,7 @@ public class  ProductServiceImpl implements ProductService {
             productList.add(searchHit.getContent());
         }
         map.put("list", productList);
-        map.put("total",totalHits);
+        map.put("total", totalHits);
         return map;
     }
 
@@ -144,12 +145,13 @@ public class  ProductServiceImpl implements ProductService {
         }
         return response;
     }
+
     @Override
     public ResponseMessage delProById(Integer id) {
-        boolean flag= productMapper.delProById(id);
-        if (flag){
+        boolean flag = productMapper.delProById(id);
+        if (flag) {
             per.deleteById(id.toString());
-            return ResponseMessage.success("删除成功",flag);
+            return ResponseMessage.success("删除成功", flag);
         }
         return ResponseMessage.error("删除失败");
     }
@@ -162,10 +164,10 @@ public class  ProductServiceImpl implements ProductService {
         File file = new File();
         file.setFilePath(filePath);
         file.setUserId(userId);
-        int count=fileMapper.addFile(file);
+        int count = fileMapper.addFile(file);
         boolean b = productMapper.updateFileId(file.getId(), product.getId());
         boolean b2 = fileMapper.updateProId(product.getId(), file.getId());
-        if (b&&b2) {
+        if (b && b2) {
             Product save = per.save(product);
             if (save == null) {
                 return ResponseMessage.error("数据保存失败，对象为空");
@@ -180,7 +182,7 @@ public class  ProductServiceImpl implements ProductService {
         boolean b = productMapper.updateProduct(products);
 
         if (b) {
-            Date date=new Date();
+            Date date = new Date();
             products.setCreateTime(date);
             Product save = per.save(products);
             return ResponseMessage.success(save);
@@ -191,7 +193,7 @@ public class  ProductServiceImpl implements ProductService {
     @Override
     public ResponseMessage getProductByLogin(String loginName) {
         Product productByLogin = productMapper.getProductByLogin(loginName);
-        if (productByLogin!=null){
+        if (productByLogin != null) {
             return ResponseMessage.error("不可以使用");
         }
         return ResponseMessage.success();
@@ -201,7 +203,7 @@ public class  ProductServiceImpl implements ProductService {
     public ResponseMessage setProductTes() {
         List<Product> productList = productMapper.setProductTes();
         per.saveAll(productList);
-        return ResponseMessage.success("成功",productList);
+        return ResponseMessage.success("成功", productList);
     }
 
     @Override
@@ -211,26 +213,26 @@ public class  ProductServiceImpl implements ProductService {
         page.setCurrentPageNo(esSelect.getCurrentPageNo());
         page.setPageSize(esSelect.getPageSize());
         //匹配查询
-        if(esSelect.getName() != null && !"".equals(esSelect.getName())){
-            boolQueryBuilder.must(QueryBuilders.matchQuery("name",esSelect.getName()));
+        if (esSelect.getName() != null && !"".equals(esSelect.getName())) {
+            boolQueryBuilder.must(QueryBuilders.matchQuery("name", esSelect.getName()));
         }
-        if (esSelect.getEnd() > 1){
+        if (esSelect.getEnd() > 1) {
             boolQueryBuilder.must(QueryBuilders.rangeQuery("price").from(esSelect.getBegin()).to(esSelect.getEnd()));
         }
-        if (esSelect.getEnd() == -1){
+        if (esSelect.getEnd() == -1) {
             boolQueryBuilder.must(QueryBuilders.rangeQuery("price").gte(esSelect.getBegin()));
         }
-        if (esSelect.getBrandId() > 0){
-            boolQueryBuilder.must(QueryBuilders.matchQuery("brandId",esSelect.getBrandId()));
+        if (esSelect.getBrandId() > 0) {
+            boolQueryBuilder.must(QueryBuilders.matchQuery("brandId", esSelect.getBrandId()));
         }
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
         nativeSearchQueryBuilder.withQuery(boolQueryBuilder);
-        if (esSelect.isSortPrice()){
+        if (esSelect.isSortPrice()) {
             nativeSearchQueryBuilder.withSort(SortBuilders.fieldSort("price").order(SortOrder.ASC));
-        }else {
+        } else {
             nativeSearchQueryBuilder.withSort(SortBuilders.fieldSort("price").order(SortOrder.DESC));
         }
-        nativeSearchQueryBuilder.withPageable(PageRequest.of(page.getCurrentPageNo() -1, page.getPageSize()));
+        nativeSearchQueryBuilder.withPageable(PageRequest.of(page.getCurrentPageNo() - 1, page.getPageSize()));
 
         HighlightBuilder highlightBuilder = new HighlightBuilder();
         highlightBuilder.field("name");
@@ -243,32 +245,33 @@ public class  ProductServiceImpl implements ProductService {
         long totalHits = search.getTotalHits();
         int totalPage = (int) totalHits;
         page.setTotalPage(totalPage);
-        for(SearchHit<Product> hits: search) {
+        for (SearchHit<Product> hits : search) {
             Product prod = hits.getContent();
             Map<String, List<String>> highlightFields = hits.getHighlightFields();
             List<String> hightList = highlightFields.get("name");
-            if (hightList != null && !hightList.isEmpty()){
+            if (hightList != null && !hightList.isEmpty()) {
                 prod.setName(hightList.get(0));
             }
-            if (esSelect.getUserId() != 0){
+            if (esSelect.getUserId() != 0) {
                 //设置查找是否被收藏
                 Collect collect = new Collect();
                 collect.setProductId(prod.getId());
                 collect.setUserId(esSelect.getUserId());
                 ResponseMessage msg = collectService.getCollectionByproductIdAndUserId(collect);
-                if (msg.getCode() == 200){
+                if (msg.getCode() == 200) {
                     prod.setCollection(true);
                 }
             }
             productList.add(prod);
         }
-        page.setData(productList);
+        List<Product> encoding = EncodingUtil.encoding(productList);
+        page.setData(encoding);
         return ResponseMessage.success(page);
     }
 
     @Override
-    public ResponseMessage getCollectProduct(Collect collect,Page page) {
-        PageHelper.startPage(page.getCurrentPageNo(),page.getPageSize());
+    public ResponseMessage getCollectProduct(Collect collect, Page page) {
+        PageHelper.startPage(page.getCurrentPageNo(), page.getPageSize());
         List<Product> collectProduct = productMapper.getCollectProduct(collect);
         PageInfo pageInfo = new PageInfo(collectProduct);
         List<Product> encoding = EncodingUtil.encoding(collectProduct);
@@ -285,15 +288,37 @@ public class  ProductServiceImpl implements ProductService {
 
     @Override
     public ResponseMessage getRecommendProduct(int parentId, int id) {
-        List<Product> recommendProduct = productMapper.getRecommendProduct(parentId,id);
+        List<Product> recommendProduct = productMapper.getRecommendProduct(parentId, id);
         List<Product> productList = EncodingUtil.encoding(recommendProduct);
         return ResponseMessage.success(productList);
     }
 
     @Override
     public ResponseMessage getHistoryProduct(int userId) {
-        List<Product> products= productMapper.getHistoryProduct(userId);
+        List<Product> products = productMapper.getHistoryProduct(userId);
         List<Product> productList = EncodingUtil.encoding(products);
         return ResponseMessage.success(productList);
+    }
+
+    @Override
+    public ResponseMessage getProductListByproductList(List ids) {
+        List<Product> productListByLst = productMapper.getProductListByproductList(ids);
+        return ResponseMessage.success(productListByLst);
+    }
+
+    @Override
+    public ResponseMessage checkProductExitsByCategoryId(Category category) {
+        List<Product> productList = null;
+        if (category.getType() == 1){
+            productList =  productMapper.getProductByFirstCategoryId(category.getId());
+        } else if (category.getType() == 2) {
+            productList = productMapper.getProductBySecondCategoryId(category.getId());
+        } else if (category.getType() == 3) {
+            productList = productMapper.getProductByThreeCategoryId(category.getId());
+        }
+        if (productList.size() == 0){
+            return ResponseMessage.success("可以删除");
+        }
+        return ResponseMessage.error("不能删除，该分类下有数据！");
     }
 }

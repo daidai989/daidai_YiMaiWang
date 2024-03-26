@@ -104,4 +104,11 @@ public class UserController {
         ResponseMessage userById = userService.getUserById(id);
         return userById;
     }
+
+    @RequestMapping("addUser")
+    @ResponseBody
+    public ResponseMessage addUser(@RequestBody User user) {
+        ResponseMessage userById = userService.addUser(user);
+        return userById;
+    }
 }
