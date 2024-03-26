@@ -13,7 +13,6 @@ public class ResponseMessage<T> {
     private String message;
     private T data;
 
-
     public static <E> ResponseMessage<E> success(E data) {
         return new ResponseMessage<>(200,"操作成功",data);
     }

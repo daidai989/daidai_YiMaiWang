@@ -12,7 +12,6 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface FileMapper {
     public int addFile(File file);
-
     public boolean updateProId(@Param("proId") Integer proId, @Param("id")Integer id);
 
 }

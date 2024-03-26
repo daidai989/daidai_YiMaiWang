@@ -42,5 +42,4 @@ public class CategoryController {
         ResponseMessage responeseMsg = categoryService.getAllCategory();
         return responeseMsg;
     }
-
 }

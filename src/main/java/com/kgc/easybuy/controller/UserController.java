@@ -50,6 +50,7 @@ public class UserController {
         return message;
     }
 
+
     @RequestMapping("checkUserExist")
     @ResponseBody
     public Object checkUserExist(User user){

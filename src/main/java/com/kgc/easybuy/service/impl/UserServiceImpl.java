@@ -24,6 +24,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RedisUtil redisUtil;
 
+
     @Override
     public ResponseMessage login(User user) {
         String md5String = Md5Util.getMD5String(user.getPassword());

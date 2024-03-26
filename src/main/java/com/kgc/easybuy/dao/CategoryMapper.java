@@ -12,6 +12,7 @@ import java.util.List;
 public interface CategoryMapper {
 
     public List<Category> getFirstCategories();
+
     public List<Category> getSecondCategories(Integer id);
     public List<Category> getThirdCategories(Integer id);
 }

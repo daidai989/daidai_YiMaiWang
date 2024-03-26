@@ -21,6 +21,7 @@ import java.util.Map;
 public class CatServiceImpl implements CatService {
     @Autowired
     private CatMapper catMapper;
+
     @Override
     public ResponseMessage getProductsById(String token) {
         Map<String, Object> map = JwtUtil.parseToken(token);

@@ -11,7 +11,6 @@ import java.util.List;
  * @author daidai
  */
 public interface CatService {
-
     public ResponseMessage getProductsById(String token);
     public ResponseMessage addProduct(Cat cat);
     public ResponseMessage delProduct(Integer id );

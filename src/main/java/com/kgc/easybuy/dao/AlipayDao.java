@@ -5,7 +5,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface AlipayDao {
-
     //添加
     public int addAlipay(AlipayDBPojo alipayDB);
     //修改

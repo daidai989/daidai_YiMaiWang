@@ -50,6 +50,7 @@ public class AlipayController {
         pw.print(false);
     }
 
+
     @RequestMapping("alipayNotify")
     @ResponseBody
     public void alipayNotify(HttpServletRequest req, HttpServletResponse resp){

@@ -12,7 +12,6 @@ public interface UserMapper {
 
     public User checkUserExist(User user);
     public int register(User user);
-
     public int updateUser(User user);
 
 

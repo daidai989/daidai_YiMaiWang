@@ -21,6 +21,7 @@ import java.util.Map;
 public class NewsServiceImpl implements NewsService {
     @Autowired
     private NewsMapper newsMapper;
+
     @Override
     public ResponseMessage getNewsList() {
         List<News> newsList = newsMapper.getNewsList();

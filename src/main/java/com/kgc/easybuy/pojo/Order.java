@@ -16,6 +16,7 @@ public class Order {
 
       private  Integer id;
       private  Integer userId;
+
       private  String  loginName;
       private  String  userAddress;
       private  Date    createTime;

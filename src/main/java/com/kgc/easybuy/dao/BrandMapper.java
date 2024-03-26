@@ -7,4 +7,5 @@ import java.util.List;
 public interface BrandMapper {
 
     public List<Brand> getBrand();
+
 }

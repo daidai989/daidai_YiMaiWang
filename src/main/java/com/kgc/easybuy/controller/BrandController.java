@@ -11,7 +11,6 @@ public class BrandController {
 
     @Autowired
     private BrandService brandService;
-
     @RequestMapping("getBrand")
     @ResponseBody
     public Object getBrand(){

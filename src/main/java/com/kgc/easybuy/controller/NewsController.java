@@ -61,6 +61,7 @@ public class NewsController {
         return responeseMsg;
     }
 
+
     @RequestMapping("updateNews")
     public ResponseMessage updateNews(@RequestBody News news) {
         ResponseMessage responeseMsg = newsService.updateNews(news);

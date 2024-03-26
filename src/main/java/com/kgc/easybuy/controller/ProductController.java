@@ -24,6 +24,7 @@ import java.util.UUID;
 @CrossOrigin(origins = "*")
 public class ProductController {
 
+
     @Autowired
     private ProductService productService;
 

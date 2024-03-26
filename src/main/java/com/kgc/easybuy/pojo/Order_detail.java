@@ -23,4 +23,5 @@ public class Order_detail {
       private String name;
       private  String  serialNumber;
       private String filePath;
+
 }

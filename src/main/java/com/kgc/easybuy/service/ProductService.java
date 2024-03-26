@@ -12,7 +12,6 @@ public interface ProductService {
     public Object getProductList(int currentPageNo,int pageSize);
 
     public ResponseMessage getHotProduct();
-
     public ResponseMessage getProductByCategoryId();
 
     public ResponseMessage getProductById(int id);

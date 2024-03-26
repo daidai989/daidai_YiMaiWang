@@ -19,7 +19,6 @@ public interface OrderMapper {
     public boolean delOrder(Integer id);
     public boolean updateOrderStatusWithCancel(Integer id);
     public Order getOrderById(Integer id);
-
     public boolean updateOrderStatusWithPay(String serialNumber);
     public List<Order> showCrossTime();
     public List<Order> getAllOrder(Integer userId);
